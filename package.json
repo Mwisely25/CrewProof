@@ -1,0 +1,21 @@
+{
+  "name": "crewproof-static-prototype",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "generate:assets": "node scripts/generate-assets.mjs",
+    "build": "npm run generate:assets && node scripts/build-static.mjs",
+    "serve:dist": "python3 -m http.server 5189 --bind 127.0.0.1 --directory dist",
+    "typecheck": "node --check assets/app.js",
+    "lint": "node scripts/lint-static.mjs",
+    "test": "npm run typecheck && npm run test:crew811 && npm run test:clients && npm run build && npm run test:routes && npm run test:serve && npm run test:onboarding && npm run test:surfaces && npm run lint",
+    "preflight:onboarding": "npm test && node scripts/onboarding-preflight.mjs",
+    "test:surfaces": "node scripts/test-static-surfaces.mjs",
+    "test:routes": "node scripts/test-static-routes.mjs",
+    "test:serve": "node scripts/test-serve-smoke.mjs",
+    "test:onboarding": "node scripts/test-onboarding-readiness.mjs",
+    "test:crew811": "node scripts/test-crew811.mjs",
+    "test:clients": "node scripts/test-clients.mjs"
+  }
+}
