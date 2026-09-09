@@ -985,6 +985,11 @@ function restoreClient(id) {
   return client;
 }
 
+function restoreAllClients() {
+  const archived = getClients().filter((client) => client.status === "archived");
+  return archived.map((client) => restoreClient(client.id));
+}
+
 const jobOverviewPins = {
   "JOB-1045": { x: 76, y: 43, label: "Pine Hill", crew: "Alpha Crew" },
   "JOB-1046": { x: 37, y: 36, label: "Oak Ridge", crew: "Bravo Crew" },
@@ -4010,7 +4015,7 @@ function runCrew811Action(action) {
   if (action === "close") {
     if (crew811CanClose(ticket)) {
       ticket.status = "CLOSED";
-      auditCrew811(ticket, "Closed / archived");
+      auditCrew811(ticket, "Closed");
     } else {
       auditCrew811(ticket, "Close blocked until responses are CLEAR, MARKED, or override documented");
     }
@@ -5735,6 +5740,7 @@ const clientDetailName = document.querySelector("[data-client-detail-name]");
 const clientDetailCode = document.querySelector("[data-client-detail-code]");
 const clientEditLink = document.querySelector("[data-client-edit-link]");
 const clientToggleArchive = document.querySelector("[data-client-toggle-archive]");
+const clientRestoreAll = document.querySelector("[data-client-restore-all]");
 const clientCreateJob = document.querySelector("[data-client-create-job]");
 const clientInfo = document.querySelector("[data-client-info]");
 const clientContacts = document.querySelector("[data-client-contacts]");
@@ -7762,6 +7768,11 @@ roleMode?.addEventListener("change", () => {
 
 clientSearchInput?.addEventListener("input", () => renderClients(routeFromLocation()));
 clientStatusFilter?.addEventListener("change", () => renderClients(routeFromLocation()));
+clientRestoreAll?.addEventListener("click", () => {
+  restoreAllClients();
+  renderClients(routeFromLocation());
+  renderOnboarding();
+});
 
 clientForm?.addEventListener("submit", (event) => {
   event.preventDefault();
