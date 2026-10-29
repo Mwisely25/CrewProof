@@ -1,0 +1,2337 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <base href="../">
+    <meta name="crewproof-share-route" content="/billing/JOB-1047">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>CrewProof share - billing / JOB-1047</title>
+    <meta
+      name="description"
+      content="CrewProof turns telecom locate maps and closeout packets into live job boards with proof, approval, and billing status tied to the map."
+    >
+    <meta name="openai-domain-verification" content="dv-Le0bvep2qblB6bQxLQf5h5xw">
+    <link rel="stylesheet" href="assets/styles.css?v=field-package1">
+  </head>
+  <body>
+    <main class="sheet-app" aria-label="CrewProof field and management application">
+      <div class="app-shell" data-app-shell>
+        <aside class="mode-sidebar" aria-label="CrewProof navigation">
+          <div class="mode-brand"><span class="hex-logo">CP</span><strong>CREW<span>PROOF</span></strong></div>
+          <p data-mode-label>Crew View</p>
+          <nav>
+            <a href="/crew" data-route-link="/crew">Crew View</a>
+            <a href="/crew811" data-route-link="/crew811">Crew811</a>
+            <a href="/claims" data-route-link="/claims">Claims / Damage</a>
+            <a href="/management" data-route-link="/management">Management</a>
+            <a href="/onboarding" data-route-link="/onboarding">Onboarding</a>
+            <a href="/clients" data-route-link="/clients">Clients</a>
+            <a href="/workspaces" data-route-link="/workspaces">Workspaces</a>
+            <a href="/jobs" data-route-link="/jobs">Jobs</a>
+            <a href="/closeouts" data-route-link="/closeouts">Closeouts</a>
+            <a href="/billing/JOB-1045" data-route-link="/billing/JOB-1045" data-billing-nav-link>Billing</a>
+            <a href="/reports" data-route-link="/reports">Reports</a>
+            <a href="/settings" data-route-link="/settings">Settings</a>
+          </nav>
+          <label>Role mode
+            <select data-role-mode>
+              <option value="crew">Crew / Foreman</option>
+              <option value="pm">PM / Admin / Owner</option>
+              <option value="billing">Billing</option>
+            </select>
+          </label>
+          <div class="auth-session-bar" data-auth-panel aria-label="Active operator session">
+            <label>Active Operator
+              <select data-auth-user-select>
+                <option value="jramirez@crewproof.local">J. Ramirez (Foreman)</option>
+                <option value="pm@crewproof.local">M. Vance (PM / Owner)</option>
+                <option value="billing@crewproof.local">S. Chen (Billing)</option>
+                <option value="locate@crewproof.local">D. Brooks (811 Desk)</option>
+                <option value="claims@crewproof.local">R. Patel (Claims)</option>
+              </select>
+            </label>
+            <p class="auth-status-copy" data-auth-status>Session: J. Ramirez / Crew</p>
+            <input type="file" data-global-file-input hidden>
+          </div>
+        </aside>
+
+        <section class="crew-view route-view" data-view="crew" aria-label="Crew field working view">
+          <header class="crew-topbar">
+            <div><strong>CREW VIEW</strong><span>Telecom field map / proof capture</span></div>
+            <select data-crew-job-select aria-label="Select crew job">
+              <option value="JOB-1045">JOB-1045 / Windstream / Pine Hill</option>
+              <option value="JOB-1046">JOB-1046 / Kinetic / Oak Ridge</option>
+              <option value="JOB-1047">JOB-1047 / Spectrum / Cedar Park</option>
+              <option value="JOB-1048">JOB-1048 / AT&amp;T / Slaughter Ln</option>
+            </select>
+          </header>
+          <div class="crew-field-grid">
+            <section class="crew-map-panel" aria-label="Crew live telecom map">
+              <div class="crew-map-head">
+                <div><b>LIVE FIELD MAP</b><span data-crew-live-copy>HH-1 selected / GPS locked / Ready to Bill</span></div>
+                <div class="crew-map-tools" aria-label="Crew map controls">
+                  <button type="button" class="active" data-crew-map-view="detail">Detail</button>
+                  <button type="button" data-crew-map-view="jobs">All Jobs</button>
+                  <button type="button" data-crew-map-zoom="out" aria-label="Zoom crew map out">-</button>
+                  <button type="button" data-crew-map-zoom="fit">Fit</button>
+                  <button type="button" data-crew-map-zoom="in" aria-label="Zoom crew map in">+</button>
+                  <span data-crew-zoom-readout>100%</span>
+                </div>
+              </div>
+              <div class="crew-map-canvas" data-drop-map="crew" aria-label="Crew live telecom map. Select Drop Note or Drop Gig, then click the map to place a pin.">
+                <div class="crew-overview-layer" data-crew-overview-layer hidden aria-label="All active crew jobs">
+                  <img src="assets/crewproof-locate-map-crop.png" alt="All active telecom jobs map">
+                  <div class="crew-job-pin-layer" data-crew-job-pin-layer></div>
+                </div>
+                <div class="crew-map-scroll-layer" data-crew-map-layer>
+                  <img src="assets/crewproof-locate-map-crop.png" alt="Crew live telecom locate map">
+                  <button type="button" class="crew-pin ready is-selected" data-crew-asset="HH-1" style="--x:80%;--y:43%">HH-1</button>
+                  <button type="button" class="crew-photo ready" data-crew-photo="HH-1" style="--x:86%;--y:43%"><img src="assets/photo-hh-1.png" alt="HH-1 field proof"><span>Photo</span></button>
+                  <button type="button" class="crew-pin waiting" data-crew-asset="SC-1" style="--x:80%;--y:32%">SC-1</button>
+                  <button type="button" class="crew-photo waiting" data-crew-photo="SC-1" style="--x:86%;--y:32%"><img src="assets/photo-sc-1.png" alt="SC-1 field proof"><span>Photo</span></button>
+                  <button type="button" class="crew-pin missing" data-crew-asset="SV-1" style="--x:80%;--y:66%">SV-1</button>
+                  <button type="button" class="crew-photo missing" data-crew-photo="SV-1" style="--x:86%;--y:66%"><img src="assets/photo-sv-1.png" alt="SV-1 field proof"><span>Missing</span></button>
+                  <button type="button" class="crew-pin rejected" data-crew-asset="SV-2" style="--x:44%;--y:89%">SV-2</button>
+                  <button type="button" class="crew-photo rejected" data-crew-photo="SV-2" style="--x:50%;--y:86%"><img src="assets/photo-sv-2.png" alt="SV-2 field proof"><span>Rejected</span></button>
+                  <button type="button" class="crew-pin waiting" data-crew-asset="UG-1" style="--x:70%;--y:84%">UG-1</button>
+                  <button type="button" class="crew-photo waiting" data-crew-photo="UG-1" style="--x:75%;--y:80%"><img src="assets/photo-ug-1.png" alt="UG-1 field proof"><span>Photo</span></button>
+                  <div class="map-note-layer" data-map-note-layer="crew" aria-live="polite"></div>
+                </div>
+              </div>
+              <div class="crew-action-bar" aria-label="Crew proof actions">
+                <button type="button" data-crew-action="Add Proof">Add Proof</button>
+                <button type="button" data-map-tool="note">Drop Note</button>
+                <button type="button" data-map-tool="gig">Drop Gig</button>
+                <button type="button" data-crew-action="GPS Lock">GPS Lock</button>
+                <button type="button" data-crew-action="Take Photo">Take Photo</button>
+                <button type="button" data-crew-action="Add Damage Proof">Add Damage Proof</button>
+                <button type="button" data-crew-action="Report Damage">Report Damage</button>
+                <button type="button" data-crew-action="Add Restoration Proof">Add Restoration Proof</button>
+                <button type="button" data-crew-action="Add Utility Strike Proof">Add Utility Strike Proof</button>
+                <button type="button" data-crew-action="Add Pre-Existing Damage Proof">Add Pre-Existing Damage Proof</button>
+                <button type="button" data-crew-action="Add Warranty / Punch Proof">Add Warranty / Punch Proof</button>
+                <button type="button" data-crew-action="Mark Complete">Mark Complete</button>
+                <p data-crew-action-status>Field actions update this job card and package source.</p>
+              </div>
+            </section>
+            <aside class="crew-job-card" aria-label="Crew selected job card">
+              <h2 data-crew-card-job>JOB-1045</h2>
+              <dl>
+                <div><dt>Customer</dt><dd data-crew-card-customer>Windstream</dd></div>
+                <div><dt>Address</dt><dd data-crew-card-address>1250 Pine Hill Rd, Austin, TX</dd></div>
+                <div><dt>Crew</dt><dd data-crew-card-crew>Alpha Crew</dd></div>
+                <div><dt>Ready to Bill</dt><dd data-crew-card-ready>$8,450</dd></div>
+                <div><dt>Blocked</dt><dd data-crew-card-blocked>$85,100</dd></div>
+                <div><dt>Proof Progress</dt><dd data-crew-card-progress>100%</dd></div>
+              </dl>
+              <ul>
+                <li>Open Issues: <b data-crew-card-issues>SV-1 photo / SV-2 redline / UG-1 locate</b></li>
+                <li>Photos: <b>5 pinned</b></li>
+                <li>GPS Proof: <b>Matched</b></li>
+                <li>Redlines: <b>1 needs fix</b></li>
+                <li>Documents: <b>Package assembling</b></li>
+                <li>811 Ticket: <b data-crew-card-811-ticket>FL811-24-1194</b></li>
+                <li>811 Status: <b data-crew-card-811-status>Renewal needed / PENDING</b></li>
+                <li>811 Covers: <b data-crew-card-811-coverage>Start / HH-1 to End / SV-2</b></li>
+                <li>811 Expires: <b data-crew-card-811-expiry>06/27/2026 16:00</b></li>
+                <li>811 Blocker: <b data-crew-card-811-blocker>Positive response pending</b></li>
+                <li>Admin Docs: <b data-crew-card-admin-docs>83%</b></li>
+                <li>Rate Submission: <b data-crew-card-rate-submission>100%</b></li>
+                <li>Rate Approval: <b data-crew-card-rate-approval>Approved</b></li>
+                <li>Calculation Confidence: <b data-crew-card-calculation-confidence>96%</b></li>
+                <li>Contract Match: <b data-crew-card-contract-match>100%</b></li>
+                <li>PO Funding: <b data-crew-card-po-funding>75%</b></li>
+                <li>Change Order Status: <b data-crew-card-change-order>50%</b></li>
+                <li>Retainage / Waiver: <b data-crew-card-retainage-waiver>80%</b></li>
+                <li>Map Notes: <b data-crew-card-notes>0 dropped</b></li>
+              </ul>
+              <ol class="crew-note-list" data-map-note-list="crew" aria-label="Dropped map notes and gigs"></ol>
+              <div class="share-panel crew-share-panel" aria-label="Share live crew field data">
+                <label>
+                  Live Field Link
+                  <input data-share-link type="text" value="Share link builds from selected field asset" readonly>
+                </label>
+                <div class="share-actions">
+                  <button type="button" data-copy-share>Copy Link</button>
+                  <button type="button" data-download-snapshot>Snapshot JSON</button>
+                </div>
+              </div>
+              <div class="crew-card-actions">
+                <a href="/closeout/JOB-1045" data-route-link="/closeout/JOB-1045" data-open-closeout>Open Closeout Package</a>
+                <a href="/billing/JOB-1045" data-route-link="/billing/JOB-1045" data-open-billing>Billing Review</a>
+              </div>
+            </aside>
+          </div>
+        </section>
+
+        <section class="management-view route-view" data-view="management" aria-label="Management command center">
+          <header class="management-header">
+            <div><h1>Management Command Center</h1><p>Revenue, operations, closeout aging, and job status across active telecom work.</p></div>
+            <div class="management-header-actions" aria-label="Share live management data">
+              <span data-management-date>06/23/2026 live operations</span>
+              <input data-ops-share-link type="text" value="Live operations share link" readonly>
+              <button type="button" data-copy-ops-share>Copy Ops Link</button>
+              <button type="button" data-download-ops-snapshot>Ops JSON</button>
+            </div>
+          </header>
+          <section class="kpi-grid" aria-label="Management KPIs">
+            <article><span>Ready to Bill Today</span><b data-kpi-ready>$0</b><small data-kpi-ready-sub>0 jobs cleared</small></article>
+            <article><span>Pending Approval</span><b data-kpi-pending>$0</b><small data-kpi-pending-sub>Owner / PM queue</small></article>
+            <article><span>Blocked Revenue</span><b data-kpi-blocked>$187,000</b><small data-kpi-blocked-sub>3 jobs with proof, approval, or rejection holds</small></article>
+            <article><span>30 Day Forecast</span><b data-kpi-forecast>$0</b><small data-kpi-forecast-sub>Based on active work</small></article>
+          </section>
+          <section class="blocked-revenue-action-card" aria-label="Billing recovery top actions">
+            <div class="blocked-action-header">
+              <div>
+                <span>BILLING RECOVERY</span>
+                <h2>Top Actions to Reduce Blocked Revenue</h2>
+              </div>
+              <div class="blocked-summary">
+                <span>Blocked Revenue</span>
+                <strong data-blocked-action-total>$187,000</strong>
+                <small data-blocked-action-share>70% of ready + blocked revenue</small>
+              </div>
+            </div>
+            <div class="revenue-snapshot">
+              <div><span>Ready to Bill Today</span><strong data-recovery-ready-total>$78,650</strong><small data-recovery-ready-sub>8 ready asset lines</small></div>
+              <div><span>Blocked Revenue</span><strong data-recovery-blocked-total>$187,000</strong><small data-recovery-blocked-sub>JOB-1045, JOB-1047, JOB-1046</small></div>
+              <div><span>Potential Billable Pool</span><strong data-recovery-pool-total>$265,650</strong><small data-recovery-pool-sub>Ready + blocked</small></div>
+            </div>
+            <div class="blocked-action-grid" data-blocked-action-grid>
+              <article class="priority-high">
+                <span>1</span>
+                <div>
+                  <h3>Clear JOB-1045 Windstream blockers</h3>
+                  <p>Largest blocked job at <strong>$85,100</strong>. Prioritize UG-1 locate verification, SV-2 redline correction, SV-1 open-vault photo, and SC-1 PM approval.</p>
+                  <ul>
+                    <li><strong>UG-1:</strong> Verify Sunshine 811 locate hold, $32,400</li>
+                    <li><strong>SV-2:</strong> Correct redline / bore mismatch, $22,900</li>
+                    <li><strong>SV-1:</strong> Capture missing open-vault photo, $18,600</li>
+                    <li><strong>SC-1:</strong> Push PM review approval, $11,200</li>
+                  </ul>
+                </div>
+                <b>Unlock $85,100</b>
+              </article>
+              <article class="priority-high">
+                <span>2</span>
+                <div>
+                  <h3>Fix and resubmit JOB-1047 Spectrum closeout package</h3>
+                  <p>JOB-1047 has <strong>$0 ready</strong> and <strong>$73,500 blocked</strong>. Rebuild the rejected package before sending it back to Spectrum OSP Billing Review.</p>
+                  <ul>
+                    <li><strong>CP-HH-7:</strong> Correct wrong handhole label in photo</li>
+                    <li><strong>CP-SC-2:</strong> Add missing splice tray photo</li>
+                    <li><strong>QC gate:</strong> Check IDs, GPS, photos, and manifest before resubmission</li>
+                  </ul>
+                </div>
+                <b>Unlock $73,500</b>
+              </article>
+              <article class="priority-medium">
+                <span>3</span>
+                <div>
+                  <h3>Push JOB-1046 Kinetic approval and missing proof cleanup</h3>
+                  <p>JOB-1046 has <strong>$31,300 ready</strong> and <strong>$28,400 blocked</strong>. Keep ready lines moving while the owner splice count and before-photo exception are cleaned up.</p>
+                  <ul>
+                    <li><strong>OR-SC-3:</strong> Confirm owner splice count review</li>
+                    <li><strong>OR-SV-5:</strong> Resolve missing before-photo exception</li>
+                    <li><strong>Billing:</strong> Do not hold the $31,300 already ready</li>
+                  </ul>
+                </div>
+                <b>Unlock $28,400</b>
+              </article>
+            </div>
+            <div class="billing-recovery-callout">
+              <strong>Immediate billing move:</strong>
+              <span data-recovery-billing-move>Send the clean $78,650 ready today while blockers are worked. That includes JOB-1048 AT&amp;T, JOB-1046 Kinetic ready lines, and JOB-1045 HH-1.</span>
+            </div>
+            <p class="blocked-data-note" data-recovery-data-note>Data check: dollar totals reconcile to $187,000 across JOB-1045, JOB-1047, and JOB-1046, so count labels should use 3 blocked jobs.</p>
+          </section>
+          <section class="management-main-grid">
+            <article class="ops-map-card">
+              <h2>Live Operations Map</h2>
+              <div class="ops-map">
+                <img src="assets/crewproof-locate-map-crop.png" alt="Operations map overview">
+                <div data-management-map-pins></div>
+              </div>
+              <dl class="management-selected-job" data-management-selected-job>
+                <div><dt>Selected Job</dt><dd>Click a job pin</dd></div>
+                <div><dt>Ready</dt><dd>$0</dd></div>
+                <div><dt>Blocked</dt><dd>$0</dd></div>
+              </dl>
+            </article>
+            <article class="chart-card"><h2>Revenue by Customer</h2><div class="bar-chart" data-revenue-by-customer></div></article>
+            <article class="chart-card"><h2>Jobs by Status</h2><div class="status-donut"><b data-status-total>0</b><span>Active Jobs</span></div><p data-status-copy>Ready 0 / Missing 0 / Rejected 0 / Waiting 0</p></article>
+            <article class="claims-impact-card">
+              <div class="card-title-row">
+                <h2>Claims &amp; Damage Exposure</h2>
+                <a href="/claims" data-route-link="/claims">Open Claims Map</a>
+              </div>
+              <dl>
+                <div><dt>Open Claims</dt><dd data-management-claims-open>0</dd></div>
+                <div><dt>Billing Held</dt><dd data-management-claims-blocked>$0</dd></div>
+                <div><dt>Recovery File</dt><dd data-management-claims-recovery>$0</dd></div>
+              </dl>
+              <p data-management-claims-top>Top claim: loading damage records</p>
+              <ol data-management-claims-actions></ol>
+            </article>
+            <article class="table-card"><h2>Jobs in Progress</h2><table><tbody data-jobs-progress></tbody></table></article>
+            <article class="table-card"><h2>Crew Utilization</h2><table><tbody data-crew-utilization></tbody></table></article>
+            <article class="table-card"><h2>Top Blocked Jobs</h2><table><tbody data-top-blocked-jobs></tbody></table></article>
+            <article class="table-card"><h2>Crew Performance</h2><table><tbody data-crew-performance></tbody></table></article>
+            <article class="table-card"><h2>Closeout Aging</h2><table><tbody data-closeout-aging></tbody></table></article>
+            <article class="table-card wide"><h2>Alerts &amp; Exceptions</h2><table><tbody data-alerts-exceptions></tbody></table></article>
+          </section>
+        </section>
+
+        <section class="crew811-view route-view" data-view="crew811" aria-label="Crew811 811 ticket management">
+          <aside class="crew811-queue-panel" aria-label="811 ticket queue">
+            <header>
+              <h1>Crew811</h1>
+              <p>Florida 811 tickets, excavator information, positive response, renewals, and field proof on the CrewProof map.</p>
+            </header>
+            <div class="crew811-import">
+              <strong>Import / Match</strong>
+              <span>Florida 811 excavator ticket feed</span>
+              <button type="button" data-crew811-action="import">Import Ticket</button>
+              <label class="crew811-json-import">
+                Sunshine 811 / Exactix JSON
+                <textarea data-crew811-json rows="8" spellcheck="false">{"sourcePortal":"exactix.sunshine811.com","ticketNumber":"FL811-24-1194","companyId":"248654","excavatorId":"544490","companyName":"NEXT LEVEL UNDERGROUND","officeName":"NEXT LEVEL UNDERGROUND","companyType":"CONTRACTOR","contactName":"AURELIAN ONU","phone":"(305) 205-6932","email":"NXLVTICKET@GMAIL.COM","callBackTime":"ANYTIME","fieldContact":"ANDREI KRILOV","fieldContactType":"Cell","fieldContactMethod":"(754) 260-7248","workingFor":"FPL MASTEC SSUP","workType":"WR 908792 HIGHLANDS 21 LATERAL HARDENING","address1":"1835 E HALLANDALE BEACH BLVD","address2":"SUITE 667","city":"HALLANDALE BEACH","state":"FL","zip":"33009","county":"BROWARD","positiveResponseStatus":"PENDING","ticketStatus":"RENEWAL_NEEDED","linkedJobId":"JOB-1045"}</textarea>
+              </label>
+              <button type="button" data-crew811-action="import-json">Sync Sunshine JSON</button>
+              <small data-crew811-import-status>Paste Exactix JSON to update tickets and linked jobs.</small>
+            </div>
+            <div class="crew811-share-panel" aria-label="Live 811 ticket sharing">
+              <strong>Sunshine 811 / Exactix Ticket Packet</strong>
+              <input data-crew811-share-link type="text" value="811 share link" readonly>
+              <div>
+                <button type="button" data-copy-crew811-share>Copy 811 Link</button>
+                <button type="button" data-download-crew811-snapshot>Sunshine 811 JSON</button>
+              </div>
+            </div>
+            <div class="crew811-ticket-list" data-crew811-list aria-label="811 tickets"></div>
+          </aside>
+          <section class="crew811-map-panel" aria-label="Map-first 811 ticket layer">
+            <div class="crew811-map-head">
+              <div>
+                <strong>LIVE 811 LAYER</strong>
+                <span data-crew811-map-copy>Tickets overlaid on telecom field map</span>
+              </div>
+              <div class="crew811-map-filters">
+                <button type="button" data-crew811-filter="all" class="active">All</button>
+                <button type="button" data-crew811-filter="RENEWAL_NEEDED">Renewal</button>
+                <button type="button" data-crew811-filter="WAITING_ON_RESPONSE">Response</button>
+                <button type="button" data-crew811-filter="CONFLICT">Conflict</button>
+                <button type="button" data-crew811-filter="CLEAR">Clear</button>
+              </div>
+            </div>
+            <div class="crew811-map-canvas">
+              <img src="assets/crewproof-locate-map-crop.png" alt="CrewProof map with 811 ticket pins">
+              <svg class="crew811-geometry" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+                <polyline data-crew811-boundary points="78,30 81,41 80,62 70,82 46,88" />
+              </svg>
+              <div class="crew811-coverage-layer" data-crew811-coverage-layer aria-label="Sunshine 811 ticket coverage"></div>
+              <div data-crew811-map-pins></div>
+            </div>
+            <div class="crew811-legend" aria-label="811 ticket status legend">
+              <span><i class="new"></i>NEW</span>
+              <span><i class="review"></i>NEEDS REVIEW</span>
+              <span><i class="assigned"></i>ASSIGNED</span>
+              <span><i class="waiting"></i>WAITING ON RESPONSE</span>
+              <span><i class="clear"></i>CLEAR</span>
+              <span><i class="conflict"></i>CONFLICT</span>
+              <span><i class="expired"></i>EXPIRED</span>
+              <span><i class="renewal"></i>RENEWAL NEEDED</span>
+              <span><i class="closed"></i>CLOSED</span>
+            </div>
+          </section>
+          <aside class="crew811-ticket-panel" aria-label="Selected 811 ticket">
+            <header>
+              <span>SELECTED TICKET</span>
+              <h2 data-crew811-number>FL811-24-1194</h2>
+            </header>
+            <dl>
+              <div><dt>811 Center</dt><dd data-crew811-provider>Florida 811</dd></div>
+              <div><dt>Company ID</dt><dd data-crew811-company-id>248654</dd></div>
+              <div><dt>Excavator ID</dt><dd data-crew811-excavator-id>544490</dd></div>
+              <div><dt>Excavator</dt><dd data-crew811-excavator>NEXT LEVEL UNDERGROUND</dd></div>
+              <div><dt>Working For</dt><dd data-crew811-working-for>FPL MASTEC SSUP</dd></div>
+              <div><dt>Work Type</dt><dd data-crew811-work-type>WR 908792 HIGHLANDS 21 LATERAL HARDENING</dd></div>
+              <div><dt>Address</dt><dd data-crew811-address>1250 Pine Hill Rd, Austin</dd></div>
+              <div><dt>Call Back Time</dt><dd data-crew811-call-back>ANYTIME</dd></div>
+              <div><dt>Field Contact</dt><dd data-crew811-field-contact>Andrei Krilov / Cell</dd></div>
+              <div><dt>Due Date</dt><dd data-crew811-due>06/25/2026 16:00</dd></div>
+              <div><dt>Expiration</dt><dd data-crew811-expiration>06/27/2026 16:00</dd></div>
+              <div><dt>Status</dt><dd data-crew811-status>RENEWAL_NEEDED</dd></div>
+              <div><dt>Linked Job</dt><dd data-crew811-job>JOB-1045</dd></div>
+              <div><dt>Assigned Crew</dt><dd data-crew811-crew>Alpha</dd></div>
+              <div><dt>Positive Response</dt><dd data-crew811-response>PENDING</dd></div>
+              <div><dt>Renewal Countdown</dt><dd data-crew811-countdown>48h</dd></div>
+            </dl>
+            <div class="crew811-proof-box">
+              <strong>Field Proof</strong>
+              <ul data-crew811-proof>
+                <li>GPS point pending</li>
+                <li>Marked utilities pending</li>
+              </ul>
+            </div>
+            <div class="crew811-actions" aria-label="811 ticket actions">
+              <button type="button" data-crew811-action="link">Link to Job</button>
+              <button type="button" data-crew811-action="assign">Assign Crew</button>
+              <button type="button" data-crew811-action="proof">Upload Proof</button>
+              <button type="button" data-crew811-action="clear">Mark Clear</button>
+              <button type="button" data-crew811-action="conflict">Mark Conflict</button>
+              <button type="button" data-crew811-action="renew">Renew Ticket</button>
+              <button type="button" data-crew811-action="close">Close Ticket</button>
+            </div>
+            <section class="crew811-audit">
+              <h3>Audit Events</h3>
+              <ol data-crew811-events></ol>
+            </section>
+          </aside>
+        </section>
+
+        <section class="claims-view route-view" data-view="claims" aria-label="Claims and damages map">
+          <aside class="claims-queue-panel" aria-label="Claims and damages queue">
+            <header>
+              <h1>Claims / Damage</h1>
+              <p>Damage reports, photos, utility strikes, restoration claims, warranty holds, and recovery dollars on a separate map.</p>
+            </header>
+            <div class="claims-summary">
+              <div><span>Open Claims</span><b data-claims-open>0</b></div>
+              <div><span>Recovery $</span><b data-claims-recovery>$0</b></div>
+              <div><span>Blocked Jobs</span><b data-claims-blocked>0</b></div>
+            </div>
+            <div class="claims-intake-card" aria-label="Claims map intake status">
+              <strong>Map Intake</strong>
+              <span data-claims-intake-status>Ready to drop a damage pin or attach field evidence.</span>
+              <button type="button" data-claims-action="drop">Drop Damage Pin</button>
+            </div>
+            <div class="claims-share-panel" aria-label="Live claims layer sharing">
+              <strong>Live Claims Packet</strong>
+              <input data-claims-share-link type="text" value="Claims share link" readonly>
+              <div>
+                <button type="button" data-copy-claims-share>Copy Claims Link</button>
+                <button type="button" data-download-claims-snapshot>Claims JSON</button>
+              </div>
+            </div>
+            <div class="claims-ticket-list" data-claims-list aria-label="Claims and damage records"></div>
+          </aside>
+          <section class="claims-map-panel" aria-label="Separate claims and damages map">
+            <div class="claims-map-head">
+              <div>
+                <strong>DAMAGE / CLAIMS MAP</strong>
+                <span data-claims-map-copy>Claims layer separate from production proof map</span>
+              </div>
+              <div class="claims-map-filters">
+                <button type="button" data-claims-filter="all" class="active">All</button>
+                <button type="button" data-claims-filter="Open">Open</button>
+                <button type="button" data-claims-filter="Investigating">Investigating</button>
+                <button type="button" data-claims-filter="Recovery">Recovery</button>
+                <button type="button" data-claims-filter="Closed">Closed</button>
+                <button type="button" data-claims-action="drop">Drop Damage Pin</button>
+              </div>
+            </div>
+            <div class="claims-map-canvas" data-claims-map-canvas aria-label="Claims map. Use Drop Damage Pin, then click the map to create a claim at that location.">
+              <img src="assets/crewproof-locate-map-crop.png" alt="Claims and damages map layer">
+              <svg class="claims-redline-layer" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+                <polyline points="44,88 51,86 70,82 78,70" />
+                <circle cx="48" cy="88" r="2.2" />
+              </svg>
+              <div data-claims-map-pins></div>
+            </div>
+            <div class="claims-legend" aria-label="Claim type legend">
+              <span><i class="utility-strike"></i>Utility Strike</span>
+              <span><i class="restoration"></i>Restoration</span>
+              <span><i class="property"></i>Property Damage</span>
+              <span><i class="warranty"></i>Warranty</span>
+              <span><i class="vehicle"></i>Vehicle / Equipment</span>
+            </div>
+          </section>
+          <aside class="claims-detail-panel" aria-label="Selected claim or damage report">
+            <header>
+              <span>SELECTED CLAIM</span>
+              <h2 data-claim-id>CLM-1045-02</h2>
+            </header>
+            <dl>
+              <div><dt>Type</dt><dd data-claim-type>Utility Strike</dd></div>
+              <div><dt>Status</dt><dd data-claim-status>Investigating</dd></div>
+              <div><dt>Job</dt><dd data-claim-job>JOB-1045</dd></div>
+              <div><dt>Location</dt><dd data-claim-location>Pine Hill Rd shoulder</dd></div>
+              <div><dt>Owner</dt><dd data-claim-owner>PM Review</dd></div>
+              <div><dt>Severity</dt><dd data-claim-severity>High</dd></div>
+              <div><dt>Source</dt><dd data-claim-source>Field report</dd></div>
+              <div><dt>Linked 811</dt><dd data-claim-811>FL811-24-1201</dd></div>
+              <div><dt>Claim Value</dt><dd data-claim-value>$12,800</dd></div>
+              <div><dt>Blocked Dollars</dt><dd data-claim-blocked>$22,900</dd></div>
+              <div><dt>Last Update</dt><dd data-claim-updated>06/26/2026 09:20</dd></div>
+            </dl>
+            <figure class="claim-photo">
+              <img data-claim-photo src="assets/photo-sv-2.png" alt="Selected damage evidence">
+              <figcaption data-claim-caption>Damage photo pinned to claim location</figcaption>
+            </figure>
+            <div class="claim-proof-box">
+              <strong>Claim File</strong>
+              <ul data-claim-proof></ul>
+            </div>
+            <div class="claims-actions">
+              <button type="button" data-claims-action="photo">Add Photo</button>
+              <button type="button" data-claims-action="assign">Assign Owner</button>
+              <button type="button" data-claims-action="recovery">Start Recovery</button>
+              <button type="button" data-claims-action="hold">Hold Billing</button>
+              <button type="button" data-claims-action="close">Close Claim</button>
+              <button type="button" data-claim-email>Draft Recovery Email</button>
+              <button type="button" data-claim-snapshot>Download Claim JSON</button>
+              <a href="/billing/JOB-1045" data-claim-billing-link data-route-link="/billing/JOB-1045">Open Billing Hold</a>
+              <a href="/closeout/JOB-1045" data-claim-closeout-link data-route-link="/closeout/JOB-1045">Open Closeout Package</a>
+            </div>
+            <p class="claim-status" data-claim-status-message role="status" aria-live="polite">Claim file ready.</p>
+            <section class="claims-timeline">
+              <h3>Timeline</h3>
+              <ol data-claim-events></ol>
+            </section>
+          </aside>
+        </section>
+
+        <section class="jobs-view route-view management-view" data-view="jobs" aria-label="Jobs operations list">
+          <header class="management-header"><div><h1>Jobs</h1><p>Active telecom work by customer, crew, proof state, and dollars.</p></div><a href="/management" data-route-link="/management">Back to Management</a></header>
+          <section class="directory-grid">
+            <article class="table-card wide"><h2>Job Status Board</h2><table><thead><tr><th>Job</th><th>Customer</th><th>Site</th><th>Status</th><th>Crew</th><th>Ready</th><th>Blocked</th><th>Crew Map</th><th>Billing</th></tr></thead><tbody data-job-status-board></tbody></table></article>
+            <article class="table-card"><h2>Next Field Action</h2><table><tbody data-next-field-action></tbody></table></article>
+          </section>
+        </section>
+
+        <section class="clients-view route-view management-view" data-view="clients" aria-label="Client management">
+          <header class="management-header">
+            <div>
+              <h1 data-client-page-title>Clients</h1>
+              <p data-client-page-subtitle>Manage customer profiles, issued-to contacts, billing rules, and closeout requirements.</p>
+            </div>
+            <div class="management-header-actions">
+              <a href="/clients/new" data-route-link="/clients/new" data-client-add-link>Add Client</a>
+              <a href="/onboarding" data-route-link="/onboarding">Back to Onboarding</a>
+            </div>
+          </header>
+
+          <section class="client-list-panel" data-client-list-panel>
+            <div class="client-toolbar">
+              <label>Search
+                <input type="search" data-client-search placeholder="Client, code, contact, billing email">
+              </label>
+              <label>Status
+                <select data-client-status-filter>
+                  <option value="active">Active</option>
+                  <option value="archived">Archived</option>
+                  <option value="all">All</option>
+                </select>
+              </label>
+              <button type="button" data-client-restore-all>Unarchive All</button>
+            </div>
+            <article class="table-card wide">
+              <h2>Client Directory</h2>
+              <table>
+                <thead><tr><th>Client</th><th>Customer Code</th><th>Issued To</th><th>Billing Email</th><th>Ready Rule</th><th>Status</th><th>Actions</th></tr></thead>
+                <tbody data-client-list></tbody>
+              </table>
+            </article>
+          </section>
+
+          <section class="client-detail-panel" data-client-detail-panel hidden>
+            <article class="client-detail-card">
+              <div class="client-detail-head">
+                <div>
+                  <span data-client-detail-status>Active</span>
+                  <h2 data-client-detail-name>Client</h2>
+                  <p data-client-detail-code>Customer code</p>
+                </div>
+                <div class="client-actions">
+                  <a href="/clients/WINDSTREAM/edit" data-client-edit-link data-route-link="/clients/WINDSTREAM/edit">Edit Client</a>
+                  <button type="button" data-client-toggle-archive>Archive Client</button>
+                  <button type="button" data-client-create-job>Create Job for Client</button>
+                </div>
+              </div>
+              <section class="client-detail-grid">
+                <article><h3>Client Info</h3><dl data-client-info></dl></article>
+                <article><h3>Contacts</h3><dl data-client-contacts></dl></article>
+                <article><h3>Billing Rules</h3><dl data-client-billing></dl></article>
+                <article><h3>Closeout Rules</h3><dl data-client-closeout></dl></article>
+                <article><h3>811 / Locate Rules</h3><dl data-client-locate></dl></article>
+                <article><h3>Claims Rules</h3><dl data-client-claims></dl></article>
+                <article class="wide"><h3>Audit / Metadata</h3><table><tbody data-client-audit></tbody></table></article>
+              </section>
+            </article>
+          </section>
+
+          <section class="client-form-panel" data-client-form-panel hidden>
+            <form class="client-form" data-client-form novalidate>
+              <article class="table-card wide">
+                <h2 data-client-form-title>Add Client</h2>
+                <p class="client-form-status" data-client-form-status>Required fields are marked in the form.</p>
+                <div class="client-form-grid">
+                  <label>Client Name <input name="name" data-client-field="name" required></label>
+                  <label>Customer Code <input name="customerCode" data-client-field="customerCode" required></label>
+                  <label>Legal Name <input name="legalName" data-client-field="legalName"></label>
+                  <label>Issued To <input name="issuedTo" data-client-field="issuedTo" required></label>
+                  <label>Main Contact Name <input name="mainContactName" data-client-field="mainContactName" required></label>
+                  <label>Main Contact Email <input name="mainContactEmail" data-client-field="mainContactEmail" required></label>
+                  <label>Billing Email <input name="billingEmail" data-client-field="billingEmail" required></label>
+                  <label>Billing Terms <input name="paymentTerms" data-client-field="paymentTerms" value="Net 30" required></label>
+                  <label>Phone <input name="phone" data-client-field="phone"></label>
+                  <label>Website <input name="website" data-client-field="website"></label>
+                  <label>Office Address <input name="officeAddress" data-client-field="officeAddress"></label>
+                  <label>Billing Address <input name="billingAddress" data-client-field="billingAddress"></label>
+                  <label>Service Territory <input name="serviceTerritory" data-client-field="serviceTerritory"></label>
+                  <label>AP Contact Name <input name="apContactName" data-client-field="apContactName"></label>
+                  <label>AP Contact Email <input name="apContactEmail" data-client-field="apContactEmail"></label>
+                  <label>Closeout Contact Name <input name="closeoutContactName" data-client-field="closeoutContactName"></label>
+                  <label>Closeout Contact Email <input name="closeoutContactEmail" data-client-field="closeoutContactEmail"></label>
+                  <label>Field Contact Name <input name="fieldContactName" data-client-field="fieldContactName"></label>
+                  <label>Field Contact Email <input name="fieldContactEmail" data-client-field="fieldContactEmail"></label>
+                  <label>Retainage Percent <input name="retainagePercent" data-client-field="retainagePercent" type="number" min="0" max="100" step="0.1"></label>
+                  <label>Invoice Email <input name="invoiceEmail" data-client-field="invoiceEmail"></label>
+                  <label>Claims Contact Name <input name="claimsContactName" data-client-field="claimsContactName"></label>
+                  <label>Claims Contact Email <input name="claimsContactEmail" data-client-field="claimsContactEmail"></label>
+                  <label class="wide">Ready Rule <textarea name="readyRule" data-client-field="readyRule" rows="2" required>Ready lines can send; blocked lines stay held</textarea></label>
+                  <label class="wide">Notes <textarea name="notes" data-client-field="notes" rows="3"></textarea></label>
+                </div>
+                <fieldset class="client-rule-grid">
+                  <legend>Default Closeout Rules</legend>
+                  <label><input type="checkbox" data-client-field="requiredPhotos" checked> Required Photos</label>
+                  <label><input type="checkbox" data-client-field="gpsRequired" checked> GPS Required</label>
+                  <label><input type="checkbox" data-client-field="redlinesRequired" checked> Redlines Required</label>
+                  <label><input type="checkbox" data-client-field="materialTicketRequired" checked> Material Ticket Required</label>
+                  <label><input type="checkbox" data-client-field="boreLogRequired"> Bore Log Required</label>
+                  <label><input type="checkbox" data-client-field="locateTicketRequired" checked> Locate Ticket Required</label>
+                  <label><input type="checkbox" data-client-field="positiveResponseRequired" checked> Positive Response Required</label>
+                </fieldset>
+                <div class="client-form-errors" data-client-form-errors></div>
+                <div class="client-form-actions">
+                  <button type="submit" data-client-save>Save Client</button>
+                  <button type="button" data-client-save-job>Save + Create Job</button>
+                  <a href="/clients" data-route-link="/clients">Cancel</a>
+                </div>
+              </article>
+            </form>
+          </section>
+        </section>
+
+        <section class="workspaces-view route-view management-view" data-view="workspaces" aria-label="Client workspace operating system">
+          <header class="management-header">
+            <div>
+              <h1>Client Workspaces</h1>
+              <p>Invite pilot clients, create their first field job, store uploaded file metadata under workspace folders, and audit every storage event.</p>
+            </div>
+            <a href="/clients" data-route-link="/clients">Back to Clients</a>
+          </header>
+          <section class="workspace-grid">
+            <article class="workspace-card">
+              <h2>Invite Pilot Client</h2>
+              <form class="workspace-form" data-workspace-invite-form>
+                <label>Workspace Name <input data-workspace-invite-field="name" value="Pilot Fiber Co"></label>
+                <label>Admin Email <input data-workspace-invite-field="adminEmail" value="ops@pilotfiber.example"></label>
+                <label>Primary Contact <input data-workspace-invite-field="contactName" value="Pilot Admin"></label>
+                <label>Storage Region <input data-workspace-invite-field="storageRegion" value="local-static"></label>
+                <label>811 Center / Portal <input data-workspace-invite-field="oneCallProvider" value="Florida 811"></label>
+                <label>Company ID <input data-workspace-invite-field="oneCallCompanyId" value=""></label>
+                <label>Excavator ID <input data-workspace-invite-field="oneCallExcavatorId" value=""></label>
+                <label>Company Name <input data-workspace-invite-field="oneCallCompanyName" value=""></label>
+                <label>Office Name <input data-workspace-invite-field="oneCallOfficeName" value=""></label>
+                <label>Company Type <input data-workspace-invite-field="oneCallCompanyType" value="CONTRACTOR"></label>
+                <label>Phone <input data-workspace-invite-field="oneCallPhone" value=""></label>
+                <label>Mobile / Cell Phone <input data-workspace-invite-field="oneCallMobilePhone" value=""></label>
+                <label>Email <input data-workspace-invite-field="oneCallEmail" value=""></label>
+                <label>Call Back Time <input data-workspace-invite-field="oneCallCallBackTime" value="ANYTIME"></label>
+                <label>Field Contact <input data-workspace-invite-field="oneCallFieldContact" value=""></label>
+                <label>Contact Type <input data-workspace-invite-field="oneCallContactType" value="Cell"></label>
+                <label>Field Contact Phone/Fax/Email <input data-workspace-invite-field="oneCallFieldContactMethod" value=""></label>
+                <label>Working For <input data-workspace-invite-field="oneCallWorkingFor" value=""></label>
+                <label>Work Type <input data-workspace-invite-field="oneCallWorkType" value=""></label>
+                <label class="wide">811 Mailing Address 1 <input data-workspace-invite-field="oneCallAddress1" value=""></label>
+                <label class="wide">811 Mailing Address 2 <input data-workspace-invite-field="oneCallAddress2" value=""></label>
+                <label>City <input data-workspace-invite-field="oneCallCity" value=""></label>
+                <label>State <input data-workspace-invite-field="oneCallState" value="FL"></label>
+                <label>Zip <input data-workspace-invite-field="oneCallZip" value=""></label>
+                <label class="wide">Add / Remove Subcontractors <textarea data-workspace-invite-field="oneCallSubcontractors" rows="2" placeholder="List subcontractors, IDs, field contacts, and who is allowed to request tickets"></textarea></label>
+                <label class="wide">811 Notes <textarea data-workspace-invite-field="oneCallNotes" rows="3" placeholder="Positive response rules, emergency contact, member/operator notes, renewal rules, and ticket naming rules"></textarea></label>
+                <label class="wide">Signup Questions <textarea data-workspace-invite-field="questions" data-signup-questions rows="9"></textarea></label>
+                <button type="submit">Invite Client</button>
+                <button type="button" data-send-signup-questions>Open Signup Email</button>
+              </form>
+            </article>
+            <article class="workspace-card">
+              <h2>Create First Active Job</h2>
+              <form class="workspace-form" data-workspace-job-form>
+                <label>Workspace <select data-workspace-job-field="workspaceId"></select></label>
+                <label>Customer <input data-workspace-job-field="customerName" value="Pilot Fiber Customer"></label>
+                <label>Project <input data-workspace-job-field="projectName" value="North Route Build"></label>
+                <label>Crew <input data-workspace-job-field="crewName" value="Pilot Crew 1"></label>
+                <label>Job ID <input data-workspace-job-field="jobId" value="PILOT-1001"></label>
+                <label>Address <input data-workspace-job-field="address" value="100 Pilot Rd, Austin, TX"></label>
+                <label>Map File <input data-workspace-job-field="mapFile" value="route-map.pdf"></label>
+                <label>Permit File <input data-workspace-job-field="permitFile" value="permit.pdf"></label>
+                <label>Locate Sheet <input data-workspace-job-field="locateFile" value="tx811-ticket.pdf"></label>
+                <button type="submit">Create + Activate Job</button>
+              </form>
+            </article>
+            <article class="workspace-card">
+              <h2>Upload Crew Proof</h2>
+              <form class="workspace-form" data-workspace-proof-form>
+                <label>Workspace <select data-workspace-proof-field="workspaceId"></select></label>
+                <label>Job <select data-workspace-proof-field="jobId"></select></label>
+                <label>Asset / Location <input data-workspace-proof-field="assetId" value="HH-1"></label>
+                <label>Proof Photo <input data-workspace-proof-field="fileName" value="hh-1-proof.jpg"></label>
+                <label>GPS <input data-workspace-proof-field="gps" value="30.210654,-97.951234"></label>
+                <button type="submit">Store Proof Metadata</button>
+              </form>
+            </article>
+            <article class="workspace-card wide">
+              <h2>Workspace Isolation</h2>
+              <table><thead><tr><th>Workspace</th><th>Type</th><th>Status</th><th>Storage Root</th><th>Customers</th><th>Jobs</th><th>Documents</th></tr></thead><tbody data-workspace-list></tbody></table>
+            </article>
+            <article class="workspace-card wide">
+              <h2>Owner Retrieval Index</h2>
+              <table><thead><tr><th>Workspace</th><th>Customer</th><th>Project</th><th>Job</th><th>Document Type</th><th>Storage Path</th><th>Timestamp</th></tr></thead><tbody data-workspace-documents></tbody></table>
+            </article>
+            <article class="workspace-card">
+              <h2>Security Controls</h2>
+              <table><tbody data-workspace-security></tbody></table>
+            </article>
+            <article class="workspace-card">
+              <h2>Audit History</h2>
+              <table><tbody data-workspace-audit></tbody></table>
+            </article>
+            <article class="workspace-card wide crewbox-panel" data-crewbox-panel aria-label="CrewBox Drive workspace storage">
+              <div class="crewbox-header">
+                <div>
+                  <h2>CrewBox Drive</h2>
+                  <p>Tenant-isolated folders, field files, live rate/bore spreadsheets, keyword routing rules, approvals, and job links.</p>
+                </div>
+                <div class="crewbox-toolbar">
+                  <label>Folder
+                    <select data-crewbox-folder-select>
+                      <option value="root">/ (Workspace Root)</option>
+                    </select>
+                  </label>
+                  <label>View
+                    <select data-crewbox-filter-select>
+                      <option value="active">Active Folder</option>
+                      <option value="all">All Active Items</option>
+                      <option value="trash">Trash</option>
+                    </select>
+                  </label>
+                  <button type="button" data-crewbox-new-folder>New Folder</button>
+                  <button type="button" data-crewbox-upload-file>Upload File</button>
+                  <button type="button" data-crewbox-new-sheet>New Spreadsheet</button>
+                  <button type="button" data-crewbox-empty-trash>Empty Trash</button>
+                </div>
+              </div>
+              <table>
+                <thead><tr><th>Name</th><th>Type</th><th>Path</th><th>Approval</th><th>Job Links</th><th>Updated</th><th>Actions</th></tr></thead>
+                <tbody data-crewbox-items></tbody>
+              </table>
+              <div class="crewbox-subgrid">
+                <div class="crewbox-sheet-card" data-crewbox-sheet-editor>
+                  <h3>Spreadsheet Editor <span data-crewbox-sheet-title>(Select a sheet)</span></h3>
+                  <div class="crewbox-sheet-grid" data-crewbox-sheet-grid></div>
+                  <div class="crewbox-sheet-actions">
+                    <button type="button" data-crewbox-save-sheet>Save Sheet</button>
+                    <label>Link Job
+                      <select data-crewbox-job-link-select>
+                        <option value="JOB-1045">JOB-1045</option>
+                        <option value="JOB-1046">JOB-1046</option>
+                        <option value="JOB-1047">JOB-1047</option>
+                        <option value="JOB-1048">JOB-1048</option>
+                      </select>
+                    </label>
+                    <button type="button" data-crewbox-link-job-btn>Link Selected Item to Job</button>
+                  </div>
+                </div>
+                <div class="crewbox-rules-card">
+                  <h3>Filename Routing &amp; Approval Rules</h3>
+                  <form class="crewbox-rule-form" data-crewbox-rule-form>
+                    <input data-crewbox-rule-name placeholder="Rule name (e.g. Bore Logs)" required>
+                    <input data-crewbox-rule-keywords placeholder="Keywords (comma-separated, e.g. bore,log)" required>
+                    <select data-crewbox-rule-target></select>
+                    <label><input type="checkbox" data-crewbox-rule-approval checked> Require Approval</label>
+                    <button type="submit">Save Rule</button>
+                  </form>
+                  <ul class="crewbox-rules-list" data-crewbox-rules-list></ul>
+                  <h4>Recent Drive Activity</h4>
+                  <ul class="crewbox-events-list" data-crewbox-events-list></ul>
+                </div>
+              </div>
+            </article>
+            <article class="workspace-card wide crew-chat-panel" data-crew-chat-panel aria-label="Crew Chat and Job Conversation Hub">
+              <div class="crew-chat-header">
+                <div>
+                  <h2>Crew Chat &amp; Job Conversation Hub</h2>
+                  <p>Real-time company, crew, and job rooms with @JOB-XXXX auto-linking into closeout decision logs.</p>
+                </div>
+                <div class="crew-chat-controls">
+                  <label>Room
+                    <select data-chat-room-select>
+                      <option value="company">Company General (company)</option>
+                      <option value="crew:alpha">Crew Alpha (crew:alpha)</option>
+                      <option value="crew:bravo">Crew Bravo (crew:bravo)</option>
+                      <option value="crew:charlie">Crew Charlie (crew:charlie)</option>
+                      <option value="crew:delta">Crew Delta (crew:delta)</option>
+                      <option value="job:JOB-1045">Job Room: JOB-1045</option>
+                      <option value="job:JOB-1046">Job Room: JOB-1046</option>
+                      <option value="job:JOB-1047">Job Room: JOB-1047</option>
+                      <option value="job:JOB-1048">Job Room: JOB-1048</option>
+                    </select>
+                  </label>
+                  <button type="button" data-chat-mark-read>Mark Room Read</button>
+                  <span class="chat-unread-pill" data-chat-unread-badge>0 unread</span>
+                </div>
+              </div>
+              <div class="crew-chat-body">
+                <div class="crew-chat-feed-wrap">
+                  <div class="crew-chat-messages" data-chat-messages aria-live="polite"></div>
+                  <form class="crew-chat-form" data-chat-form>
+                    <input data-chat-input placeholder="Message room... Mention @JOB-1045 to auto-link to job closeout log" required>
+                    <button type="submit">Send Message</button>
+                  </form>
+                </div>
+                <div class="crew-chat-joblog-wrap">
+                  <h3>Job Conversation Log (<span data-chat-log-job-label>JOB-1045</span>)</h3>
+                  <table>
+                    <thead><tr><th>Room</th><th>Author</th><th>Message</th><th>Source</th><th>Timestamp</th><th>Action</th></tr></thead>
+                    <tbody data-chat-job-log></tbody>
+                  </table>
+                </div>
+              </div>
+            </article>
+          </section>
+          <p class="workspace-status" data-workspace-status role="status" aria-live="polite">Workspace system ready. Demo seed data is isolated from pilot client workspaces.</p>
+        </section>
+
+        <section class="onboarding-view route-view management-view" data-view="onboarding" aria-label="CrewProof onboarding checklist">
+          <header class="management-header">
+            <div>
+              <h1>Onboarding</h1>
+              <p>Set up customers, crews, pay items, proof rules, 811, claims, and billing handoff before field work goes live.</p>
+            </div>
+            <div class="management-header-actions">
+              <a href="ONBOARDING.md" data-onboarding-runbook>Open Runbook</a>
+              <a href="/management" data-route-link="/management">Back to Management</a>
+            </div>
+          </header>
+          <section class="onboarding-grid" aria-label="Onboarding setup status">
+            <article class="onboarding-card intro">
+              <h2>Launch Checklist</h2>
+              <p>Every item here has to connect to a job location, a crew, a pay item, or an approval rule. The goal is fewer unpaid closeouts, not another crew app setup wizard.</p>
+              <p>Route smoke test coverage is part of onboarding readiness so direct links, app shell assets, and job review pages are checked before users are invited.</p>
+              <p>Local serve smoke coverage confirms the built CrewProof site responds over HTTP with the expected routes, assets, and runbook.</p>
+              <div class="onboarding-meter" aria-label="Onboarding completion">
+                <span style="--complete: 72%"></span>
+              </div>
+              <dl>
+                <div><dt>Current stage</dt><dd>Field pilot / Pine Hill</dd></div>
+                <div><dt>Owner packet</dt><dd>Windstream OSP Closeout / AP</dd></div>
+                <div><dt>Live source</dt><dd>Foreman app + GPS camera</dd></div>
+              </dl>
+            </article>
+            <article class="onboarding-status-panel" aria-label="Live onboarding preflight status">
+              <div>
+                <span>LIVE PREFLIGHT STATUS</span>
+                <h2 data-onboarding-live-status>Ready for pilot onboarding</h2>
+                <p data-onboarding-live-summary>Run npm run preflight:onboarding before inviting users today.</p>
+              </div>
+              <dl>
+                <div><dt>Deadline</dt><dd data-onboarding-deadline>Sunday, June 28, 2026</dd></div>
+                <div><dt>Command</dt><dd data-onboarding-command>npm run preflight:onboarding</dd></div>
+                <div><dt>Built Pages</dt><dd data-onboarding-built-pages>22</dd></div>
+                <div><dt>Seed Jobs</dt><dd data-onboarding-seed-jobs>4</dd></div>
+                <div><dt>Package Outputs</dt><dd data-onboarding-package-outputs>6</dd></div>
+                <div><dt>Runbook Docs</dt><dd data-onboarding-runbook-count>4</dd></div>
+              </dl>
+            </article>
+            <article class="client-setup-card table-card" aria-label="Client setup status">
+              <h2>Client Setup</h2>
+              <dl class="client-setup-metrics">
+                <div><dt>Total Clients</dt><dd data-client-total>4</dd></div>
+                <div><dt>Active</dt><dd data-client-active>4</dd></div>
+                <div><dt>Archived</dt><dd data-client-archived>0</dd></div>
+              </dl>
+              <div class="client-setup-actions">
+                <a href="/clients" data-route-link="/clients">Open Clients</a>
+                <a href="/clients/new" data-route-link="/clients/new">Add Client</a>
+              </div>
+            </article>
+            <article class="table-card">
+              <h2>Setup Steps</h2>
+              <table><thead><tr><th>Step</th><th>Owner</th><th>Status</th></tr></thead><tbody data-onboarding-steps></tbody></table>
+            </article>
+            <article class="table-card">
+              <h2>System Readiness</h2>
+              <table><thead><tr><th>Area</th><th>Check</th><th>Status</th></tr></thead><tbody data-onboarding-system-readiness></tbody></table>
+            </article>
+            <article class="table-card">
+              <h2>Field Data Required</h2>
+              <table><thead><tr><th>Data</th><th>Source</th><th>Use</th></tr></thead><tbody data-onboarding-field-data></tbody></table>
+            </article>
+            <article class="table-card wide">
+              <h2>Role Invite Checklist</h2>
+              <table><thead><tr><th>Role</th><th>Invite Route</th><th>First Task</th><th>Verify Before Invite</th></tr></thead><tbody data-onboarding-role-invites></tbody></table>
+            </article>
+            <article class="table-card wide">
+              <h2>Customer / Billing Rules</h2>
+              <table><thead><tr><th>Customer</th><th>Issued To</th><th>Ready Rule</th><th>Billing Contact</th></tr></thead><tbody data-onboarding-billing-rules></tbody></table>
+            </article>
+            <article class="table-card wide">
+              <h2>Go-Live Gates</h2>
+              <table><thead><tr><th>Gate</th><th>Pass Condition</th><th>Current Check</th><th>Route</th></tr></thead><tbody data-onboarding-gates></tbody></table>
+            </article>
+          </section>
+        </section>
+
+        <section class="closeouts-view route-view management-view" data-view="closeouts" aria-label="Closeout package queue">
+          <header class="management-header"><div><h1>Closeouts</h1><p>Package readiness, aging, and owner acceptance queue.</p></div><a href="/closeout/JOB-1045" data-route-link="/closeout/JOB-1045" data-closeouts-primary-link>Open JOB-1045 Package</a></header>
+          <section class="directory-grid">
+            <article class="table-card wide"><h2>Closeout Queue</h2><table><thead><tr><th>Package</th><th>Job</th><th>Owner</th><th>Age</th><th>Status</th><th>Hold</th><th>Crew Map</th><th>Billing</th></tr></thead><tbody data-closeout-queue></tbody></table></article>
+            <article class="table-card"><h2>Aging Buckets</h2><table><tbody data-aging-buckets></tbody></table></article>
+          </section>
+        </section>
+
+        <section class="reports-view route-view management-view" data-view="reports" aria-label="Reports dashboard">
+          <header class="management-header"><div><h1>Reports</h1><p>Internal rollups for revenue, blockers, crew output, and closeout quality.</p></div><span>Generated from live field package data</span></header>
+          <section class="directory-grid">
+            <article class="chart-card"><h2>Revenue Forecast</h2><div class="bar-chart" data-report-revenue></div></article>
+            <article class="chart-card"><h2>Proof Quality</h2><div class="bar-chart" data-report-proof-quality></div></article>
+            <article class="table-card wide"><h2>Report Queue</h2><table><tbody data-report-queue></tbody></table></article>
+          </section>
+        </section>
+
+        <section class="settings-view route-view management-view" data-view="settings" aria-label="Settings and role defaults">
+          <header class="management-header"><div><h1>Settings</h1><p>Role defaults and package behavior. No external integrations are configured here.</p></div><span>Admin-only controls</span></header>
+          <section class="directory-grid">
+            <article class="table-card"><h2>Role Defaults</h2><table><tbody data-settings-role-defaults></tbody></table></article>
+            <article class="table-card"><h2>Package Rules</h2><table><tbody data-settings-package-rules></tbody></table></article>
+            <article class="table-card"><h2>Current Defaults</h2><table><tbody data-settings-current-defaults></tbody></table></article>
+            <article class="table-card wide"><h2>Available Views</h2><table><tbody data-settings-available-views></tbody></table></article>
+          </section>
+        </section>
+
+        <section class="billing-view route-view" data-view="billing" aria-label="Billing review">
+          <header class="management-header"><div><h1>Billing Review</h1><p data-billing-job-label>JOB-1045 billing package and readiness holds.</p></div><a href="/crew" data-route-link="/crew">Back to Crew View</a></header>
+          <section class="billing-grid">
+            <article><h2>Ready Lines</h2><table data-billing-ready><tbody></tbody></table></article>
+            <article><h2>Blocked Lines</h2><table data-billing-blocked><tbody></tbody></table></article>
+            <article>
+              <h2>Billing Holds</h2>
+              <dl class="billing-summary" data-billing-summary>
+                <div><dt>Ready Total</dt><dd>$0</dd></div>
+                <div><dt>Held Total</dt><dd>$0</dd></div>
+                <div><dt>Package Status</dt><dd>Select a job</dd></div>
+              </dl>
+              <table data-billing-holds><tbody></tbody></table>
+              <div class="billing-actions">
+                <a href="/closeout/JOB-1045" data-billing-closeout-link data-route-link="/closeout/JOB-1045">Open Closeout Package</a>
+                <a href="/crew" data-billing-crew-link data-route-link="/crew">Open Crew Map</a>
+                <button type="button" data-billing-email>Draft Invoice Email</button>
+                <button type="button" data-billing-snapshot>Download Billing JSON</button>
+              </div>
+              <p class="billing-status" data-billing-status role="status" aria-live="polite">Billing review ready.</p>
+            </article>
+          </section>
+        </section>
+      </div>
+
+      <section class="sheet route-view closeout-view" data-view="closeout" id="top">
+        <aside class="left-rail" aria-label="Job metadata">
+          <div class="brand-block">
+            <span class="hex-logo">CP</span>
+            <div>
+              <h1>CREW<span>PROOF</span></h1>
+              <p>TELECOM FIELD MAP</p>
+            </div>
+          </div>
+
+          <table class="info-table">
+            <tbody>
+              <tr>
+                <th>JOB ID:</th>
+                <td class="auto-job-cell">
+                  <select data-job-id aria-label="Select live field job">
+                    <option value="JOB-1045">JOB-1045 / Windstream / Pine Hill</option>
+                    <option value="JOB-1046">JOB-1046 / Kinetic / Oak Ridge</option>
+                    <option value="JOB-1047">JOB-1047 / Spectrum / Cedar Park</option>
+                    <option value="JOB-1048">JOB-1048 / AT&amp;T / Slaughter Ln</option>
+                  </select>
+                  <em>field sync</em>
+                  <small data-job-picker-status>5 assets / $8,450 ready / $85,100 blocked</small>
+                </td>
+              </tr>
+              <tr><th>CUSTOMER:</th><td data-job-customer>WINDSTREAM</td></tr>
+              <tr><th>ISSUED TO:</th><td data-job-issued-to>Windstream OSP Closeout / AP</td></tr>
+              <tr><th>DATA SOURCE:</th><td><span class="live-pill">LIVE FIELD FEED</span></td></tr>
+              <tr><th>LAST SYNC:</th><td data-live-sync>06/23/2026 14:40</td></tr>
+              <tr><th>PROJECT:</th><td data-job-project>PINE HILL FTTH EXPANSION</td></tr>
+              <tr><th>SITE ID:</th><td data-job-site-id>TXL-0456</td></tr>
+              <tr><th>SITE NAME:</th><td data-job-site-name>PINE HILL</td></tr>
+              <tr><th>SITE TYPE:</th><td data-job-site-type>MONOPOLE</td></tr>
+              <tr><th>ADDRESS:</th><td data-job-address>1250 PINE HILL RD<br>AUSTIN, TX 78737</td></tr>
+              <tr><th>COUNTY:</th><td data-job-county>TRAVIS</td></tr>
+              <tr><th>MAP DATE:</th><td data-job-map-date>05/14/2024</td></tr>
+              <tr><th>DRAWN BY:</th><td data-job-drawn-by>Field Team 2</td></tr>
+            </tbody>
+          </table>
+
+          <div class="north-panel">
+            <strong>N</strong>
+            <div class="north-arrow"></div>
+            <div class="scale-line"><span></span><span></span><span></span><span></span></div>
+            <small>1 inch = 100 ft</small>
+          </div>
+
+          <div class="notes-panel comms-panel">
+            <h2>COMMS / TIMELINE</h2>
+            <div class="comms-meta" aria-label="Expandable field source records">
+              <details>
+                <summary><span>LAST TECH:</span><b data-selected-tech>J. Ramirez / Alpha</b></summary>
+                <p>Last person tied to this selected asset. Used to chase missing proof, rework, and closeout questions.</p>
+              </details>
+              <details>
+                <summary><span>CONTRACTOR:</span><b data-selected-contractor>Lone Star Fiber Works</b></summary>
+                <p>Responsible contractor or crew company for the selected map asset and proof package.</p>
+              </details>
+              <details>
+                <summary><span>LAST UPDATE:</span><b data-selected-updated>06/23/2026 14:40</b></summary>
+                <p>Most recent field sync time from photos, GPS, chat, email, or package review activity.</p>
+              </details>
+              <details>
+                <summary><span>FIELD FEED:</span><b data-selected-feed>Foreman app + GPS camera</b></summary>
+                <p>Live source that produced the selected proof record. This is what the closeout package uses.</p>
+              </details>
+            </div>
+            <ul class="comms-log" data-comms-log>
+              <li><b>14:40 Chat</b><span>Alpha: HH-1 set, restoration photo attached.</span></li>
+              <li><b>14:12 Email</b><span>PM sent ready-to-bill note for handhole install.</span></li>
+              <li><b>13:58 Timeline</b><span>GPS point and pay item matched to HH-1.</span></li>
+            </ul>
+          </div>
+        </aside>
+
+        <section class="map-sheet" aria-label="Interactive locate map">
+          <div class="map-toolbar">
+            <div>
+              <strong>LIVE CLOSEOUT LAYER</strong>
+              <span data-selected-toolbar>HH-1 selected - Ready to Bill</span>
+              <em class="live-source" data-live-source>Live from Alpha / GPS camera</em>
+            </div>
+            <div class="toolbar-actions" aria-label="Field package filters">
+              <button class="active" type="button" data-filter="all">All</button>
+              <button type="button" data-map-view="detail" class="active">Detail Map</button>
+              <button type="button" data-map-view="jobs">Full Job Map</button>
+              <button type="button" data-map-zoom="out" aria-label="Zoom out">-</button>
+              <button type="button" data-map-zoom="fit">Fit</button>
+              <button type="button" data-map-zoom="in" aria-label="Zoom in">+</button>
+              <span class="zoom-readout" data-zoom-readout>100%</span>
+              <button type="button" data-filter="ready">Ready</button>
+              <button type="button" data-filter="missing">Missing</button>
+              <button type="button" data-filter="rejected">Rejected</button>
+              <button type="button" data-map-tool="note">Drop Note</button>
+              <button type="button" data-map-tool="gig">Drop Gig</button>
+            </div>
+          </div>
+
+          <div class="map-canvas" tabindex="0" aria-label="Scrollable locate map. Use plus and minus keys to zoom, zero to fit, or command/control wheel to zoom at pointer.">
+            <div class="map-mode-status" data-map-mode-status hidden>
+              <span data-map-mode-copy>Drop mode active</span>
+              <button type="button" data-map-tool-cancel>Cancel</button>
+            </div>
+            <div class="job-overview-layer" data-job-overview-layer hidden aria-label="Full job map overview">
+              <img src="assets/crewproof-locate-map-crop.png" alt="Full telecom job map overview">
+              <div class="job-pin-layer" data-job-pin-layer></div>
+            </div>
+            <div class="map-scroll-layer" data-drop-map="closeout" aria-label="Closeout locate map. Select Drop Note or Drop Gig, then click the map to place a pin.">
+              <img src="assets/crewproof-locate-map-crop.png" alt="Locate map for Pine Hill telecom site">
+              <button class="asset-marker ready is-selected" type="button" data-slot="handhole" data-asset="HH-1" data-status="ready" style="--x: 80%; --y: 43%;">HH-1</button>
+              <button class="photo-pin ready is-selected" type="button" data-photo-slot="handhole" data-photo-asset="HH-1" data-status="ready" style="--x: 85%; --y: 43%;">
+                <img src="assets/photo-hh-1.png" alt="HH-1 handhole evidence photo">
+                <span>HH-1 photo</span>
+              </button>
+              <button class="asset-marker waiting" type="button" data-slot="splice" data-asset="SC-1" data-status="waiting" style="--x: 80%; --y: 32%;">SC-1</button>
+              <button class="photo-pin waiting" type="button" data-photo-slot="splice" data-photo-asset="SC-1" data-status="waiting" style="--x: 85%; --y: 32%;">
+                <img src="assets/photo-sc-1.png" alt="SC-1 splice closure evidence photo">
+                <span>SC-1 photo</span>
+              </button>
+              <button class="asset-marker missing" type="button" data-slot="vaultA" data-asset="SV-1" data-status="missing" style="--x: 80%; --y: 66%;">SV-1</button>
+              <button class="photo-pin missing" type="button" data-photo-slot="vaultA" data-photo-asset="SV-1" data-status="missing" style="--x: 86%; --y: 66%;">
+                <img src="assets/photo-sv-1.png" alt="SV-1 splice vault evidence photo">
+                <span>SV-1 missing</span>
+              </button>
+              <button class="asset-marker rejected" type="button" data-slot="vaultB" data-asset="SV-2" data-status="rejected" style="--x: 44%; --y: 89%;">SV-2</button>
+              <button class="photo-pin rejected" type="button" data-photo-slot="vaultB" data-photo-asset="SV-2" data-status="rejected" style="--x: 50%; --y: 86%;">
+                <img src="assets/photo-sv-2.png" alt="SV-2 rejected evidence photo">
+                <span>SV-2 rejected</span>
+              </button>
+              <button class="asset-marker waiting" type="button" data-slot="underground" data-asset="UG-1" data-status="waiting" style="--x: 70%; --y: 84%;">UG-1</button>
+              <button class="photo-pin waiting" type="button" data-photo-slot="underground" data-photo-asset="UG-1" data-status="waiting" style="--x: 75%; --y: 80%;">
+                <img src="assets/photo-ug-1.png" alt="UG-1 underground route evidence photo">
+                <span>UG-1 photo</span>
+              </button>
+              <div class="map-note-layer" data-map-note-layer="closeout" aria-live="polite"></div>
+            </div>
+          </div>
+
+          <div class="detail-drawings" aria-label="Field detail drawings">
+            <article>
+              <h2>SPLICE CLOSURE DETAIL</h2>
+              <div class="splice-closure"></div>
+              <p>Directional aerial fiber to next pole</p>
+            </article>
+            <article>
+              <h2>SPLICE VAULT DETAIL</h2>
+              <div class="vault-detail">
+                <span>IN</span><i></i><i></i><span>OUT</span>
+              </div>
+              <p>UG fiber in conduit / splice tray</p>
+            </article>
+          </div>
+        </section>
+
+        <aside class="right-rail" aria-label="Legend and live job information">
+          <section class="legend-panel">
+            <h2>LEGEND</h2>
+            <ul>
+              <li><i class="line boundary"></i>Property boundary</li>
+              <li><i class="line aerial"></i>Aerial fiber</li>
+              <li><i class="line underground"></i>Underground fiber</li>
+              <li><i class="symbol splice"></i>Splice closure</li>
+              <li><i class="symbol handhole"></i>Handhole</li>
+              <li><i class="symbol vault"></i>Splice vault</li>
+              <li><i class="surface shelter"></i>Equipment shelter</li>
+              <li><i class="surface generator"></i>Generator</li>
+            </ul>
+          </section>
+
+          <section class="job-panel" aria-label="Selected job information">
+            <h2>JOB INFORMATION</h2>
+            <dl>
+              <div><dt>STATUS:</dt><dd><span class="status-dot ready"></span><span data-selected-status>Ready to Bill</span></dd></div>
+              <div><dt>ASSET:</dt><dd data-selected-asset>HH-1 Handhole</dd></div>
+              <div><dt>CREW:</dt><dd data-selected-crew>Alpha</dd></div>
+              <div><dt>FIELD DEVICE:</dt><dd data-selected-device>Alpha iPad / GPS camera</dd></div>
+              <div><dt>GPS:</dt><dd data-selected-gps>30.210654, -97.951234</dd></div>
+              <div><dt>PROOF:</dt><dd data-selected-proof>Complete</dd></div>
+              <div><dt>BLOCKER:</dt><dd data-selected-blocker>None</dd></div>
+              <div><dt>PAY ITEM:</dt><dd data-selected-pay-item>Handhole install + restoration</dd></div>
+              <div><dt data-selected-money-label>READY TO BILL:</dt><dd data-selected-value>$8,450</dd></div>
+            </dl>
+            <div class="progress-row">
+              <span>PROOF PROGRESS:</span>
+              <div class="progress-track"><i data-selected-progress style="width: 100%;"></i></div>
+              <b data-selected-percent>100%</b>
+            </div>
+            <figure class="selected-photo">
+              <img data-selected-photo src="assets/photo-hh-1.png" alt="Selected asset evidence">
+              <figcaption data-selected-photo-caption>HH-1 handhole evidence at job location</figcaption>
+            </figure>
+            <ul class="proof-list" data-selected-proof-list>
+              <li class="done">Crew Submitted: handhole photo</li>
+              <li class="done">GPS point attached</li>
+              <li class="done">Pay item matched</li>
+              <li class="done">Ready to Bill</li>
+            </ul>
+          </section>
+
+          <section class="summary-panel package-panel">
+            <h2>DAILY CLOSEOUT PACKAGE</h2>
+            <form class="package-form" data-invoice-form>
+              <label>
+                Package #
+                <input name="invoiceNumber" data-invoice-number type="text" value="INV-20260623-JOB1045">
+              </label>
+              <label>
+                Work Date
+                <input name="workDate" data-work-date type="date" value="2026-06-23">
+              </label>
+              <label>
+                Send To
+                <input name="recipient" type="email" value="ap@windstream.example">
+              </label>
+              <label>
+                Issued To
+                <input name="issuedTo" type="text" value="Windstream OSP Closeout / AP">
+              </label>
+              <label>
+                Subject
+                <input name="subject" type="text" value="Daily closeout package - JOB-1045 - Pine Hill">
+              </label>
+              <label>
+                Include Assets
+                <select name="lineMode" data-line-mode>
+                  <option value="ready">Ready to Bill only</option>
+                  <option value="all">All closeout lines</option>
+                  <option value="blocked">Blocked/rejected lines only</option>
+                </select>
+              </label>
+              <label>
+                PM Notes
+                <textarea name="notes" rows="4">Daily closeout package for Pine Hill. Includes map sheet, asset photos, proof checklist, billing lines, and remaining blockers.</textarea>
+              </label>
+              <div class="package-progress" aria-label="Crew location and progress">
+                <div>
+                  <span>Crew Location</span>
+                  <b data-package-location>HH-1 handhole / Pine Hill east fence</b>
+                </div>
+                <div>
+                  <span>Closeout Progress</span>
+                  <b data-package-progress>100% proof complete</b>
+                </div>
+                <div>
+                  <span>Last Field Update</span>
+                  <b data-package-updated>J. Ramirez / 06/23/2026 14:40</b>
+                </div>
+                <div>
+                  <span>Live Source</span>
+                  <b data-package-source>Foreman app + GPS camera</b>
+                </div>
+              </div>
+              <div class="share-panel" aria-label="Share live field data">
+                <label>
+                  Live Share Link
+                  <input data-share-link type="text" value="Share link builds from selected field asset" readonly>
+                </label>
+                <div class="share-actions">
+                  <button type="button" data-copy-share>Copy Share Link</button>
+                  <button type="button" data-download-snapshot>Download Snapshot JSON</button>
+                  <button type="button" data-download-package-csv>Package CSV</button>
+                  <button type="button" data-download-package-zip>Package ZIP</button>
+                  <button type="button" data-print-package>Print / Save PDF</button>
+                </div>
+              </div>
+              <div class="package-completeness" aria-label="Package completeness summary">
+                <div><span>Package Status</span><b data-package-complete-status>Needs Fix</b></div>
+                <div><span>Ready Lines</span><b data-package-ready-count>0</b></div>
+                <div><span>Blocked Lines</span><b data-package-blocked-count>0</b></div>
+                <div><span>Missing Docs</span><b data-package-missing-count>0</b></div>
+                <p data-package-next-action>Review blockers before sending.</p>
+              </div>
+              <div class="package-checklist" aria-label="Closeout package contents">
+                <span>Locate map</span>
+                <span>Field photos</span>
+                <span>Before / after photos</span>
+                <span>Redlines</span>
+                <span>As-built variance</span>
+                <span>Route corrections</span>
+                <span>Bore log</span>
+                <span>Material ticket</span>
+                <span>Material receiving</span>
+                <span>Reel / lot trace</span>
+                <span>Locate tickets</span>
+                <span>Utility conflicts</span>
+                <span>Pothole / vac proof</span>
+                <span>Make-ready clearance</span>
+                <span>Permit / ROW</span>
+                <span>Work order intake</span>
+                <span>Owner prerequisites</span>
+                <span>Restoration punch</span>
+                <span>Source intake</span>
+                <span>Reconciliation</span>
+                <span>Pay item rules</span>
+                <span>Approval rules</span>
+                <span>Signoff log</span>
+                <span>Dispute register</span>
+                <span>Escalations</span>
+                <span>Notifications</span>
+                <span>Safety / JSA</span>
+                <span>Incident log</span>
+                <span>Site access</span>
+                <span>Customer notices</span>
+                <span>Outage / NOC</span>
+                <span>Service impact</span>
+                <span>Weather / conditions</span>
+                <span>Equipment / tools</span>
+                <span>Calibration / custody</span>
+                <span>Crew qualifications</span>
+                <span>Certification expiry</span>
+                <span>Fiber tests</span>
+                <span>Turn-up status</span>
+                <span>Owner deliverables</span>
+                <span>Owner acceptance</span>
+                <span>Ball in court</span>
+                <span>Handoff receipts</span>
+                <span>QC inspection</span>
+                <span>Owner approval</span>
+                <span>Invoice lines</span>
+                <span>COI / claim docs</span>
+                <span>Pay terms</span>
+                <span>Invoice aging</span>
+                <span>Lien / bond notice</span>
+                <span>Dispute hold</span>
+                <span>Crew time</span>
+                <span>Production units</span>
+                <span>Subcontractor support apps</span>
+                <span>Cost codes</span>
+                <span>GL export</span>
+                <span>Tax / jurisdiction</span>
+                <span>Exceptions</span>
+              </div>
+              <button type="submit">Open Email With Closeout Package</button>
+              <p class="invoice-status" data-invoice-status role="status" aria-live="polite">Closeout package assembled.</p>
+            </form>
+          </section>
+        </aside>
+
+        <section class="bottom-tables" aria-label="Closeout summaries">
+          <article>
+            <h2>ASSET SUMMARY</h2>
+            <table><thead><tr><th>ID</th><th>TYPE</th><th>STATUS</th><th>NOTES</th></tr></thead><tbody data-asset-summary-lines><tr><td>HH-1</td><td>Handhole</td><td>Ready to Bill</td><td>24x36 drop in</td></tr></tbody></table>
+          </article>
+          <article>
+            <h2>BORE LOG</h2>
+            <table>
+              <thead><tr><th>RUN</th><th>PLAN</th><th>MEASURED</th><th>VAR</th><th>STATUS</th></tr></thead>
+              <tbody data-bore-log-lines>
+                <tr><td>HH-1 to SV-1</td><td>125 ft</td><td>125 ft</td><td>0</td><td>Matched</td></tr>
+                <tr class="needs-fix"><td>SV-1 to SV-2</td><td>87 ft</td><td>94 ft</td><td>+7</td><td>Needs Fix</td></tr>
+              </tbody>
+            </table>
+          </article>
+          <article>
+            <h2>MATERIAL COUNT</h2>
+            <table>
+              <thead><tr><th>MATERIAL</th><th>TICKET</th><th>USED</th><th>LEFT</th><th>STATUS</th></tr></thead>
+              <tbody data-material-count-lines>
+                <tr><td>144ct Fiber</td><td>MAT-240</td><td>238 ft</td><td>2 ft</td><td>OK</td></tr>
+                <tr class="needs-fix"><td>1.25 in HDPE</td><td>MAT-212</td><td>219 ft</td><td>-7 ft</td><td>Reconcile</td></tr>
+                <tr><td>24x36 HH</td><td>MAT-HH2</td><td>1 ea</td><td>1 ea</td><td>OK</td></tr>
+              </tbody>
+            </table>
+          </article>
+          <article>
+            <h2>UTILITY SUMMARY</h2>
+            <table><thead><tr><th>SEG</th><th>TYPE</th><th>FROM</th><th>TO</th><th>STATUS</th></tr></thead><tbody data-utility-summary-lines><tr><td>1</td><td>Aerial Fiber</td><td>Pole</td><td>Site HH-1</td><td>Waiting</td></tr><tr><td>2</td><td>Underground Fiber</td><td>HH-1</td><td>SV-1</td><td>Ready</td></tr><tr><td>3</td><td>Underground Fiber</td><td>SV-1</td><td>SV-2</td><td>Missing</td></tr></tbody></table>
+          </article>
+          <article class="invoice-summary">
+            <h2>DAILY CLOSEOUT PACKAGE</h2>
+            <table>
+              <thead><tr><th>ASSET</th><th>STATUS</th><th>PAY ITEM</th><th>AMOUNT</th></tr></thead>
+              <tbody data-invoice-lines>
+                <tr><td>HH-1</td><td>Ready to Bill</td><td>Handhole install</td><td>$8,450</td></tr>
+              </tbody>
+              <tfoot>
+                <tr><th colspan="3">READY TOTAL</th><td data-ready-total>$8,450</td></tr>
+                <tr><th colspan="3">BLOCKED TOTAL</th><td data-blocked-total>$85,100</td></tr>
+              </tfoot>
+            </table>
+          </article>
+          <article class="docs-summary">
+            <h2>DOCUMENT MANIFEST</h2>
+            <table>
+              <thead><tr><th>DOC</th><th>STATUS</th><th>REF</th></tr></thead>
+              <tbody data-doc-lines>
+                <tr><td>Locate map</td><td>Included</td><td>Sheet 1</td></tr>
+                <tr><td>Field photos</td><td>Included</td><td>5 pinned</td></tr>
+                <tr><td>Redlines</td><td>Included</td><td>UG route</td></tr>
+                <tr><td>Bore log</td><td>Needs Fix</td><td>SV-2</td></tr>
+                <tr><td>Material ticket</td><td>Included</td><td>MAT-240</td></tr>
+              </tbody>
+            </table>
+          </article>
+        </section>
+
+        <section class="package-tables" aria-label="Photo and locate ticket summaries">
+          <article>
+            <h2>BEFORE / AFTER PHOTOS</h2>
+            <table>
+              <thead><tr><th>ASSET</th><th>BEFORE</th><th>AFTER</th><th>GPS</th><th>STATUS</th></tr></thead>
+              <tbody data-before-after-lines>
+                <tr><td>HH-1</td><td>Attached</td><td>Attached</td><td>Matched</td><td>Ready</td></tr>
+                <tr class="needs-fix"><td>SV-1</td><td>Attached</td><td>Missing open-vault</td><td>Matched</td><td>Needs Fix</td></tr>
+                <tr class="needs-fix"><td>SV-2</td><td>Attached</td><td>Attached</td><td>Mismatch</td><td>Rejected</td></tr>
+              </tbody>
+            </table>
+          </article>
+          <article>
+            <h2>LOCATE TICKETS</h2>
+            <table>
+              <thead><tr><th>TICKET</th><th>AREA</th><th>VALID THROUGH</th><th>STATUS</th><th>HOLD</th></tr></thead>
+              <tbody data-locate-ticket-lines>
+                <tr><td>FL811-24-1187</td><td>HH-1 to SV-1</td><td>06/28/2026</td><td>Clear</td><td>None</td></tr>
+                <tr class="needs-fix"><td>FL811-24-1194</td><td>SV-1 to SV-2</td><td>06/25/2026</td><td>Verify</td><td>UG-1 approval</td></tr>
+                <tr class="needs-fix"><td>FL811-24-1201</td><td>Pine Hill Rd shoulder</td><td>06/24/2026</td><td>Expired soon</td><td>SV-2 rework</td></tr>
+              </tbody>
+            </table>
+          </article>
+        </section>
+
+        <section class="package-tables rate-admin-tables" aria-label="Admin documents rate submission and calculation audit">
+          <article>
+            <h2>PERCENTAGES</h2>
+            <table>
+              <thead><tr><th>METRIC</th><th>VALUE</th><th>FORMULA</th></tr></thead>
+              <tbody data-job-percent-lines>
+                <tr><td>Admin Docs Complete</td><td>83%</td><td>Required admin docs attached / required docs</td></tr>
+                <tr><td>Rate Submission</td><td>100%</td><td>Completed rate fields / required fields</td></tr>
+              </tbody>
+            </table>
+          </article>
+          <article>
+            <h2>ADMIN DOCS</h2>
+            <table>
+              <thead><tr><th>DOCUMENT</th><th>STATUS</th><th>VERSION</th><th>USED</th></tr></thead>
+              <tbody data-admin-doc-lines>
+                <tr><td>Contract / MSA</td><td>Attached</td><td>MSA-22</td><td>Yes</td></tr>
+              </tbody>
+            </table>
+          </article>
+          <article>
+            <h2>RATE SUBMISSION</h2>
+            <dl class="rate-summary" data-rate-submission-summary>
+              <div><dt>Status</dt><dd>Approved</dd></div>
+              <div><dt>Rate Version</dt><dd>ATT-2026-06-v3</dd></div>
+            </dl>
+            <table>
+              <thead><tr><th>ASSET</th><th>PAY ITEM</th><th>QTY</th><th>RATE</th><th>TOTAL</th><th>STATUS</th></tr></thead>
+              <tbody data-rate-submission-lines>
+                <tr><td>SL-HH-9</td><td>Handhole install + restoration</td><td>1 EA</td><td>$12,400</td><td>$12,400</td><td>Approved</td></tr>
+              </tbody>
+            </table>
+            <div class="rate-actions" aria-label="Rate submission actions">
+              <button type="button" data-rate-action="submit">Submit Rates</button>
+              <button type="button" data-rate-action="approve">Approve Rates</button>
+              <button type="button" data-rate-action="reject">Reject Rates</button>
+              <button type="button" data-rate-action="lock">Lock Rates for Billing</button>
+              <button type="button" data-rate-action="upload">Upload Rate Sheet</button>
+              <button type="button" data-rate-action="export">Export Rate Submission</button>
+              <button type="button" data-rate-action="audit">View Calculation Audit</button>
+            </div>
+            <p class="rate-action-status" data-rate-action-status role="status" aria-live="polite"></p>
+          </article>
+          <article>
+            <h2>CALCULATION AUDIT</h2>
+            <table>
+              <thead><tr><th>ASSET</th><th>RATE SOURCE</th><th>FORMULA</th><th>RESULT</th></tr></thead>
+              <tbody data-calculation-audit-lines>
+                <tr><td>SL-HH-9</td><td>ATT-2026-06-v3</td><td>$12,400 x 1 EA</td><td>Ready to Bill</td></tr>
+              </tbody>
+            </table>
+          </article>
+          <article class="wide">
+            <h2>DAILY CUSTOMER SUMMARY</h2>
+            <table>
+              <thead><tr><th>ITEM</th><th>VALUE</th></tr></thead>
+              <tbody data-daily-customer-summary-lines>
+                <tr><td>Rate Basis</td><td>ATT-2026-06-v3 / Approved</td></tr>
+              </tbody>
+            </table>
+            <p class="daily-summary-copy" data-daily-customer-summary-text>The job packet summary will calculate after the job loads.</p>
+          </article>
+        </section>
+
+        <section class="package-tables document-automation-tables" aria-label="Document automation engine damage proof and situation assistant">
+          <article class="wide">
+            <h2>DOCUMENT AUTOMATION ENGINE</h2>
+            <p class="automation-boundary" data-document-automation-status>Operational documents only. CrewProof creates packages, exports, readiness support, and audit records. It does not process payments, payroll, banking, collections, settlements, or money movement.</p>
+            <table>
+              <thead><tr><th>DOCUMENT</th><th>AUDIENCE</th><th>STATUS</th><th>SOURCES</th><th>MISSING</th><th>EXPORTS</th></tr></thead>
+              <tbody data-document-automation-lines>
+                <tr><td>Daily closeout package</td><td>Closeout</td><td>Draft</td><td>Field proof</td><td>Loading</td><td>PDF / JSON</td></tr>
+              </tbody>
+            </table>
+          </article>
+          <article>
+            <h2>DAMAGE PROOF / OPERATIONS LEDGER</h2>
+            <table>
+              <thead><tr><th>PROOF ID</th><th>ASSET</th><th>TYPE</th><th>STATUS</th><th>811 / CLAIM</th><th>NEXT ACTION</th></tr></thead>
+              <tbody data-damage-proof-lines>
+                <tr><td>DPF-1045-01</td><td>SV-2</td><td>Utility Strike</td><td>Needs Review</td><td>FL811-24-1201 / CLM-1045-02</td><td>PM review</td></tr>
+              </tbody>
+            </table>
+          </article>
+          <article>
+            <h2>AI SITUATION ASSISTANT</h2>
+            <table>
+              <thead><tr><th>QUESTION</th><th>ANSWER</th><th>NEXT</th></tr></thead>
+              <tbody data-situation-assistant-lines>
+                <tr><td>What damage proof exists?</td><td>Loading job damage proof.</td><td>Review</td></tr>
+              </tbody>
+            </table>
+          </article>
+          <article>
+            <h2>JOB CHAT / DECISION LOG</h2>
+            <table>
+              <thead><tr><th>TIME</th><th>SOURCE</th><th>RECORD</th><th>DECISION STATUS</th></tr></thead>
+              <tbody data-job-decision-log-lines>
+                <tr><td>14:40</td><td>Chat</td><td>Loading source messages.</td><td>Draft</td></tr>
+              </tbody>
+            </table>
+          </article>
+        </section>
+
+        <section class="utility-conflict-tables" aria-label="Utility conflicts crossings pothole vac proof and make-ready clearance">
+          <article>
+            <h2>UTILITY CONFLICTS</h2>
+            <table>
+              <thead><tr><th>CROSSING</th><th>UTILITY</th><th>DEPTH</th><th>METHOD</th><th>STATUS</th><th>HOLD</th></tr></thead>
+              <tbody data-utility-conflict-lines>
+                <tr><td>HH-1 to SV-1</td><td>Gas</td><td>42 in</td><td>Vac expose</td><td>Clear</td><td>None</td></tr>
+                <tr><td>UG-1 sweep</td><td>Water</td><td>38 in</td><td>Hand dig</td><td>Clear</td><td>Photo attach</td></tr>
+                <tr class="needs-fix"><td>SV-1 to SV-2</td><td>Power</td><td>Unknown</td><td>Pothole</td><td>Verify</td><td>FL811 hold</td></tr>
+                <tr class="needs-fix"><td>Road shoulder</td><td>Storm</td><td>24 in</td><td>Bore watch</td><td>Conflict</td><td>SV-2 rework</td></tr>
+              </tbody>
+            </table>
+          </article>
+          <article>
+            <h2>POTHOLE / MAKE-READY</h2>
+            <table>
+              <thead><tr><th>ITEM</th><th>CREW</th><th>PROOF</th><th>OWNER</th><th>RESULT</th><th>NEXT</th></tr></thead>
+              <tbody data-pothole-make-ready-lines>
+                <tr><td>Vac ticket V-1187</td><td>Delta</td><td>Photo + GPS</td><td>Locate Desk</td><td>Accepted</td><td>Release UG-1</td></tr>
+                <tr><td>Pole make-ready</td><td>Bravo</td><td>Pole photo</td><td>OSP engineer</td><td>Review</td><td>SC-1 signoff</td></tr>
+                <tr class="needs-fix"><td>Pothole P-1194</td><td>Delta</td><td>Missing depth</td><td>Utility coord</td><td>Hold</td><td>Measure power</td></tr>
+                <tr class="needs-fix"><td>Storm crossing</td><td>Charlie</td><td>Redline only</td><td>County</td><td>Rejected</td><td>Vac photo</td></tr>
+              </tbody>
+            </table>
+          </article>
+        </section>
+
+        <section class="material-trace-tables" aria-label="Material receiving reel lot traceability and warranty blockers">
+          <article>
+            <h2>MATERIAL RECEIVING</h2>
+            <table>
+              <thead><tr><th>ITEM</th><th>PO</th><th>RECEIVED</th><th>ISSUED</th><th>USED</th><th>HOLD</th></tr></thead>
+              <tbody data-material-receiving-lines>
+                <tr><td>144ct fiber</td><td>PO-7782</td><td>240 ft</td><td>240 ft</td><td>238 ft</td><td>None</td></tr>
+                <tr class="needs-fix"><td>1.25 in HDPE</td><td>PO-7782</td><td>212 ft</td><td>226 ft</td><td>219 ft</td><td>Reconcile</td></tr>
+                <tr><td>24x36 handhole</td><td>PO-7782</td><td>1 ea</td><td>1 ea</td><td>1 ea</td><td>None</td></tr>
+                <tr><td>Splice vault</td><td>PO-7782</td><td>2 ea</td><td>2 ea</td><td>2 ea</td><td>Photo proof</td></tr>
+              </tbody>
+            </table>
+          </article>
+          <article>
+            <h2>REEL / LOT TRACE</h2>
+            <table>
+              <thead><tr><th>ASSET</th><th>SERIAL / LOT</th><th>SUPPLIER</th><th>WARRANTY</th><th>STATUS</th><th>HOLD</th></tr></thead>
+              <tbody data-reel-lot-trace-lines>
+                <tr><td>SC-1 fiber</td><td>REEL-144-7782</td><td>Graybar</td><td>5 yr</td><td>Matched</td><td>None</td></tr>
+                <tr><td>HH-1</td><td>HH24-3310</td><td>Oldcastle</td><td>1 yr</td><td>Matched</td><td>None</td></tr>
+                <tr class="needs-fix"><td>SV-1</td><td>SV36-8820</td><td>Oldcastle</td><td>1 yr</td><td>Photo hold</td><td>Open-vault</td></tr>
+                <tr class="needs-fix"><td>HDPE bore</td><td>LOT-HDPE-212</td><td>Dura-Line</td><td>2 yr</td><td>Qty mismatch</td><td>SV-2 bore</td></tr>
+              </tbody>
+            </table>
+          </article>
+        </section>
+
+        <section class="workflow-tables" aria-label="Approval readiness and audit summaries">
+          <article>
+            <h2>APPROVAL / READINESS</h2>
+            <table>
+              <thead><tr><th>ASSET</th><th>APPROVAL</th><th>PACKAGE</th><th>READINESS</th><th>HOLD</th></tr></thead>
+              <tbody data-approval-lines>
+                <tr><td>HH-1</td><td>Approved</td><td>Ready</td><td>Queued</td><td>None</td></tr>
+                <tr class="needs-fix"><td>SV-1</td><td>Needs Fix</td><td>Blocked</td><td>Held</td><td>Missing photo</td></tr>
+                <tr class="needs-fix"><td>SV-2</td><td>Rejected</td><td>Blocked</td><td>Held</td><td>Redline mismatch</td></tr>
+              </tbody>
+            </table>
+          </article>
+          <article>
+            <h2>AUDIT TRAIL</h2>
+            <table>
+              <thead><tr><th>TIME</th><th>EVENT</th><th>BY</th><th>RESULT</th></tr></thead>
+              <tbody data-audit-lines>
+                <tr><td>14:40</td><td>HH-1 proof locked</td><td>J. Ramirez</td><td>Ready to bill</td></tr>
+                <tr class="needs-fix"><td>12:05</td><td>SV-1 photo check</td><td>PM Review</td><td>Needs fix</td></tr>
+                <tr class="needs-fix"><td>10:30</td><td>SV-2 owner review</td><td>Windstream</td><td>Rejected</td></tr>
+              </tbody>
+            </table>
+          </article>
+        </section>
+
+        <section class="risk-tables" aria-label="Compliance risk warranty and exception ownership">
+          <article>
+            <h2>COMPLIANCE / RISK</h2>
+            <table>
+              <thead><tr><th>CHECK</th><th>STATUS</th><th>OWNER</th><th>DUE</th><th>RISK</th></tr></thead>
+              <tbody data-compliance-risk-lines>
+                <tr><td>Permit / ROW</td><td>Clear</td><td>PM Review</td><td>Closed</td><td>Low</td></tr>
+                <tr class="needs-fix"><td>Locate expiry</td><td>Verify</td><td>Locate Desk</td><td>06/24</td><td>Medium</td></tr>
+                <tr><td>Safety / traffic</td><td>Logged</td><td>Alpha</td><td>Closed</td><td>Low</td></tr>
+                <tr class="needs-fix"><td>Damage claim</td><td>Watch</td><td>Canyon Bore</td><td>Open</td><td>Medium</td></tr>
+              </tbody>
+            </table>
+          </article>
+          <article>
+            <h2>WARRANTY / EXCEPTIONS</h2>
+            <table>
+              <thead><tr><th>ITEM</th><th>OWNER</th><th>AGING</th><th>DOLLARS</th><th>NEXT STEP</th></tr></thead>
+              <tbody data-warranty-exception-lines>
+                <tr><td>HH-1 warranty</td><td>Lone Star</td><td>0d</td><td>$8,450</td><td>Ready queue</td></tr>
+                <tr class="needs-fix"><td>SV-1 missing photo</td><td>Alpha</td><td>1d</td><td>$18,600</td><td>Reshoot</td></tr>
+                <tr class="needs-fix"><td>SV-2 redline</td><td>Charlie</td><td>1d</td><td>$22,900</td><td>Correct map</td></tr>
+                <tr class="needs-fix"><td>UG-1 locate hold</td><td>Locate Desk</td><td>0d</td><td>$32,400</td><td>Verify ticket</td></tr>
+              </tbody>
+            </table>
+          </article>
+        </section>
+
+        <section class="integration-tables" aria-label="External package handoff and export readiness">
+          <article>
+            <h2>PACKAGE HANDOFFS</h2>
+            <table>
+              <thead><tr><th>DESTINATION</th><th>PACKAGE</th><th>STATUS</th><th>PREP TIME</th><th>NEXT</th></tr></thead>
+              <tbody data-package-handoff-lines>
+                <tr><td>Owner review</td><td>Closeout PDF + JSON</td><td>Ready to export</td><td>14:42</td><td>PM approve</td></tr>
+                <tr><td>AP / accounting</td><td>Invoice lines</td><td>Draft ready</td><td>14:41</td><td>Send bill</td></tr>
+                <tr><td>Document package</td><td>Photos / redlines</td><td>Included</td><td>14:40</td><td>Attach to email</td></tr>
+                <tr class="needs-fix"><td>Locate desk</td><td>Ticket verify</td><td>Needs review</td><td>11:05</td><td>FL811 check</td></tr>
+              </tbody>
+            </table>
+          </article>
+          <article>
+            <h2>EXPORT EVENTS</h2>
+            <table>
+              <thead><tr><th>EXPORT</th><th>EVENT</th><th>STATUS</th><th>NEXT</th></tr></thead>
+              <tbody data-export-event-lines>
+                <tr><td>Closeout PDF</td><td>package.ready</td><td>Export ready</td><td>PM review</td></tr>
+                <tr><td>Invoice CSV</td><td>invoice.ready</td><td>Draft ready</td><td>AP send</td></tr>
+                <tr><td>Proof exception list</td><td>proof.needs_fix</td><td>Needs field fix</td><td>SV-1 photo</td></tr>
+                <tr class="needs-fix"><td>Locate ticket packet</td><td>ticket.verify</td><td>Hold</td><td>FL811 check</td></tr>
+              </tbody>
+            </table>
+          </article>
+        </section>
+
+        <section class="operations-tables" aria-label="Crew action queue SLA aging and proof quality">
+          <article>
+            <h2>ACTION QUEUE / SLA</h2>
+            <table>
+              <thead><tr><th>ITEM</th><th>OWNER</th><th>SLA</th><th>AGING</th><th>ACTION</th></tr></thead>
+              <tbody data-action-queue-lines>
+                <tr><td>HH-1 bill pack</td><td>PM Review</td><td>Today</td><td>0h</td><td>Send invoice</td></tr>
+                <tr class="needs-fix"><td>SV-1 after photo</td><td>Alpha</td><td>Today</td><td>2h</td><td>Reshoot vault</td></tr>
+                <tr class="needs-fix"><td>SV-2 redline</td><td>Charlie</td><td>Today</td><td>4h</td><td>Fix route</td></tr>
+                <tr class="needs-fix"><td>UG-1 locate</td><td>Locate Desk</td><td>15m</td><td>35m</td><td>Verify ticket</td></tr>
+              </tbody>
+            </table>
+          </article>
+          <article>
+            <h2>PROOF QUALITY</h2>
+            <table>
+              <thead><tr><th>ASSET</th><th>GPS</th><th>TIME</th><th>PHOTO HASH</th><th>RESULT</th></tr></thead>
+              <tbody data-proof-quality-lines>
+                <tr><td>HH-1</td><td>+/- 6 ft</td><td>Matched</td><td>Locked</td><td>Trusted</td></tr>
+                <tr><td>SC-1</td><td>+/- 9 ft</td><td>Matched</td><td>Locked</td><td>Review</td></tr>
+                <tr class="needs-fix"><td>SV-1</td><td>+/- 7 ft</td><td>Matched</td><td>Missing</td><td>Incomplete</td></tr>
+                <tr class="needs-fix"><td>SV-2</td><td>+/- 18 ft</td><td>Mismatch</td><td>Locked</td><td>Rejected</td></tr>
+              </tbody>
+            </table>
+          </article>
+        </section>
+
+        <section class="program-tables" aria-label="Program rollup and daily crew dispatch">
+          <article>
+            <h2>PROGRAM ROLLUP</h2>
+            <table>
+              <thead><tr><th>JOB</th><th>CUSTOMER</th><th>READY</th><th>BLOCKED</th><th>STATE</th></tr></thead>
+              <tbody data-program-rollup-lines>
+                <tr><td>JOB-1045</td><td>Windstream</td><td>$8,450</td><td>$85,100</td><td>Fixes open</td></tr>
+                <tr><td>JOB-1046</td><td>Kinetic</td><td>$21,700</td><td>$14,200</td><td>PM review</td></tr>
+                <tr><td>JOB-1047</td><td>Spectrum</td><td>$0</td><td>$46,500</td><td>Rejected</td></tr>
+                <tr><td>JOB-1048</td><td>AT&amp;T</td><td>$38,900</td><td>$0</td><td>Ready</td></tr>
+              </tbody>
+            </table>
+          </article>
+          <article>
+            <h2>DAILY DISPATCH</h2>
+            <table>
+              <thead><tr><th>CREW</th><th>JOB</th><th>LOCATION</th><th>TASK</th><th>ETA</th></tr></thead>
+              <tbody data-daily-dispatch-lines>
+                <tr><td>Alpha</td><td>1045</td><td>SV-1</td><td>Reshoot vault</td><td>15:30</td></tr>
+                <tr><td>Charlie</td><td>1045</td><td>SV-2</td><td>Correct redline</td><td>16:00</td></tr>
+                <tr><td>Delta</td><td>1045</td><td>UG-1</td><td>Locate verify</td><td>15:15</td></tr>
+                <tr><td>Field Team 4</td><td>1046</td><td>Oak Ridge</td><td>PM walk</td><td>Tomorrow</td></tr>
+              </tbody>
+            </table>
+          </article>
+        </section>
+
+        <section class="commercial-tables" aria-label="Contract change order retainage and waiver status">
+          <article>
+            <h2>CONTRACT / CHANGE ORDERS</h2>
+            <table>
+              <thead><tr><th>REF</th><th>SCOPE</th><th>STATUS</th><th>VALUE</th><th>ACTION</th></tr></thead>
+              <tbody data-contract-change-order-lines>
+                <tr><td>MSA-22</td><td>FTTH build</td><td>Active</td><td>$93,550</td><td>Bill ready items</td></tr>
+                <tr><td>CO-014</td><td>Extra bore</td><td>Pending</td><td>$7,800</td><td>Owner signoff</td></tr>
+                <tr class="needs-fix"><td>CO-015</td><td>SV-2 rework</td><td>Draft</td><td>$4,200</td><td>Attach redline</td></tr>
+              </tbody>
+            </table>
+          </article>
+          <article>
+            <h2>RETAINAGE / WAIVERS</h2>
+            <table>
+              <thead><tr><th>ITEM</th><th>STATUS</th><th>AMOUNT</th><th>OWNER</th><th>NEXT</th></tr></thead>
+              <tbody data-retainage-waiver-lines>
+                <tr><td>Retainage</td><td>5%</td><td>$423</td><td>AP</td><td>Holdback</td></tr>
+                <tr><td>Lien waiver</td><td>Ready</td><td>$8,450</td><td>Lone Star</td><td>Attach</td></tr>
+                <tr class="needs-fix"><td>CO waiver</td><td>Missing</td><td>$4,200</td><td>Charlie</td><td>Upload</td></tr>
+              </tbody>
+            </table>
+          </article>
+        </section>
+
+        <section class="upstream-tables" aria-label="Work order intake owner prerequisites purchase order and upstream billing blockers">
+          <article>
+            <h2>WORK ORDER INTAKE</h2>
+            <table>
+              <thead><tr><th>REF</th><th>SOURCE</th><th>SCOPE</th><th>PO / SOW</th><th>STATUS</th><th>HOLD</th></tr></thead>
+              <tbody data-work-order-intake-lines>
+                <tr><td>WO-1045</td><td>Owner work order</td><td>Pine Hill FTTH</td><td>PO-7782</td><td>Matched</td><td>None</td></tr>
+                <tr><td>SOW-22A</td><td>MSA-22</td><td>HH / vault / bore</td><td>SOW-22A</td><td>Active</td><td>None</td></tr>
+                <tr class="needs-fix"><td>CO-015</td><td>Field change</td><td>SV-2 rework</td><td>Pending</td><td>Draft</td><td>Owner signoff</td></tr>
+                <tr><td>MAT-240</td><td>Warehouse</td><td>144ct fiber</td><td>PO-7782</td><td>Attached</td><td>None</td></tr>
+              </tbody>
+            </table>
+          </article>
+          <article>
+            <h2>OWNER PREREQS</h2>
+            <table>
+              <thead><tr><th>ITEM</th><th>REQUIRED FOR</th><th>OWNER</th><th>STATUS</th><th>DUE</th><th>HOLD</th></tr></thead>
+              <tbody data-owner-prereq-lines>
+                <tr><td>Approved design</td><td>All lines</td><td>Engineering</td><td>Attached</td><td>Closed</td><td>None</td></tr>
+                <tr><td>PO funding</td><td>Invoice post</td><td>AP</td><td>Open</td><td>Today</td><td>SC-1 / UG-1</td></tr>
+                <tr class="needs-fix"><td>Change order</td><td>SV-2 rework</td><td>Owner PM</td><td>Missing</td><td>16:00</td><td>$4,200</td></tr>
+                <tr><td>Permit release</td><td>ROW closeout</td><td>County</td><td>Queued</td><td>06/24</td><td>Lane photo</td></tr>
+              </tbody>
+            </table>
+          </article>
+        </section>
+
+        <section class="analytics-tables" aria-label="Closeout analytics root causes and cash forecast">
+          <article>
+            <h2>ROOT CAUSE / CYCLE TIME</h2>
+            <table>
+              <thead><tr><th>METRIC</th><th>VALUE</th><th>TARGET</th><th>DRIVER</th><th>ACTION</th></tr></thead>
+              <tbody data-root-cause-lines>
+                <tr><td>Ready cycle</td><td>4.2h</td><td>6h</td><td>Photos matched</td><td>Keep</td></tr>
+                <tr class="needs-fix"><td>Reject rate</td><td>22%</td><td>&lt;8%</td><td>Redlines</td><td>Field check</td></tr>
+                <tr class="needs-fix"><td>Missing proof</td><td>1 asset</td><td>0</td><td>Open vault</td><td>Reshoot</td></tr>
+                <tr><td>Avg approval</td><td>18h</td><td>24h</td><td>PM queue</td><td>Monitor</td></tr>
+              </tbody>
+            </table>
+          </article>
+          <article>
+            <h2>CASH FORECAST</h2>
+            <table>
+              <thead><tr><th>BUCKET</th><th>DOLLARS</th><th>EXPECTED</th><th>CONFIDENCE</th><th>BLOCKER</th></tr></thead>
+              <tbody data-cash-forecast-lines>
+                <tr><td>Ready today</td><td>$8,450</td><td>Today</td><td>High</td><td>None</td></tr>
+                <tr><td>Owner review</td><td>$43,600</td><td>24h</td><td>Medium</td><td>Approval</td></tr>
+                <tr class="needs-fix"><td>Fix required</td><td>$41,500</td><td>48h</td><td>Low</td><td>Proof</td></tr>
+                <tr><td>Retainage</td><td>$423</td><td>Close</td><td>High</td><td>Holdback</td></tr>
+              </tbody>
+            </table>
+          </article>
+        </section>
+
+        <section class="security-tables" aria-label="Access control signature and tamper evidence">
+          <article>
+            <h2>ACCESS / SHARING</h2>
+            <table>
+              <thead><tr><th>ROLE</th><th>ACCESS</th><th>CAN APPROVE</th><th>CAN PAY</th><th>EXPIRY</th></tr></thead>
+              <tbody data-access-sharing-lines>
+                <tr><td>Owner PM</td><td>Full package</td><td>Yes</td><td>No</td><td>7d</td></tr>
+                <tr><td>AP</td><td>Invoice only</td><td>No</td><td>Yes</td><td>7d</td></tr>
+                <tr><td>Crew</td><td>Fix items</td><td>No</td><td>No</td><td>24h</td></tr>
+                <tr class="needs-fix"><td>Public link</td><td>Disabled</td><td>No</td><td>No</td><td>Revoked</td></tr>
+              </tbody>
+            </table>
+          </article>
+          <article>
+            <h2>SIGNATURE / TAMPER</h2>
+            <table>
+              <thead><tr><th>ITEM</th><th>STATUS</th><th>HASH</th><th>SIGNED BY</th><th>TIME</th></tr></thead>
+              <tbody data-signature-tamper-lines>
+                <tr><td>HH-1 proof</td><td>Locked</td><td>8F3A</td><td>J. Ramirez</td><td>14:40</td></tr>
+                <tr><td>Package JSON</td><td>Signed</td><td>91CD</td><td>CrewProof</td><td>14:42</td></tr>
+                <tr><td>Invoice lines</td><td>Signed</td><td>44B2</td><td>PM Review</td><td>14:41</td></tr>
+                <tr class="needs-fix"><td>SV-1 after</td><td>Missing</td><td>-</td><td>-</td><td>-</td></tr>
+              </tbody>
+            </table>
+          </article>
+        </section>
+
+        <section class="device-tables" aria-label="Offline sync device health and retention">
+          <article>
+            <h2>OFFLINE SYNC QUEUE</h2>
+            <table>
+              <thead><tr><th>DEVICE</th><th>CREW</th><th>PENDING</th><th>LAST SYNC</th><th>STATUS</th></tr></thead>
+              <tbody data-offline-sync-lines>
+                <tr><td>Alpha iPad</td><td>Alpha</td><td>0</td><td>14:40</td><td>Synced</td></tr>
+                <tr><td>Bravo phone</td><td>Bravo</td><td>1 photo</td><td>13:15</td><td>Queued</td></tr>
+                <tr class="needs-fix"><td>Charlie tablet</td><td>Charlie</td><td>1 redline</td><td>10:30</td><td>Retry</td></tr>
+                <tr><td>Delta phone</td><td>Delta</td><td>0</td><td>11:50</td><td>Synced</td></tr>
+              </tbody>
+            </table>
+          </article>
+          <article>
+            <h2>RETENTION / DEVICE HEALTH</h2>
+            <table>
+              <thead><tr><th>ITEM</th><th>POLICY</th><th>HEALTH</th><th>STORAGE</th><th>NEXT</th></tr></thead>
+              <tbody data-retention-device-lines>
+                <tr><td>Photos</td><td>7 yrs</td><td>OK</td><td>Cloud + local</td><td>Retain</td></tr>
+                <tr><td>GPS trail</td><td>7 yrs</td><td>OK</td><td>Cloud</td><td>Retain</td></tr>
+                <tr class="needs-fix"><td>Redline cache</td><td>7 yrs</td><td>Retry</td><td>Device</td><td>Upload</td></tr>
+                <tr><td>Battery</td><td>Field day</td><td>78%</td><td>-</td><td>OK</td></tr>
+              </tbody>
+            </table>
+          </article>
+        </section>
+
+        <section class="gis-tables" aria-label="As-built GIS handoff and asset registry">
+          <article>
+            <h2>AS-BUILT / GIS HANDOFF</h2>
+            <table>
+              <thead><tr><th>LAYER</th><th>FORMAT</th><th>STATUS</th><th>DELTA</th><th>NEXT</th></tr></thead>
+              <tbody data-gis-handoff-lines>
+                <tr><td>Route line</td><td>GeoJSON</td><td>Ready</td><td>+7 ft</td><td>PM review</td></tr>
+                <tr><td>Handholes</td><td>CSV + GPS</td><td>Ready</td><td>0</td><td>Publish</td></tr>
+                <tr class="needs-fix"><td>Vaults</td><td>GeoJSON</td><td>Hold</td><td>SV-2 mismatch</td><td>Correct</td></tr>
+                <tr><td>Photos</td><td>Linked URLs</td><td>Partial</td><td>SV-1 missing</td><td>Reshoot</td></tr>
+              </tbody>
+            </table>
+          </article>
+          <article>
+            <h2>ASSET REGISTRY</h2>
+            <table>
+              <thead><tr><th>ASSET</th><th>OWNER ID</th><th>GPS</th><th>TYPE</th><th>RECORD</th></tr></thead>
+              <tbody data-asset-registry-lines>
+                <tr><td>HH-1</td><td>WST-HH-1045</td><td>Matched</td><td>Handhole</td><td>Ready</td></tr>
+                <tr><td>SC-1</td><td>WST-SC-1045</td><td>Matched</td><td>Closure</td><td>Review</td></tr>
+                <tr class="needs-fix"><td>SV-1</td><td>WST-SV-1045A</td><td>Matched</td><td>Vault</td><td>Photo hold</td></tr>
+                <tr class="needs-fix"><td>SV-2</td><td>WST-SV-1045B</td><td>Mismatch</td><td>Vault</td><td>Rejected</td></tr>
+              </tbody>
+            </table>
+          </article>
+        </section>
+
+        <section class="redline-tables" aria-label="Redline route corrections as-built variance and billing impact">
+          <article>
+            <h2>REDLINE / ROUTE CORRECTIONS</h2>
+            <table>
+              <thead><tr><th>SEGMENT</th><th>PLAN</th><th>FIELD</th><th>DELTA</th><th>MARKUP</th><th>STATUS</th></tr></thead>
+              <tbody data-redline-correction-lines>
+                <tr><td>HH-1 to SV-1</td><td>125 ft</td><td>125 ft</td><td>0</td><td>Matched</td><td>Ready</td></tr>
+                <tr><td>SC-1 aerial drop</td><td>Pole line</td><td>Pole #124567</td><td>0</td><td>Tagged</td><td>Owner review</td></tr>
+                <tr class="needs-fix"><td>SV-1 to SV-2</td><td>87 ft</td><td>94 ft</td><td>+7 ft</td><td>Redline mismatch</td><td>Rejected</td></tr>
+                <tr><td>UG-1 sweep</td><td>Conduit</td><td>Conduit</td><td>0</td><td>Locate verified</td><td>Waiting</td></tr>
+              </tbody>
+            </table>
+          </article>
+          <article>
+            <h2>AS-BUILT VARIANCE</h2>
+            <table>
+              <thead><tr><th>ASSET</th><th>GPS DELTA</th><th>PAY IMPACT</th><th>APPROVER</th><th>EVIDENCE</th><th>NEXT</th></tr></thead>
+              <tbody data-asbuilt-variance-lines>
+                <tr><td>HH-1</td><td>0.8 ft</td><td>$0</td><td>PM</td><td>GPS photo</td><td>Publish</td></tr>
+                <tr><td>SC-1</td><td>1.2 ft</td><td>$0</td><td>Owner PM</td><td>Pole photo</td><td>Accept</td></tr>
+                <tr class="needs-fix"><td>SV-2</td><td>18.4 ft</td><td>$4,200 CO</td><td>Construction mgr</td><td>Bore log + redline</td><td>Approve variance</td></tr>
+                <tr class="needs-fix"><td>Route line</td><td>+7 ft</td><td>$22,900 hold</td><td>PM Review</td><td>GIS layer</td><td>Correct map</td></tr>
+              </tbody>
+            </table>
+          </article>
+        </section>
+
+        <section class="finance-tables" aria-label="Insurance claims support and billing terms">
+          <article>
+            <h2>INSURANCE / CLAIMS</h2>
+            <table>
+              <thead><tr><th>ITEM</th><th>STATUS</th><th>POLICY</th><th>DOLLARS</th><th>NEXT</th></tr></thead>
+              <tbody data-insurance-claim-lines>
+                <tr><td>COI</td><td>Current</td><td>GL / Auto</td><td>-</td><td>Attach to owner</td></tr>
+                <tr class="needs-fix"><td>Damage watch</td><td>Open</td><td>GL-2026</td><td>$2,500 reserve</td><td>Photo shoulder</td></tr>
+                <tr><td>Warranty bond</td><td>Active</td><td>WB-1045</td><td>$8,450</td><td>Release with HH-1</td></tr>
+                <tr class="needs-fix"><td>Deductible hold</td><td>Pending</td><td>Claim review</td><td>$1,000</td><td>PM decision</td></tr>
+              </tbody>
+            </table>
+          </article>
+          <article>
+            <h2>FINANCING / PAY TERMS</h2>
+            <table>
+              <thead><tr><th>CONTRACTOR</th><th>ELIGIBLE</th><th>ADVANCE</th><th>TERM</th><th>HOLD</th></tr></thead>
+              <tbody data-financing-term-lines>
+                <tr><td>Lone Star</td><td>Yes</td><td>$8,027</td><td>Net 30</td><td>5% retainage</td></tr>
+                <tr><td>Summit Splicing</td><td>Review</td><td>$0</td><td>Owner approval</td><td>SC-1 waiting</td></tr>
+                <tr class="needs-fix"><td>Canyon Bore</td><td>No</td><td>$0</td><td>Hold</td><td>SV-2 rejected</td></tr>
+                <tr><td>Delta crew</td><td>Review</td><td>$0</td><td>Locate verify</td><td>UG-1 pending</td></tr>
+              </tbody>
+            </table>
+          </article>
+        </section>
+
+        <section class="payment-control-tables" aria-label="Invoice support aging lien bond and dispute controls">
+          <article>
+            <h2>INVOICE / AGING</h2>
+            <table>
+              <thead><tr><th>INVOICE</th><th>ASSET</th><th>AMOUNT</th><th>AGE</th><th>PROMISE</th><th>STATUS</th></tr></thead>
+              <tbody data-invoice-aging-lines>
+                <tr><td>INV-1045-HH1</td><td>HH-1</td><td>$8,450</td><td>0d</td><td>Net 30</td><td>Ready</td></tr>
+                <tr><td>Draft-SC1</td><td>SC-1</td><td>$11,200</td><td>Hold</td><td>On approval</td><td>Waiting</td></tr>
+                <tr class="needs-fix"><td>Hold-SV1</td><td>SV-1</td><td>$18,600</td><td>3d</td><td>After photo</td><td>Blocked</td></tr>
+                <tr class="needs-fix"><td>Reject-SV2</td><td>SV-2</td><td>$22,900</td><td>4d</td><td>Dispute</td><td>Dispute watch</td></tr>
+              </tbody>
+            </table>
+          </article>
+          <article>
+            <h2>LIEN / BOND NOTICE</h2>
+            <table>
+              <thead><tr><th>NOTICE</th><th>PARTY</th><th>DEADLINE</th><th>DOLLARS</th><th>DOC</th><th>NEXT</th></tr></thead>
+              <tbody data-lien-bond-lines>
+                <tr><td>Prelim notice</td><td>Owner / GC</td><td>Sent</td><td>$8,450</td><td>PN-1045</td><td>Attach receipt</td></tr>
+                <tr><td>Bond claim clock</td><td>Surety</td><td>07/23</td><td>$11,200</td><td>WB-1045</td><td>Wait approval</td></tr>
+                <tr class="needs-fix"><td>Lien rights</td><td>SV-1 hold</td><td>07/08</td><td>$18,600</td><td>Missing photo</td><td>Reshoot</td></tr>
+                <tr class="needs-fix"><td>Dispute packet</td><td>SV-2 reject</td><td>Now</td><td>$22,900</td><td>Dispute file</td><td>Escalate PM</td></tr>
+              </tbody>
+            </table>
+          </article>
+        </section>
+
+        <section class="labor-tables" aria-label="Crew time production units and subcontractor support applications">
+          <article>
+            <h2>CREW TIME / PRODUCTION</h2>
+            <table>
+              <thead><tr><th>CREW</th><th>HOURS</th><th>PRODUCTION</th><th>PROOF MATCH</th><th>PAY STATUS</th><th>HOLD</th></tr></thead>
+              <tbody data-crew-time-lines>
+                <tr><td>Alpha</td><td>8.5</td><td>HH-1 / SV-1</td><td>Partial</td><td>Split</td><td>SV-1 photo</td></tr>
+                <tr><td>Bravo</td><td>5.0</td><td>SC-1 splice</td><td>Submitted</td><td>Pending</td><td>Owner approval</td></tr>
+                <tr class="needs-fix"><td>Charlie</td><td>7.0</td><td>SV-2 bore</td><td>Mismatch</td><td>Held</td><td>Bore log</td></tr>
+                <tr><td>Delta</td><td>4.0</td><td>UG-1 locate</td><td>Submitted</td><td>Pending</td><td>FL811 verify</td></tr>
+              </tbody>
+            </table>
+          </article>
+          <article>
+            <h2>SUB PAY APPS</h2>
+            <table>
+              <thead><tr><th>CONTRACTOR</th><th>PAY APP</th><th>REQUEST</th><th>APPROVED</th><th>RETAINAGE</th><th>STATUS</th></tr></thead>
+              <tbody data-sub-pay-app-lines>
+                <tr><td>Lone Star</td><td>PA-1045-A</td><td>$27,050</td><td>$8,450</td><td>$423</td><td>Partial release</td></tr>
+                <tr><td>Summit</td><td>PA-1045-B</td><td>$11,200</td><td>$0</td><td>$0</td><td>Owner review</td></tr>
+                <tr class="needs-fix"><td>Canyon Bore</td><td>PA-1045-C</td><td>$55,300</td><td>$0</td><td>$0</td><td>Held</td></tr>
+                <tr><td>Delta crew</td><td>PA-1045-D</td><td>$32,400</td><td>$0</td><td>$0</td><td>Locate hold</td></tr>
+              </tbody>
+            </table>
+          </article>
+        </section>
+
+        <section class="accounting-tables" aria-label="Cost code GL export tax jurisdiction and accounting posting controls">
+          <article>
+            <h2>COST CODE / GL EXPORT</h2>
+            <table>
+              <thead><tr><th>LINE</th><th>COST CODE</th><th>GL</th><th>AMOUNT</th><th>POST</th><th>HOLD</th></tr></thead>
+              <tbody data-cost-code-lines>
+                <tr><td>HH-1</td><td>OSP-HH</td><td>4100-Field Rev</td><td>$8,450</td><td>Ready</td><td>None</td></tr>
+                <tr><td>SC-1</td><td>OSP-SPLICE</td><td>4100-Field Rev</td><td>$11,200</td><td>Pending</td><td>Approval</td></tr>
+                <tr class="needs-fix"><td>SV-1</td><td>OSP-VAULT</td><td>4100-Field Rev</td><td>$18,600</td><td>Blocked</td><td>Photo</td></tr>
+                <tr class="needs-fix"><td>SV-2</td><td>OSP-BORE</td><td>4100-Field Rev</td><td>$22,900</td><td>Rejected</td><td>Redline</td></tr>
+              </tbody>
+            </table>
+          </article>
+          <article>
+            <h2>TAX / JURISDICTION</h2>
+            <table>
+              <thead><tr><th>AREA</th><th>TAX USE</th><th>EXEMPT</th><th>CERT</th><th>STATUS</th><th>HOLD</th></tr></thead>
+              <tbody data-tax-jurisdiction-lines>
+                <tr><td>Travis TX</td><td>Construction service</td><td>Yes</td><td>WST-EX-22</td><td>Matched</td><td>None</td></tr>
+                <tr><td>Pine Hill ROW</td><td>Permit recovery</td><td>No</td><td>-</td><td>Accrue</td><td>ROW fee</td></tr>
+                <tr class="needs-fix"><td>SV-2 rework</td><td>Backcharge</td><td>Review</td><td>-</td><td>Hold</td><td>Owner reject</td></tr>
+                <tr><td>Retainage</td><td>Deferred</td><td>N/A</td><td>-</td><td>Track</td><td>Final accept</td></tr>
+              </tbody>
+            </table>
+          </article>
+        </section>
+
+        <section class="permit-tables" aria-label="Permit ROW restoration and punch list">
+          <article>
+            <h2>PERMIT / ROW</h2>
+            <table>
+              <thead><tr><th>PERMIT</th><th>AREA</th><th>STATUS</th><th>EXPIRES</th><th>HOLD</th></tr></thead>
+              <tbody data-permit-row-lines>
+                <tr><td>ROW-4471</td><td>Pine Hill Rd</td><td>Active</td><td>07/02/2026</td><td>None</td></tr>
+                <tr><td>TCP-119</td><td>Road shoulder</td><td>Logged</td><td>06/30/2026</td><td>Lane photo</td></tr>
+                <tr class="needs-fix"><td>BORE-221</td><td>SV-1 to SV-2</td><td>Variance</td><td>06/29/2026</td><td>+7 ft review</td></tr>
+                <tr><td>REST-88</td><td>Drive apron</td><td>Open</td><td>07/05/2026</td><td>After photo</td></tr>
+              </tbody>
+            </table>
+          </article>
+          <article>
+            <h2>RESTORATION / PUNCH</h2>
+            <table>
+              <thead><tr><th>ITEM</th><th>LOCATION</th><th>OWNER</th><th>STATUS</th><th>DUE</th></tr></thead>
+              <tbody data-restoration-punch-lines>
+                <tr><td>Seed / straw</td><td>HH-1 fence</td><td>Alpha</td><td>Complete</td><td>Closed</td></tr>
+                <tr class="needs-fix"><td>Open vault after</td><td>SV-1</td><td>Alpha</td><td>Missing</td><td>Today</td></tr>
+                <tr class="needs-fix"><td>Shoulder patch</td><td>SV-2 road</td><td>Charlie</td><td>Rejected</td><td>Tomorrow</td></tr>
+                <tr><td>Cabinet cleanup</td><td>Shelter pad</td><td>Field Team 2</td><td>Ready</td><td>PM walk</td></tr>
+              </tbody>
+            </table>
+          </article>
+        </section>
+
+        <section class="intake-tables" aria-label="Source intake reconciliation and field data validation">
+          <article>
+            <h2>INTAKE / SOURCES</h2>
+            <table>
+              <thead><tr><th>SOURCE</th><th>TYPE</th><th>LAST IN</th><th>PARSED</th><th>ISSUE</th></tr></thead>
+              <tbody data-source-intake-lines>
+                <tr><td>Foreman app</td><td>Photos + GPS</td><td>14:40</td><td>Yes</td><td>None</td></tr>
+                <tr><td>Email inbox</td><td>Owner notes</td><td>14:12</td><td>Yes</td><td>SC-1 review</td></tr>
+                <tr><td>PDF locate map</td><td>Plan sheet</td><td>09:10</td><td>Yes</td><td>Sheet 1 only</td></tr>
+                <tr class="needs-fix"><td>Invoice export</td><td>Pay items</td><td>13:55</td><td>Partial</td><td>SV-2 mismatch</td></tr>
+              </tbody>
+            </table>
+          </article>
+          <article>
+            <h2>RECONCILIATION</h2>
+            <table>
+              <thead><tr><th>CHECK</th><th>FIELD</th><th>OWNER</th><th>BILLING</th><th>RESULT</th></tr></thead>
+              <tbody data-reconciliation-lines>
+                <tr><td>HH-1 install</td><td>Complete</td><td>Approved</td><td>Matched</td><td>Ready</td></tr>
+                <tr><td>SC-1 closure</td><td>Submitted</td><td>Pending</td><td>Matched</td><td>Waiting</td></tr>
+                <tr class="needs-fix"><td>SV-1 vault</td><td>Missing photo</td><td>Hold</td><td>Blocked</td><td>Needs Fix</td></tr>
+                <tr class="needs-fix"><td>SV-2 bore</td><td>94 ft</td><td>87 ft plan</td><td>Blocked</td><td>Reject</td></tr>
+              </tbody>
+            </table>
+          </article>
+        </section>
+
+        <section class="rules-tables" aria-label="Pay item catalog and approval rule controls">
+          <article>
+            <h2>PAY ITEM CATALOG</h2>
+            <table>
+              <thead><tr><th>CODE</th><th>ITEM</th><th>UNIT</th><th>RATE</th><th>PROOF REQUIRED</th></tr></thead>
+              <tbody data-pay-item-catalog-lines>
+                <tr><td>HH24</td><td>24x36 handhole</td><td>EA</td><td>$8,450</td><td>Photo + GPS</td></tr>
+                <tr><td>SC14</td><td>144ct splice</td><td>EA</td><td>$11,200</td><td>Pole photo</td></tr>
+                <tr class="needs-fix"><td>SV36</td><td>Splice vault</td><td>EA</td><td>$18,600</td><td>Open-vault photo</td></tr>
+                <tr class="needs-fix"><td>BORE125</td><td>1.25 in HDPE bore</td><td>FT</td><td>$372</td><td>Footage match</td></tr>
+              </tbody>
+            </table>
+          </article>
+          <article>
+            <h2>APPROVAL RULES</h2>
+            <table>
+              <thead><tr><th>RULE</th><th>TRIGGER</th><th>RELEASES</th><th>OWNER</th><th>STATUS</th></tr></thead>
+              <tbody data-approval-rule-lines>
+                <tr><td>R-101</td><td>Photo + GPS + pay item</td><td>Ready to Bill</td><td>PM</td><td>Active</td></tr>
+                <tr><td>R-204</td><td>Owner accepts SC-1</td><td>Approval</td><td>Owner PM</td><td>Waiting</td></tr>
+                <tr class="needs-fix"><td>R-312</td><td>Missing required photo</td><td>Hold dollars</td><td>Crew</td><td>Blocking</td></tr>
+                <tr class="needs-fix"><td>R-410</td><td>Plan vs actual mismatch</td><td>Reject line</td><td>PM</td><td>Blocking</td></tr>
+              </tbody>
+            </table>
+          </article>
+        </section>
+
+        <section class="qc-approval-tables" aria-label="QC inspection owner approval checklist and acceptance gates">
+          <article>
+            <h2>QC INSPECTION</h2>
+            <table>
+              <thead><tr><th>CHECK</th><th>ASSET</th><th>INSPECTOR</th><th>RESULT</th><th>EVIDENCE</th><th>HOLD</th></tr></thead>
+              <tbody data-qc-inspection-lines>
+                <tr><td>Photo match</td><td>HH-1</td><td>PM Review</td><td>Pass</td><td>GPS photo</td><td>None</td></tr>
+                <tr><td>Pole note</td><td>SC-1</td><td>Owner PM</td><td>Review</td><td>Pole #124567</td><td>Approval</td></tr>
+                <tr class="needs-fix"><td>Open vault</td><td>SV-1</td><td>QC tech</td><td>Fail</td><td>Missing after</td><td>Retake</td></tr>
+                <tr class="needs-fix"><td>Bore footage</td><td>SV-2</td><td>PM Review</td><td>Fail</td><td>94 ft vs 87 ft</td><td>Redline</td></tr>
+              </tbody>
+            </table>
+          </article>
+          <article>
+            <h2>OWNER APPROVAL GATES</h2>
+            <table>
+              <thead><tr><th>GATE</th><th>OWNER</th><th>RELEASES</th><th>STATUS</th><th>AGING</th><th>NEXT</th></tr></thead>
+              <tbody data-owner-approval-gate-lines>
+                <tr><td>Closeout accept</td><td>Windstream PM</td><td>HH-1 invoice</td><td>Accepted</td><td>0h</td><td>AP queue</td></tr>
+                <tr><td>Splice review</td><td>OSP engineer</td><td>SC-1 dollars</td><td>Waiting</td><td>2h</td><td>Accept pole note</td></tr>
+                <tr class="needs-fix"><td>Photo exception</td><td>QC desk</td><td>SV-1 dollars</td><td>Rejected</td><td>3h</td><td>Upload open vault</td></tr>
+                <tr class="needs-fix"><td>Variance approval</td><td>Construction mgr</td><td>SV-2 / bore</td><td>Blocked</td><td>4h</td><td>Fix redline</td></tr>
+              </tbody>
+            </table>
+          </article>
+        </section>
+
+        <section class="signoff-tables" aria-label="Owner signoff dispute register and billing-readiness risk">
+          <article>
+            <h2>SIGNOFF LOG</h2>
+            <table>
+              <thead><tr><th>ASSET</th><th>SIGNOFF</th><th>BY</th><th>TIME</th><th>RELEASE</th></tr></thead>
+              <tbody data-signoff-log-lines>
+                <tr><td>HH-1</td><td>Accepted</td><td>Owner PM</td><td>14:42</td><td>$8,450</td></tr>
+                <tr><td>SC-1</td><td>Pending</td><td>Owner PM</td><td>-</td><td>$11,200</td></tr>
+                <tr class="needs-fix"><td>SV-1</td><td>Hold</td><td>PM Review</td><td>12:05</td><td>$18,600</td></tr>
+                <tr class="needs-fix"><td>SV-2</td><td>Rejected</td><td>Windstream</td><td>10:30</td><td>$22,900</td></tr>
+              </tbody>
+            </table>
+          </article>
+          <article>
+            <h2>DISPUTE REGISTER</h2>
+            <table>
+              <thead><tr><th>ID</th><th>ISSUE</th><th>DOLLARS</th><th>EVIDENCE</th><th>NEXT</th></tr></thead>
+              <tbody data-dispute-register-lines>
+                <tr><td>D-001</td><td>SC-1 pole note</td><td>$11,200</td><td>Pole photo</td><td>Owner review</td></tr>
+                <tr class="needs-fix"><td>D-002</td><td>SV-1 missing open vault</td><td>$18,600</td><td>Need photo</td><td>Reshoot</td></tr>
+                <tr class="needs-fix"><td>D-003</td><td>SV-2 bore footage</td><td>$22,900</td><td>Redline + bore log</td><td>Reconcile</td></tr>
+                <tr><td>D-004</td><td>UG-1 locate verify</td><td>$32,400</td><td>FL811 ticket</td><td>Locate desk</td></tr>
+              </tbody>
+            </table>
+          </article>
+        </section>
+
+        <section class="escalation-tables" aria-label="Escalation queue and notification log">
+          <article>
+            <h2>ESCALATION QUEUE</h2>
+            <table>
+              <thead><tr><th>ITEM</th><th>OWNER</th><th>AGING</th><th>DOLLARS</th><th>ESCALATE TO</th></tr></thead>
+              <tbody data-escalation-queue-lines>
+                <tr><td>SC-1 approval</td><td>Owner PM</td><td>2h</td><td>$11,200</td><td>OSP manager</td></tr>
+                <tr class="needs-fix"><td>SV-1 photo</td><td>Alpha</td><td>3h</td><td>$18,600</td><td>Foreman</td></tr>
+                <tr class="needs-fix"><td>SV-2 dispute</td><td>PM Review</td><td>4h</td><td>$22,900</td><td>Construction mgr</td></tr>
+                <tr><td>UG-1 locate</td><td>Locate Desk</td><td>45m</td><td>$32,400</td><td>Utility coordinator</td></tr>
+              </tbody>
+            </table>
+          </article>
+          <article>
+            <h2>NOTIFICATION LOG</h2>
+            <table>
+              <thead><tr><th>TIME</th><th>CHANNEL</th><th>TO</th><th>MESSAGE</th><th>RESULT</th></tr></thead>
+              <tbody data-notification-log-lines>
+                <tr><td>14:45</td><td>Email</td><td>AP</td><td>HH-1 ready</td><td>Sent</td></tr>
+                <tr><td>14:30</td><td>SMS</td><td>Alpha</td><td>SV-1 reshoot</td><td>Ack</td></tr>
+                <tr class="needs-fix"><td>13:55</td><td>Email</td><td>PM</td><td>SV-2 reject</td><td>Open</td></tr>
+                <tr><td>13:20</td><td>Owner packet</td><td>Owner PM</td><td>SC-1 review</td><td>Queued</td></tr>
+              </tbody>
+            </table>
+          </article>
+        </section>
+
+        <section class="safety-tables" aria-label="Safety JSA incident and damage controls">
+          <article>
+            <h2>SAFETY / JSA</h2>
+            <table>
+              <thead><tr><th>CHECK</th><th>CREW</th><th>STATUS</th><th>TIME</th><th>HOLD</th></tr></thead>
+              <tbody data-safety-jsa-lines>
+                <tr><td>JSA signed</td><td>Alpha</td><td>Complete</td><td>07:12</td><td>None</td></tr>
+                <tr><td>Traffic setup</td><td>Charlie</td><td>Photo logged</td><td>08:05</td><td>PM review</td></tr>
+                <tr><td>PPE check</td><td>Delta</td><td>Complete</td><td>07:30</td><td>None</td></tr>
+                <tr class="needs-fix"><td>Confined space</td><td>Alpha</td><td>Missing</td><td>-</td><td>SV-1 open vault</td></tr>
+              </tbody>
+            </table>
+          </article>
+          <article>
+            <h2>INCIDENT / DAMAGE</h2>
+            <table>
+              <thead><tr><th>ID</th><th>TYPE</th><th>LOCATION</th><th>STATUS</th><th>NEXT</th></tr></thead>
+              <tbody data-incident-damage-lines>
+                <tr><td>I-001</td><td>Near miss</td><td>Pine Hill Rd</td><td>Closed</td><td>Toolbox talk</td></tr>
+                <tr class="needs-fix"><td>I-002</td><td>Shoulder rut</td><td>SV-2 road</td><td>Open</td><td>Restoration photo</td></tr>
+                <tr><td>I-003</td><td>Utility mark</td><td>UG-1 route</td><td>Watch</td><td>Locate verify</td></tr>
+                <tr><td>I-004</td><td>Customer complaint</td><td>Drive apron</td><td>Logged</td><td>PM call</td></tr>
+              </tbody>
+            </table>
+          </article>
+        </section>
+
+        <section class="access-tables" aria-label="Site access weather road and outage conditions">
+          <article>
+            <h2>SITE ACCESS</h2>
+            <table>
+              <thead><tr><th>ACCESS</th><th>STATUS</th><th>WINDOW</th><th>CONTACT</th><th>HOLD</th></tr></thead>
+              <tbody data-site-access-lines>
+                <tr><td>Gate code</td><td>Valid</td><td>07:00-17:00</td><td>Site owner</td><td>None</td></tr>
+                <tr><td>Outage window</td><td>Approved</td><td>13:00-15:00</td><td>NOC</td><td>SC-1 only</td></tr>
+                <tr class="needs-fix"><td>Road shoulder</td><td>Restricted</td><td>After 16:00</td><td>County</td><td>SV-2 patch</td></tr>
+                <tr><td>Customer notice</td><td>Sent</td><td>24h</td><td>PM</td><td>None</td></tr>
+              </tbody>
+            </table>
+          </article>
+          <article>
+            <h2>WEATHER / CONDITIONS</h2>
+            <table>
+              <thead><tr><th>ITEM</th><th>READING</th><th>IMPACT</th><th>CREW</th><th>NEXT</th></tr></thead>
+              <tbody data-weather-condition-lines>
+                <tr><td>Weather</td><td>Clear / 92F</td><td>Workable</td><td>All</td><td>Hydration</td></tr>
+                <tr><td>Ground</td><td>Dry</td><td>Restore OK</td><td>Alpha</td><td>Photo after</td></tr>
+                <tr class="needs-fix"><td>Road edge</td><td>Soft shoulder</td><td>Patch hold</td><td>Charlie</td><td>County check</td></tr>
+                <tr><td>Light</td><td>Daylight</td><td>Photos OK</td><td>Field Team 2</td><td>None</td></tr>
+              </tbody>
+            </table>
+          </article>
+        </section>
+
+        <section class="service-impact-tables" aria-label="Customer notice outage NOC and service impact holds">
+          <article>
+            <h2>CUSTOMER / NOTICE</h2>
+            <table>
+              <thead><tr><th>NOTICE</th><th>AREA</th><th>SENT</th><th>ACK</th><th>WINDOW</th><th>HOLD</th></tr></thead>
+              <tbody data-customer-notice-lines>
+                <tr><td>Door hanger</td><td>Pine Hill Rd</td><td>06/22</td><td>Logged</td><td>24h</td><td>None</td></tr>
+                <tr class="needs-fix"><td>Business notice</td><td>Drive apron</td><td>Pending</td><td>No ack</td><td>After 16:00</td><td>SV-2 patch</td></tr>
+                <tr><td>Owner notice</td><td>SC-1 outage</td><td>Sent</td><td>Ack</td><td>13:00-15:00</td><td>NOC clear</td></tr>
+                <tr><td>County alert</td><td>Road shoulder</td><td>Queued</td><td>Open</td><td>06/24</td><td>Lane photo</td></tr>
+              </tbody>
+            </table>
+          </article>
+          <article>
+            <h2>OUTAGE / NOC</h2>
+            <table>
+              <thead><tr><th>ITEM</th><th>WINDOW</th><th>NOC</th><th>IMPACT</th><th>STATUS</th><th>NEXT</th></tr></thead>
+              <tbody data-outage-noc-lines>
+                <tr><td>Backhaul window</td><td>13:00-15:00</td><td>Ready</td><td>Low</td><td>Clear</td><td>Owner approve</td></tr>
+                <tr><td>OLT port</td><td>15:00</td><td>Queued</td><td>Medium</td><td>Waiting</td><td>SC-1 signoff</td></tr>
+                <tr class="needs-fix"><td>SV-2 leg</td><td>Hold</td><td>Blocked</td><td>High</td><td>Rejected</td><td>Retest</td></tr>
+                <tr><td>Customer drop</td><td>After closeout</td><td>Pending</td><td>Low</td><td>Queued</td><td>Notify</td></tr>
+              </tbody>
+            </table>
+          </article>
+        </section>
+
+        <section class="equipment-tables" aria-label="Equipment tools calibration and custody">
+          <article>
+            <h2>EQUIPMENT / TOOLS</h2>
+            <table>
+              <thead><tr><th>ITEM</th><th>ID</th><th>CREW</th><th>STATUS</th><th>JOB USE</th></tr></thead>
+              <tbody data-equipment-tool-lines>
+                <tr><td>GPS camera</td><td>CAM-A17</td><td>Alpha</td><td>Synced</td><td>HH-1 / SV-1</td></tr>
+                <tr><td>Fusion splicer</td><td>FS-442</td><td>Bravo</td><td>Ready</td><td>SC-1</td></tr>
+                <tr><td>Bore tracker</td><td>BT-88</td><td>Charlie</td><td>Logged</td><td>SV-2 run</td></tr>
+                <tr class="needs-fix"><td>Reel counter</td><td>RC-12</td><td>Delta</td><td>Mismatch</td><td>UG-1 footage</td></tr>
+              </tbody>
+            </table>
+          </article>
+          <article>
+            <h2>CALIBRATION / CUSTODY</h2>
+            <table>
+              <thead><tr><th>ASSET</th><th>CAL DATE</th><th>CUSTODY</th><th>HASH</th><th>HOLD</th></tr></thead>
+              <tbody data-calibration-custody-lines>
+                <tr><td>CAM-A17</td><td>06/01/2026</td><td>J. Ramirez</td><td>7A2F</td><td>None</td></tr>
+                <tr><td>FS-442</td><td>05/20/2026</td><td>M. Clark</td><td>2BCD</td><td>None</td></tr>
+                <tr><td>BT-88</td><td>06/10/2026</td><td>T. Nguyen</td><td>9F10</td><td>Review</td></tr>
+                <tr class="needs-fix"><td>RC-12</td><td>Expired</td><td>Delta</td><td>-</td><td>Reconcile qty</td></tr>
+              </tbody>
+            </table>
+          </article>
+        </section>
+
+        <section class="qualification-tables" aria-label="Crew qualifications certifications and expiry">
+          <article>
+            <h2>CREW QUALIFICATIONS</h2>
+            <table>
+              <thead><tr><th>CREW</th><th>ROLE</th><th>CERT</th><th>STATUS</th><th>WORK ALLOWED</th></tr></thead>
+              <tbody data-crew-qualification-lines>
+                <tr><td>Alpha</td><td>Foreman</td><td>OSP closeout</td><td>Current</td><td>HH / vault</td></tr>
+                <tr><td>Bravo</td><td>Splicer</td><td>Fiber splice</td><td>Current</td><td>SC-1</td></tr>
+                <tr><td>Charlie</td><td>Bore lead</td><td>Directional bore</td><td>Current</td><td>SV-2 run</td></tr>
+                <tr class="needs-fix"><td>Delta</td><td>Locate tech</td><td>811 verify</td><td>Review</td><td>UG-1 hold</td></tr>
+              </tbody>
+            </table>
+          </article>
+          <article>
+            <h2>CERTIFICATION EXPIRY</h2>
+            <table>
+              <thead><tr><th>PERSON</th><th>CERT</th><th>EXPIRES</th><th>OWNER</th><th>HOLD</th></tr></thead>
+              <tbody data-certification-expiry-lines>
+                <tr><td>J. Ramirez</td><td>Closeout QC</td><td>12/31/2026</td><td>Alpha</td><td>None</td></tr>
+                <tr><td>M. Clark</td><td>Fiber splicing</td><td>10/15/2026</td><td>Bravo</td><td>None</td></tr>
+                <tr><td>T. Nguyen</td><td>Bore safety</td><td>09/01/2026</td><td>Charlie</td><td>None</td></tr>
+                <tr class="needs-fix"><td>R. Flores</td><td>Locate ticket</td><td>Expired</td><td>Delta</td><td>UG-1 approval</td></tr>
+              </tbody>
+            </table>
+          </article>
+        </section>
+
+        <section class="testing-tables" aria-label="Fiber test results turn-up and service readiness">
+          <article>
+            <h2>FIBER TESTS</h2>
+            <table>
+              <thead><tr><th>RUN</th><th>TEST</th><th>RESULT</th><th>TRACE</th><th>HOLD</th></tr></thead>
+              <tbody data-fiber-test-lines>
+                <tr><td>HH-1 to SC-1</td><td>OTDR</td><td>Pass</td><td>Attached</td><td>None</td></tr>
+                <tr><td>SC-1 splice</td><td>Loss</td><td>0.03 dB</td><td>Attached</td><td>Owner review</td></tr>
+                <tr class="needs-fix"><td>SV-1 to SV-2</td><td>Continuity</td><td>Retest</td><td>Missing</td><td>SV-2 reject</td></tr>
+                <tr><td>UG-1 route</td><td>Light level</td><td>-18.2 dBm</td><td>Attached</td><td>Locate verify</td></tr>
+              </tbody>
+            </table>
+          </article>
+          <article>
+            <h2>TURN-UP STATUS</h2>
+            <table>
+              <thead><tr><th>SERVICE</th><th>WINDOW</th><th>NOC</th><th>STATUS</th><th>NEXT</th></tr></thead>
+              <tbody data-turnup-status-lines>
+                <tr><td>Backhaul</td><td>13:00-15:00</td><td>Ready</td><td>Clear</td><td>Owner approve</td></tr>
+                <tr><td>OLT port</td><td>15:00</td><td>Queued</td><td>Waiting</td><td>SC-1 signoff</td></tr>
+                <tr class="needs-fix"><td>SV-2 leg</td><td>Hold</td><td>Blocked</td><td>Rejected</td><td>Retest</td></tr>
+                <tr><td>As-built push</td><td>After test</td><td>Queued</td><td>Pending</td><td>GIS publish</td></tr>
+              </tbody>
+            </table>
+          </article>
+        </section>
+
+        <section class="deliverable-tables" aria-label="Owner deliverables acceptance and final package status">
+          <article>
+            <h2>OWNER DELIVERABLES</h2>
+            <table>
+              <thead><tr><th>DELIVERABLE</th><th>FORMAT</th><th>STATUS</th><th>OWNER REF</th><th>HOLD</th></tr></thead>
+              <tbody data-owner-deliverable-lines>
+                <tr><td>Closeout PDF</td><td>PDF</td><td>Ready</td><td>PKG-1045</td><td>None</td></tr>
+                <tr><td>Photo ZIP</td><td>Images</td><td>Partial</td><td>PH-1045</td><td>SV-1 photo</td></tr>
+                <tr><td>As-built GIS</td><td>GeoJSON</td><td>Queued</td><td>GIS-1045</td><td>SV-2 mismatch</td></tr>
+                <tr class="needs-fix"><td>Test traces</td><td>OTDR PDF</td><td>Missing</td><td>TEST-1045</td><td>SV-2 retest</td></tr>
+              </tbody>
+            </table>
+          </article>
+          <article>
+            <h2>OWNER ACCEPTANCE</h2>
+            <table>
+              <thead><tr><th>OWNER / DESK</th><th>HANDOFF</th><th>VALIDATION</th><th>RESULT</th><th>NEXT</th></tr></thead>
+              <tbody data-owner-acceptance-lines>
+                <tr><td>Windstream OSP</td><td>14:48</td><td>Pass</td><td>Accepted</td><td>AP queue</td></tr>
+                <tr><td>AP invoice</td><td>14:50</td><td>Pass</td><td>Ready</td><td>Send invoice</td></tr>
+                <tr class="needs-fix"><td>GIS handoff</td><td>Queued</td><td>Hold</td><td>Rejected</td><td>Fix SV-2</td></tr>
+                <tr><td>Test archive</td><td>Pending</td><td>Waiting</td><td>Open</td><td>Attach traces</td></tr>
+              </tbody>
+            </table>
+          </article>
+        </section>
+
+        <section class="handoff-tables" aria-label="Ball in court accountability handoff receipts and closeout ownership">
+          <article>
+            <h2>BALL IN COURT</h2>
+            <table>
+              <thead><tr><th>PARTY</th><th>OWES</th><th>ASSET</th><th>DOLLARS</th><th>DUE</th><th>NEXT MOVE</th></tr></thead>
+              <tbody data-ball-in-court-lines>
+                <tr><td>Owner PM</td><td>SC-1 approval</td><td>SC-1</td><td>$11,200</td><td>Today</td><td>Accept pole note</td></tr>
+                <tr class="needs-fix"><td>Alpha</td><td>Open-vault photo</td><td>SV-1</td><td>$18,600</td><td>15:30</td><td>Retake photo</td></tr>
+                <tr class="needs-fix"><td>PM Review</td><td>Bore reconcile</td><td>SV-2</td><td>$22,900</td><td>16:00</td><td>Correct redline</td></tr>
+                <tr><td>Locate Desk</td><td>Ticket verify</td><td>UG-1</td><td>$32,400</td><td>15:15</td><td>Clear FL811</td></tr>
+              </tbody>
+            </table>
+          </article>
+          <article>
+            <h2>HANDOFF RECEIPTS</h2>
+            <table>
+              <thead><tr><th>CHANNEL</th><th>TO</th><th>PACKAGE</th><th>ACK</th><th>REF</th><th>HOLD</th></tr></thead>
+              <tbody data-handoff-receipt-lines>
+                <tr><td>Email</td><td>AP</td><td>Invoice lines</td><td>Queued</td><td>MSG-1445</td><td>None</td></tr>
+                <tr><td>Owner review packet</td><td>OSP PM</td><td>Closeout PDF</td><td>Accepted</td><td>Review-221</td><td>SC-1 review</td></tr>
+                <tr class="needs-fix"><td>SMS</td><td>Alpha</td><td>Fix list</td><td>Ack</td><td>SMS-882</td><td>SV-1 photo</td></tr>
+                <tr class="needs-fix"><td>Email</td><td>PM Review</td><td>Rejected line</td><td>Open</td><td>MSG-1390</td><td>SV-2 redline</td></tr>
+              </tbody>
+            </table>
+          </article>
+        </section>
+
+        <footer class="title-block">
+          <div class="brand-mini"><span class="hex-logo">CP</span><strong>CREW<span>PROOF</span></strong></div>
+          <div><span>DRAWN BY:</span><b>Field Team 2</b></div>
+          <div><span>CHECKED BY:</span><b>PM Review</b></div>
+          <div><span>APPROVED BY:</span><b>Engineering</b></div>
+          <div><span>SHEET</span><b>1 OF 12</b></div>
+          <div class="job-number" data-title-job-id>JOB-1045</div>
+        </footer>
+      </section>
+    </main>
+
+    <script src="assets/app.js?v=field-package1"></script>
+  </body>
+</html>
