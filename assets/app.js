@@ -5647,6 +5647,18 @@ function runCrewFieldAction(action) {
     crewActionStatus.classList.add("is-updated");
   }
   if (crewLiveCopy) crewLiveCopy.textContent = `${action} saved / ${assetId} / ${data.status}`;
+  if (typeof apiRequest === "function") {
+    apiRequest(`/api/assets/${encodeURIComponent(assetId)}/action`, {
+      method: "POST",
+      body: { action, actor },
+    });
+    if (damageRecord) {
+      apiRequest("/api/damage-proof", {
+        method: "POST",
+        body: damageRecord,
+      });
+    }
+  }
   refreshFieldDerivedViews(assetId);
 }
 
@@ -6839,6 +6851,25 @@ function routeParts(route) {
   return { view, jobId: parts[2] || (jobScopedViews.includes(view) ? activeJobId() : ""), action: parts[3] || "" };
 }
 
+function siteBasePrefix() {
+  const path = window.location.pathname || "/";
+  const m = path.match(/^(.*?)(?:\/(?:crew|crew811|claims|management|onboarding|clients|workspaces|jobs|closeouts|reports|settings|closeout|billing|share)(?:\/.*)?|\/(?:index|404)\.html)?\/?$/);
+  return (m && m[1] ? m[1] : "").replace(/\/+$/, "");
+}
+
+function ensureHttpBaseHref() {
+  if (isLocalFile()) return;
+  const desired = `${siteBasePrefix()}/`;
+  let base = document.querySelector("head > base");
+  if (!base) {
+    base = document.createElement("base");
+    document.head.prepend(base);
+  }
+  if (base.getAttribute("href") !== desired) {
+    base.setAttribute("href", desired);
+  }
+}
+
 function setRoute(route, replace = false) {
   const nextRoute = route || "/crew";
   if (isLocalFile()) {
@@ -6848,8 +6879,10 @@ function setRoute(route, replace = false) {
     renderRoute(nextRoute);
     return;
   }
-  if (replace) window.history.replaceState({}, "", nextRoute);
-  else window.history.pushState({}, "", nextRoute);
+  ensureHttpBaseHref();
+  const fullUrl = siteBasePrefix() + (nextRoute.startsWith("/") ? nextRoute : "/" + nextRoute);
+  if (replace) window.history.replaceState({}, "", fullUrl);
+  else window.history.pushState({}, "", fullUrl);
   renderRoute(nextRoute);
 }
 
@@ -7734,6 +7767,8 @@ function renderRoute(route = routeFromLocation()) {
   renderOnboarding();
   renderClients(route);
   renderWorkspaces();
+  if (typeof renderCrewboxDrive === "function") renderCrewboxDrive();
+  if (typeof renderCrewChat === "function") renderCrewChat();
   renderDroppedMapPins();
   renderJobOverviewPins();
 
@@ -7798,9 +7833,10 @@ clientSaveJob?.addEventListener("click", () => {
     if (clientFormStatus) clientFormStatus.textContent = "Fix the client profile before saving.";
     return;
   }
-  if (clientFormStatus) clientFormStatus.textContent = "Client saved. Job creation form is not built yet; active client is ready for future job setup.";
+  const createdJobId = createJobForClientProfile(result.client);
+  if (clientFormStatus) clientFormStatus.textContent = `Client saved and ${createdJobId} created.`;
   renderOnboarding();
-  setRoute("/clients/" + result.client.id);
+  setRoute("/crew/" + createdJobId);
 });
 
 clientToggleArchive?.addEventListener("click", () => {
@@ -7814,7 +7850,13 @@ clientToggleArchive?.addEventListener("click", () => {
 });
 
 clientCreateJob?.addEventListener("click", () => {
-  if (clientFormStatus) clientFormStatus.textContent = "Job creation will use this saved client profile when the job form is added.";
+  const id = clientCreateJob.dataset.clientId || routeParts(routeFromLocation()).jobId;
+  const client = findClientById(id) || getClients()[0];
+  if (!client) return;
+  const createdJobId = createJobForClientProfile(client);
+  if (clientFormStatus) clientFormStatus.textContent = `Created ${createdJobId} for ${client.name}.`;
+  renderOnboarding();
+  setRoute("/crew/" + createdJobId);
 });
 
 workspaceInviteForm?.addEventListener("submit", (event) => {
@@ -7879,9 +7921,1104 @@ const sharedCrew811Ticket = applySharedCrew811Payload();
 applyMapZoom(closeoutMapZoom, false);
 applyCrewMapZoom(crewMapZoom, false);
 ensureSignupQuestions();
+ensureHttpBaseHref();
 renderJobOverviewPins();
 renderDroppedMapPins();
 renderRoute(routeFromLocation());
 renderAsset(sharedAssetId || currentAssetId());
 if (sharedClaimId) renderClaimsDamage();
 if (sharedCrew811Ticket) renderCrew811();
+
+// ============================================================================
+// FULL-STACK CAPABILITIES: PERSISTENT BACKEND SYNC, AUTH, UPLOADS, RATES,
+// PACKAGE ZIP EXPORT, CREWBOX DRIVE, AND CREW CHAT
+// ============================================================================
+
+const authUserSelect = document.querySelector("[data-auth-user-select]");
+const authStatusCopy = document.querySelector("[data-auth-status]");
+const globalFileInput = document.querySelector("[data-global-file-input]");
+const downloadPackageZipButtons = document.querySelectorAll("[data-download-package-zip]");
+const rateActionButtons = document.querySelectorAll("[data-rate-action]");
+const rateActionStatus = document.querySelector("[data-rate-action-status]");
+
+const crewboxFolderSelect = document.querySelector("[data-crewbox-folder-select]");
+const crewboxFilterSelect = document.querySelector("[data-crewbox-filter-select]");
+const crewboxNewFolderBtn = document.querySelector("[data-crewbox-new-folder]");
+const crewboxUploadFileBtn = document.querySelector("[data-crewbox-upload-file]");
+const crewboxNewSheetBtn = document.querySelector("[data-crewbox-new-sheet]");
+const crewboxEmptyTrashBtn = document.querySelector("[data-crewbox-empty-trash]");
+const crewboxItemsBody = document.querySelector("[data-crewbox-items]");
+const crewboxSheetTitle = document.querySelector("[data-crewbox-sheet-title]");
+const crewboxSheetGrid = document.querySelector("[data-crewbox-sheet-grid]");
+const crewboxSaveSheetBtn = document.querySelector("[data-crewbox-save-sheet]");
+const crewboxJobLinkSelect = document.querySelector("[data-crewbox-job-link-select]");
+const crewboxLinkJobBtn = document.querySelector("[data-crewbox-link-job-btn]");
+const crewboxRuleForm = document.querySelector("[data-crewbox-rule-form]");
+const crewboxRuleName = document.querySelector("[data-crewbox-rule-name]");
+const crewboxRuleKeywords = document.querySelector("[data-crewbox-rule-keywords]");
+const crewboxRuleTarget = document.querySelector("[data-crewbox-rule-target]");
+const crewboxRuleApproval = document.querySelector("[data-crewbox-rule-approval]");
+const crewboxRulesList = document.querySelector("[data-crewbox-rules-list]");
+const crewboxEventsList = document.querySelector("[data-crewbox-events-list]");
+
+const chatRoomSelect = document.querySelector("[data-chat-room-select]");
+const chatMarkReadBtn = document.querySelector("[data-chat-mark-read]");
+const chatUnreadBadge = document.querySelector("[data-chat-unread-badge]");
+const chatMessagesContainer = document.querySelector("[data-chat-messages]");
+const chatForm = document.querySelector("[data-chat-form]");
+const chatInput = document.querySelector("[data-chat-input]");
+const chatLogJobLabel = document.querySelector("[data-chat-log-job-label]");
+const chatJobLogBody = document.querySelector("[data-chat-job-log]");
+
+let activeSessionToken = window.localStorage?.getItem("crewproof.sessionToken") || "";
+let activeUserAccount = {
+  id: "USR-CREW-1",
+  name: "J. Ramirez",
+  email: "jramirez@crewproof.local",
+  role: "crew",
+  title: "Foreman",
+  workspaceId: "demo-seed",
+};
+
+let crewboxState = {
+  items: [
+    {
+      id: "cbx_folder_closeouts",
+      workspaceId: "demo-seed",
+      parentId: null,
+      type: "folder",
+      name: "Closeout Packets",
+      trashedAt: null,
+      approvalStatus: "approved",
+      updatedAt: "2026-06-23T14:00:00.000Z",
+    },
+    {
+      id: "cbx_folder_locates",
+      workspaceId: "demo-seed",
+      parentId: null,
+      type: "folder",
+      name: "811 Locate Sheets",
+      trashedAt: null,
+      approvalStatus: "approved",
+      updatedAt: "2026-06-23T14:00:00.000Z",
+    },
+    {
+      id: "cbx_folder_rates",
+      workspaceId: "demo-seed",
+      parentId: null,
+      type: "folder",
+      name: "Rate & Bore Sheets",
+      trashedAt: null,
+      approvalStatus: "approved",
+      updatedAt: "2026-06-23T14:00:00.000Z",
+    },
+    {
+      id: "cbx_sheet_pinehill",
+      workspaceId: "demo-seed",
+      parentId: "cbx_folder_rates",
+      type: "spreadsheet",
+      name: "JOB-1045 Bore & Footage Reconciliation",
+      trashedAt: null,
+      approvalStatus: "approved",
+      columns: ["Run", "Plan Ft", "Measured Ft", "Variance", "Status"],
+      rows: [
+        ["HH-1 to SV-1", "125", "125", "0", "Matched"],
+        ["SV-1 to SV-2", "87", "94", "+7", "Needs Fix"],
+        ["HH-1 to UG-1", "210", "210", "0", "Matched"],
+      ],
+      updatedAt: "2026-06-23T14:35:00.000Z",
+    },
+    {
+      id: "cbx_file_windstream_msa",
+      workspaceId: "demo-seed",
+      parentId: "cbx_folder_closeouts",
+      type: "file",
+      name: "Windstream-MSA-19-Rate-Schedule.pdf",
+      mimeType: "application/pdf",
+      sizeBytes: 48200,
+      trashedAt: null,
+      approvalStatus: "approved",
+      updatedAt: "2026-06-23T14:10:00.000Z",
+    },
+  ],
+  rules: [
+    {
+      id: "cbr_locate_auto",
+      workspaceId: "demo-seed",
+      name: "Auto-route 811 & Exactix files",
+      keywords: ["811", "locate", "exactix", "ticket"],
+      targetFolderId: "cbx_folder_locates",
+      requireApproval: false,
+      active: true,
+    },
+    {
+      id: "cbr_rate_approval",
+      workspaceId: "demo-seed",
+      name: "Rate & Invoice sheets require PM approval",
+      keywords: ["rate", "invoice", "change-order", "variance"],
+      targetFolderId: "cbx_folder_rates",
+      requireApproval: true,
+      active: true,
+    },
+  ],
+  approvals: [],
+  jobLinks: [
+    { id: "cbl_1", workspaceId: "demo-seed", itemId: "cbx_sheet_pinehill", jobId: "JOB-1045" },
+    { id: "cbl_2", workspaceId: "demo-seed", itemId: "cbx_file_windstream_msa", jobId: "JOB-1045" },
+  ],
+  events: [
+    { id: "cbe_1", action: "spreadsheet.create", details: { name: "JOB-1045 Bore & Footage Reconciliation" }, createdAt: "2026-06-23T14:35:00.000Z" },
+  ],
+};
+let selectedCrewboxSheetId = "cbx_sheet_pinehill";
+
+let crewChatState = {
+  rooms: [
+    { id: "company", label: "Company General", kind: "company" },
+    { id: "crew:alpha", label: "Crew Alpha", kind: "crew" },
+    { id: "crew:bravo", label: "Crew Bravo", kind: "crew" },
+    { id: "crew:charlie", label: "Crew Charlie", kind: "crew" },
+    { id: "crew:delta", label: "Crew Delta", kind: "crew" },
+    { id: "job:JOB-1045", label: "JOB-1045 Pine Hill", kind: "job", jobId: "JOB-1045" },
+    { id: "job:JOB-1046", label: "JOB-1046 Oak Ridge", kind: "job", jobId: "JOB-1046" },
+    { id: "job:JOB-1047", label: "JOB-1047 Cedar Park", kind: "job", jobId: "JOB-1047" },
+    { id: "job:JOB-1048", label: "JOB-1048 Slaughter Ln", kind: "job", jobId: "JOB-1048" },
+  ],
+  messages: [
+    {
+      id: "msg_seed_1",
+      room: "company",
+      seq: 1,
+      authorId: "pm@crewproof.local",
+      authorName: "M. Vance (PM)",
+      text: "Morning crews — ensure all positive responses are verified in Crew811 before bore startup on @JOB-1045 and @JOB-1046.",
+      mentions: ["JOB-1045", "JOB-1046"],
+      createdAt: "2026-06-23T13:00:00.000Z",
+    },
+    {
+      id: "msg_seed_2",
+      room: "job:JOB-1045",
+      seq: 1,
+      authorId: "jramirez@crewproof.local",
+      authorName: "J. Ramirez (Alpha Crew)",
+      text: "HH-1 handhole photo and GPS locked. Moving to SV-1 open-vault photo next.",
+      mentions: ["JOB-1045"],
+      createdAt: "2026-06-23T14:40:00.000Z",
+    },
+    {
+      id: "msg_seed_3",
+      room: "crew:alpha",
+      seq: 1,
+      authorId: "locate@crewproof.local",
+      authorName: "D. Brooks (811 Desk)",
+      text: "FL811-24-1187 is Clear for @JOB-1045 HH-1 to SV-1. Keep pothole photos attached for UG-1.",
+      mentions: ["JOB-1045"],
+      createdAt: "2026-06-23T14:42:00.000Z",
+    },
+  ],
+  jobLinks: [
+    { id: "cjl_seed_1", messageId: "msg_seed_1", jobId: "JOB-1045", room: "company", source: "mention", linkedBy: "pm@crewproof.local", createdAt: "2026-06-23T13:00:00.000Z" },
+    { id: "cjl_seed_2", messageId: "msg_seed_2", jobId: "JOB-1045", room: "job:JOB-1045", source: "job-room", linkedBy: "jramirez@crewproof.local", createdAt: "2026-06-23T14:40:00.000Z" },
+    { id: "cjl_seed_3", messageId: "msg_seed_3", jobId: "JOB-1045", room: "crew:alpha", source: "mention", linkedBy: "locate@crewproof.local", createdAt: "2026-06-23T14:42:00.000Z" },
+  ],
+  summaries: [],
+};
+
+function canCallBackend() {
+  return typeof window.fetch === "function" && /^https?:$/i.test(window.location?.protocol || "");
+}
+
+async function apiRequest(path, { method = "GET", body } = {}) {
+  if (!canCallBackend()) return null;
+  try {
+    const headers = { Accept: "application/json" };
+    if (activeSessionToken) headers["x-session-token"] = activeSessionToken;
+    if (body !== undefined) headers["Content-Type"] = "application/json";
+    const response = await window.fetch(path, {
+      method,
+      headers,
+      body: body !== undefined ? JSON.stringify(body) : undefined,
+    });
+    if (!response.ok) return null;
+    return await response.json();
+  } catch {
+    return null;
+  }
+}
+
+function promptFileUpload({ accept = "*/*", workspaceId = "demo-seed", jobId = activeJobId(), assetId = currentAssetId(), documentType = "proof" } = {}) {
+  return new Promise((resolve) => {
+    if (!globalFileInput) {
+      resolve(null);
+      return;
+    }
+    globalFileInput.accept = accept;
+    globalFileInput.value = "";
+    const onChange = () => {
+      globalFileInput.removeEventListener("change", onChange);
+      const file = globalFileInput.files?.[0];
+      if (!file) {
+        resolve(null);
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = async () => {
+        const dataUrl = String(reader.result || "");
+        const uploaded = await apiRequest("/api/uploads", {
+          method: "POST",
+          body: {
+            workspaceId,
+            jobId,
+            assetId,
+            documentType,
+            fileName: file.name,
+            mimeType: file.type || "application/octet-stream",
+            base64Data: dataUrl,
+            uploadedBy: activeUserAccount.name,
+          },
+        });
+        resolve({
+          fileName: file.name,
+          mimeType: file.type || "application/octet-stream",
+          sizeBytes: file.size,
+          dataUrl,
+          upload: uploaded?.upload || null,
+        });
+      };
+      reader.onerror = () => resolve(null);
+      reader.readAsDataURL(file);
+    };
+    globalFileInput.addEventListener("change", onChange, { once: true });
+    globalFileInput.click();
+  });
+}
+
+function syncJobSelectOptions(jobId, job) {
+  [jobIdField, crewJobSelect, crewboxJobLinkSelect].forEach((select) => {
+    if (!select) return;
+    if (![...select.options].some((opt) => opt.value === jobId)) {
+      const option = document.createElement("option");
+      option.value = jobId;
+      option.textContent = select === crewboxJobLinkSelect ? jobId : `${jobId} / ${job.customer} / ${job.siteName}`;
+      select.append(option);
+    }
+  });
+  if (chatRoomSelect && ![...chatRoomSelect.options].some((opt) => opt.value === `job:${jobId}`)) {
+    const option = document.createElement("option");
+    option.value = `job:${jobId}`;
+    option.textContent = `Job Room: ${jobId}`;
+    chatRoomSelect.append(option);
+  }
+}
+
+function createJobForClientProfile(client) {
+  const existingNums = Object.keys(jobData)
+    .map((id) => Number.parseInt(id.replace(/\D+/g, ""), 10))
+    .filter((num) => Number.isFinite(num));
+  const nextNum = Math.max(1048, ...existingNums) + 1;
+  const newJobId = `JOB-${nextNum}`;
+  const prefix = (client.customerCode || client.name || "JB").slice(0, 2).toUpperCase();
+  const assets = {
+    handhole: `${prefix}-HH-1`,
+    splice: `${prefix}-SC-1`,
+    vaultA: `${prefix}-SV-1`,
+    vaultB: `${prefix}-SV-2`,
+    underground: `${prefix}-UG-1`,
+  };
+  const job = {
+    id: newJobId,
+    customer: client.name,
+    clientId: client.id,
+    project: `${client.name} OSP Expansion`,
+    siteName: client.serviceTerritory || "Primary Route",
+    siteId: `${prefix}-${nextNum}`,
+    address: client.officeAddress || "100 Main Corridor<br>Austin, TX 78701",
+    defaultAsset: assets.handhole,
+    assets,
+    packageRows: structuredClone(jobData["JOB-1045"].packageRows),
+  };
+  jobData[newJobId] = job;
+  jobOverviewPins[newJobId] = { x: 52, y: 48, label: job.siteName, crew: "Alpha Crew" };
+
+  const templateMap = [
+    [assets.handhole, "HH-1", "Handhole", 8450, "Ready to Bill", "ready", "Complete", "None", 100],
+    [assets.splice, "SC-1", "Splice Case", 6200, "Waiting on Approval", "waiting", "Submitted", "PM / Owner approval", 90],
+    [assets.vaultA, "SV-1", "Splice Vault", 14800, "Missing Proof", "missing", "Missing Photo", "Missing open-vault photo", 64],
+    [assets.vaultB, "SV-2", "Splice Vault", 18250, "Waiting on Approval", "waiting", "Submitted", "Inspector signoff", 85],
+    [assets.underground, "UG-1", "Underground Bore", 24600, "Waiting on Approval", "waiting", "Submitted", "Locate verification", 88],
+  ];
+  templateMap.forEach(([assetId, baseId, typeLabel, amount, status, statusClass, proof, blocker, progress]) => {
+    const base = structuredClone(assetData[baseId]);
+    assetData[assetId] = {
+      ...base,
+      jobId: newJobId,
+      asset: `${assetId} ${typeLabel}`,
+      status,
+      statusClass,
+      proof,
+      blocker,
+      amount,
+      progress,
+      updated: formatLiveTimestamp(),
+      feedUpdated: formatLiveTimestamp(),
+    };
+  });
+
+  rateSubmissionsByJob[newJobId] = {
+    customer: client.name,
+    project: job.project,
+    version: `${prefix}-2026-v1`,
+    status: "Approved",
+    submittedBy: activeUserAccount.name,
+    approvedBy: "M. Vance / PM",
+    effectiveDate: isoToday(),
+    contract: `MSA-${prefix}-2026`,
+    sow: `SOW-${nextNum}`,
+    po: `PO-${nextNum}`,
+    locked: false,
+    retainage: `${Number(client.retainagePercent) || 5}%`,
+    taxJurisdiction: "Travis County / Austin",
+    poFunding: 100,
+    changeOrderApproval: 100,
+    lines: [
+      { assetId: assets.handhole, payItem: "Handhole install", quantity: 1, unit: "EA", rate: 8450, status: "Approved", source: `${prefix}-2026-v1` },
+      { assetId: assets.splice, payItem: "Splice case prep", quantity: 1, unit: "EA", rate: 6200, status: "Approved", source: `${prefix}-2026-v1` },
+      { assetId: assets.vaultA, payItem: "Vault placement", quantity: 1, unit: "EA", rate: 14800, status: "Approved", source: `${prefix}-2026-v1` },
+      { assetId: assets.vaultB, payItem: "Vault tie-in", quantity: 1, unit: "EA", rate: 18250, status: "Approved", source: `${prefix}-2026-v1` },
+      { assetId: assets.underground, payItem: "Directional bore", quantity: 1, unit: "EA", rate: 24600, status: "Approved", source: `${prefix}-2026-v1` },
+    ],
+  };
+
+  syncJobSelectOptions(newJobId, job);
+  persistActiveJobId(newJobId);
+  apiRequest("/api/jobs", {
+    method: "POST",
+    body: {
+      jobId: newJobId,
+      clientId: client.id,
+      customer: client.name,
+      project: job.project,
+      siteName: job.siteName,
+      address: job.address,
+    },
+  });
+  return newJobId;
+}
+
+authUserSelect?.addEventListener("change", async () => {
+  const email = authUserSelect.value;
+  const response = await apiRequest("/api/auth/login", { method: "POST", body: { email } });
+  if (response?.user) {
+    activeSessionToken = response.token || "";
+    activeUserAccount = response.user;
+    window.localStorage?.setItem("crewproof.sessionToken", activeSessionToken);
+  } else {
+    const fallbackRole = email.includes("pm@") ? "pm" : email.includes("billing@") ? "billing" : "crew";
+    activeUserAccount = {
+      id: email,
+      name: authUserSelect.options[authUserSelect.selectedIndex]?.textContent?.split("(")[0]?.trim() || email,
+      email,
+      role: fallbackRole,
+      title: fallbackRole.toUpperCase(),
+      workspaceId: "demo-seed",
+    };
+  }
+  if (authStatusCopy) {
+    authStatusCopy.textContent = `Session: ${activeUserAccount.name} / ${activeUserAccount.title || activeUserAccount.role}`;
+  }
+  if (roleMode && ["crew", "pm", "billing"].includes(activeUserAccount.role)) {
+    roleMode.value = activeUserAccount.role;
+    window.localStorage?.setItem("crewproof.role", activeUserAccount.role);
+  }
+  renderCrewChat();
+});
+
+rateActionButtons.forEach((button) => {
+  button.addEventListener("click", async () => {
+    const action = button.dataset.rateAction;
+    const jobId = activeJobId();
+    const rate = rateSubmissionFor(jobId);
+    if (!rate) return;
+
+    if (action === "export") {
+      const payload = {
+        schema: "crewproof.rate-submission.v1",
+        jobId,
+        exportedAt: new Date().toISOString(),
+        exportedBy: activeUserAccount.name,
+        rateSubmission: rate,
+      };
+      payload.custody = evidenceCustodyPacket("closeout.rate-submission", payload);
+      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+      const link = document.createElement("a");
+      const url = URL.createObjectURL(blob);
+      link.href = url;
+      link.download = `crewproof-${jobId}-rate-submission.json`;
+      document.body.append(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+      if (rateActionStatus) rateActionStatus.textContent = `Rate submission JSON exported for ${jobId}.`;
+      return;
+    }
+
+    if (action === "audit") {
+      const auditEl = document.querySelector("[data-calculation-audit-lines]");
+      auditEl?.scrollIntoView({ behavior: "smooth", block: "center" });
+      if (rateActionStatus) rateActionStatus.textContent = `Viewing calculation audit for ${jobId} (${Object.keys(rate.lines || {}).length} line items).`;
+      return;
+    }
+
+    let version = rate.version;
+    if (action === "upload") {
+      const uploaded = await promptFileUpload({
+        accept: ".pdf,.csv,.xlsx,.json",
+        workspaceId: "demo-seed",
+        jobId,
+        documentType: "rate-sheet",
+      });
+      if (uploaded?.fileName) {
+        version = uploaded.fileName.replace(/\.[^.]+$/, "");
+      } else {
+        version = `${rate.version}-rev`;
+      }
+    }
+
+    const statusMap = {
+      submit: "Submitted",
+      approve: "Approved",
+      reject: "Rejected",
+      lock: "Locked for Billing",
+      upload: "Approved",
+    };
+    const nextStatus = statusMap[action] || rate.status;
+    rate.status = nextStatus;
+    rate.version = version;
+    if (action === "approve" || action === "lock" || action === "upload") {
+      rate.approvedBy = `${activeUserAccount.name} (${formatLiveTimestamp()})`;
+      Object.values(rate.lines || {}).forEach((line) => {
+        line.status = nextStatus === "Locked for Billing" ? "Locked" : "Approved";
+      });
+    } else if (action === "reject") {
+      Object.values(rate.lines || {}).forEach((line) => {
+        line.status = "Rejected";
+      });
+    } else if (action === "submit") {
+      rate.submittedBy = `${activeUserAccount.name} (${formatLiveTimestamp()})`;
+      Object.values(rate.lines || {}).forEach((line) => {
+        line.status = "Submitted";
+      });
+    }
+
+    await apiRequest(`/api/rates/${encodeURIComponent(jobId)}`, {
+      method: "POST",
+      body: { action, actor: activeUserAccount.name, version },
+    });
+
+    renderRateAdminSections(jobId);
+    renderInvoiceLines();
+    renderCloseoutSummaries();
+    renderBilling(jobId);
+    syncCrewCard(jobId);
+    renderManagement();
+    if (rateActionStatus) {
+      rateActionStatus.textContent = `Rate submission for ${jobId} updated: ${rate.status} (${rate.version}).`;
+    }
+  });
+});
+
+downloadPackageZipButtons.forEach((button) => {
+  button.addEventListener("click", async () => {
+    const jobId = activeJobId();
+    if (canCallBackend()) {
+      const link = document.createElement("a");
+      link.href = `/api/packages/${encodeURIComponent(jobId)}/export.zip`;
+      link.download = `crewproof-${jobId}-closeout-package.zip`;
+      document.body.append(link);
+      link.click();
+      link.remove();
+      if (invoiceStatus) invoiceStatus.textContent = `Closeout package ZIP archive downloaded for ${jobId}.`;
+      return;
+    }
+    const snapshot = fieldSnapshot();
+    const blob = new Blob([JSON.stringify(snapshot, null, 2)], { type: "application/json" });
+    const link = document.createElement("a");
+    const url = URL.createObjectURL(blob);
+    link.href = url;
+    link.download = `crewproof-${jobId}-closeout-package-bundle.json`;
+    document.body.append(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
+    if (invoiceStatus) invoiceStatus.textContent = `Closeout package bundle downloaded for ${jobId}.`;
+  });
+});
+
+function crewboxPathForItem(item) {
+  const parts = [item.name];
+  let current = item;
+  let guard = 0;
+  while (current?.parentId && guard < 20) {
+    guard += 1;
+    const parent = crewboxState.items.find((entry) => entry.id === current.parentId);
+    if (!parent) break;
+    parts.unshift(parent.name);
+    current = parent;
+  }
+  return "/" + parts.join("/");
+}
+
+function renderCrewboxDrive() {
+  if (!crewboxItemsBody) return;
+  const folders = crewboxState.items.filter((item) => item.type === "folder" && !item.trashedAt);
+  if (crewboxFolderSelect) {
+    const currentVal = crewboxFolderSelect.value || "root";
+    crewboxFolderSelect.textContent = "";
+    const rootOpt = document.createElement("option");
+    rootOpt.value = "root";
+    rootOpt.textContent = "/ (Workspace Root)";
+    crewboxFolderSelect.append(rootOpt);
+    folders.forEach((folder) => {
+      const opt = document.createElement("option");
+      opt.value = folder.id;
+      opt.textContent = crewboxPathForItem(folder);
+      crewboxFolderSelect.append(opt);
+    });
+    if ([...crewboxFolderSelect.options].some((opt) => opt.value === currentVal)) {
+      crewboxFolderSelect.value = currentVal;
+    }
+  }
+  if (crewboxRuleTarget) {
+    const currentTarget = crewboxRuleTarget.value;
+    crewboxRuleTarget.textContent = "";
+    folders.forEach((folder) => {
+      const opt = document.createElement("option");
+      opt.value = folder.id;
+      opt.textContent = `Move to ${folder.name}`;
+      crewboxRuleTarget.append(opt);
+    });
+    if (currentTarget && [...crewboxRuleTarget.options].some((opt) => opt.value === currentTarget)) {
+      crewboxRuleTarget.value = currentTarget;
+    }
+  }
+
+  const filterMode = crewboxFilterSelect?.value || "all";
+  const selectedFolderId = crewboxFolderSelect?.value === "root" ? null : crewboxFolderSelect?.value || null;
+  const visibleItems = crewboxState.items.filter((item) => {
+    if (filterMode === "trash") return Boolean(item.trashedAt);
+    if (item.trashedAt) return false;
+    if (filterMode === "active") return (item.parentId || null) === selectedFolderId;
+    return true;
+  });
+
+  crewboxItemsBody.textContent = "";
+  visibleItems.forEach((item) => {
+    const tr = document.createElement("tr");
+    const links = crewboxState.jobLinks.filter((link) => link.itemId === item.id).map((link) => link.jobId);
+    const actionsWrap = document.createElement("span");
+    actionsWrap.className = "client-row-actions";
+
+    if (item.type === "spreadsheet" && !item.trashedAt) {
+      const openBtn = document.createElement("button");
+      openBtn.type = "button";
+      openBtn.textContent = "Edit Sheet";
+      openBtn.addEventListener("click", () => {
+        selectedCrewboxSheetId = item.id;
+        renderCrewboxSpreadsheet();
+      });
+      actionsWrap.append(openBtn);
+    }
+
+    if (item.approvalStatus === "pending" && !item.trashedAt) {
+      const approveBtn = document.createElement("button");
+      approveBtn.type = "button";
+      approveBtn.textContent = "Approve";
+      approveBtn.addEventListener("click", async () => {
+        item.approvalStatus = "approved";
+        const approval = crewboxState.approvals.find((a) => a.itemId === item.id && a.status === "pending");
+        if (approval) {
+          approval.status = "approved";
+          await apiRequest("/api/crewbox/action", {
+            method: "POST",
+            body: { action: "approval.review", approvalId: approval.id, decision: "approved", reviewedBy: activeUserAccount.name },
+          });
+        }
+        renderCrewboxDrive();
+      });
+      actionsWrap.append(approveBtn);
+    }
+
+    const trashBtn = document.createElement("button");
+    trashBtn.type = "button";
+    trashBtn.textContent = item.trashedAt ? "Restore" : "Trash";
+    trashBtn.addEventListener("click", async () => {
+      if (item.trashedAt) {
+        item.trashedAt = null;
+        await apiRequest("/api/crewbox/action", { method: "POST", body: { action: "item.restore", id: item.id } });
+      } else {
+        item.trashedAt = new Date().toISOString();
+        await apiRequest("/api/crewbox/action", { method: "POST", body: { action: "item.trash", id: item.id } });
+      }
+      renderCrewboxDrive();
+    });
+    actionsWrap.append(trashBtn);
+
+    renderCells(tr, [
+      item.name,
+      item.type,
+      crewboxPathForItem(item),
+      item.approvalStatus || "approved",
+      links.length ? links.join(", ") : "-",
+      String(item.updatedAt || "").slice(0, 16).replace("T", " "),
+      actionsWrap,
+    ]);
+    crewboxItemsBody.append(tr);
+  });
+
+  if (!visibleItems.length) {
+    const tr = document.createElement("tr");
+    renderCells(tr, ["No items in this view", "-", "-", "-", "-", "-", "-"]);
+    crewboxItemsBody.append(tr);
+  }
+
+  renderCrewboxSpreadsheet();
+
+  if (crewboxRulesList) {
+    crewboxRulesList.textContent = "";
+    crewboxState.rules.forEach((rule) => {
+      const li = document.createElement("li");
+      const targetFolder = crewboxState.items.find((i) => i.id === rule.targetFolderId);
+      li.textContent = `${rule.name}: [${(rule.keywords || []).join(", ")}] -> ${targetFolder?.name || "Root"} (${rule.requireApproval ? "Requires approval" : "Auto-approve"})`;
+      crewboxRulesList.append(li);
+    });
+  }
+
+  if (crewboxEventsList) {
+    crewboxEventsList.textContent = "";
+    crewboxState.events.slice(-6).reverse().forEach((ev) => {
+      const li = document.createElement("li");
+      li.textContent = `${String(ev.createdAt || "").slice(11, 19)} - ${ev.action}: ${ev.details?.name || ev.details?.jobId || ""}`;
+      crewboxEventsList.append(li);
+    });
+  }
+}
+
+function renderCrewboxSpreadsheet() {
+  if (!crewboxSheetGrid) return;
+  const sheet = crewboxState.items.find((item) => item.id === selectedCrewboxSheetId && item.type === "spreadsheet")
+    || crewboxState.items.find((item) => item.type === "spreadsheet" && !item.trashedAt);
+  if (!sheet) {
+    if (crewboxSheetTitle) crewboxSheetTitle.textContent = "(No spreadsheet selected)";
+    crewboxSheetGrid.textContent = "Create or select a spreadsheet to edit cells.";
+    return;
+  }
+  selectedCrewboxSheetId = sheet.id;
+  if (crewboxSheetTitle) crewboxSheetTitle.textContent = sheet.name;
+  crewboxSheetGrid.textContent = "";
+  const table = document.createElement("table");
+  const thead = document.createElement("thead");
+  const headRow = document.createElement("tr");
+  (sheet.columns || ["Col 1", "Col 2", "Col 3", "Col 4"]).forEach((col) => {
+    const th = document.createElement("th");
+    th.textContent = col;
+    headRow.append(th);
+  });
+  thead.append(headRow);
+  const tbody = document.createElement("tbody");
+  (sheet.rows || []).forEach((rowValues, rIdx) => {
+    const tr = document.createElement("tr");
+    rowValues.forEach((cellVal, cIdx) => {
+      const td = document.createElement("td");
+      const input = document.createElement("input");
+      input.type = "text";
+      input.value = cellVal;
+      input.dataset.sheetRow = String(rIdx);
+      input.dataset.sheetCol = String(cIdx);
+      td.append(input);
+      tr.append(td);
+    });
+    tbody.append(tr);
+  });
+  table.append(thead, tbody);
+  crewboxSheetGrid.append(table);
+}
+
+crewboxFolderSelect?.addEventListener("change", renderCrewboxDrive);
+crewboxFilterSelect?.addEventListener("change", renderCrewboxDrive);
+
+crewboxNewFolderBtn?.addEventListener("click", async () => {
+  const folderCount = crewboxState.items.filter((i) => i.type === "folder").length + 1;
+  const name = `Field Packet Folder ${folderCount}`;
+  const parentId = crewboxFolderSelect?.value === "root" ? null : crewboxFolderSelect?.value || null;
+  const res = await apiRequest("/api/crewbox/action", {
+    method: "POST",
+    body: { action: "folder.create", workspaceId: "demo-seed", parentId, name },
+  });
+  const folder = res?.folder || {
+    id: `cbx_folder_${Date.now()}`,
+    workspaceId: "demo-seed",
+    parentId,
+    type: "folder",
+    name,
+    trashedAt: null,
+    approvalStatus: "approved",
+    updatedAt: new Date().toISOString(),
+  };
+  if (!crewboxState.items.some((i) => i.id === folder.id)) crewboxState.items.push(folder);
+  crewboxState.events.push({ id: `cbe_${Date.now()}`, action: "folder.create", details: { name }, createdAt: new Date().toISOString() });
+  renderCrewboxDrive();
+});
+
+crewboxUploadFileBtn?.addEventListener("click", async () => {
+  const parentId = crewboxFolderSelect?.value === "root" ? null : crewboxFolderSelect?.value || null;
+  const uploaded = await promptFileUpload({
+    accept: "*/*",
+    workspaceId: "demo-seed",
+    jobId: activeJobId(),
+    documentType: "crewbox-file",
+  });
+  const fileName = uploaded?.fileName || `field-locate-ticket-${Date.now().toString().slice(-4)}.pdf`;
+  const res = await apiRequest("/api/crewbox/action", {
+    method: "POST",
+    body: {
+      action: "file.create",
+      workspaceId: "demo-seed",
+      parentId,
+      name: fileName,
+      mimeType: uploaded?.mimeType || "application/pdf",
+      sizeBytes: uploaded?.sizeBytes || 12400,
+      storagePath: uploaded?.upload?.url || "",
+      sha256: uploaded?.upload?.sha256 || "",
+    },
+  });
+  if (res?.file) {
+    if (!crewboxState.items.some((i) => i.id === res.file.id)) crewboxState.items.push(res.file);
+  } else {
+    const matchedRule = crewboxState.rules.find((r) => r.active && r.keywords.some((kw) => fileName.toLowerCase().includes(kw.toLowerCase())));
+    const item = {
+      id: `cbx_file_${Date.now()}`,
+      workspaceId: "demo-seed",
+      parentId: matchedRule?.targetFolderId || parentId,
+      type: "file",
+      name: fileName,
+      trashedAt: null,
+      approvalStatus: matchedRule?.requireApproval ? "pending" : "approved",
+      updatedAt: new Date().toISOString(),
+    };
+    crewboxState.items.push(item);
+  }
+  crewboxState.events.push({ id: `cbe_${Date.now()}`, action: "file.upload", details: { name: fileName }, createdAt: new Date().toISOString() });
+  renderCrewboxDrive();
+});
+
+crewboxNewSheetBtn?.addEventListener("click", async () => {
+  const parentId = crewboxFolderSelect?.value === "root" ? null : crewboxFolderSelect?.value || null;
+  const name = `${activeJobId()} Field Production Sheet`;
+  const res = await apiRequest("/api/crewbox/action", {
+    method: "POST",
+    body: { action: "spreadsheet.create", workspaceId: "demo-seed", parentId, name },
+  });
+  const sheet = res?.spreadsheet || {
+    id: `cbx_sheet_${Date.now()}`,
+    workspaceId: "demo-seed",
+    parentId,
+    type: "spreadsheet",
+    name,
+    trashedAt: null,
+    approvalStatus: "approved",
+    columns: ["Asset", "Pay Item", "Quantity", "Status"],
+    rows: [
+      [currentAssetId(), "Handhole / Bore Line", "1", "Ready"],
+      ["SV-1", "Vault Placement", "1", "Pending"],
+    ],
+    updatedAt: new Date().toISOString(),
+  };
+  if (!crewboxState.items.some((i) => i.id === sheet.id)) crewboxState.items.push(sheet);
+  selectedCrewboxSheetId = sheet.id;
+  crewboxState.events.push({ id: `cbe_${Date.now()}`, action: "spreadsheet.create", details: { name }, createdAt: new Date().toISOString() });
+  renderCrewboxDrive();
+});
+
+crewboxSaveSheetBtn?.addEventListener("click", async () => {
+  const sheet = crewboxState.items.find((item) => item.id === selectedCrewboxSheetId && item.type === "spreadsheet");
+  if (!sheet || !crewboxSheetGrid) return;
+  const inputs = crewboxSheetGrid.querySelectorAll("input[data-sheet-row]");
+  inputs.forEach((input) => {
+    const r = Number(input.dataset.sheetRow);
+    const c = Number(input.dataset.sheetCol);
+    if (sheet.rows[r]) sheet.rows[r][c] = input.value;
+  });
+  sheet.updatedAt = new Date().toISOString();
+  await apiRequest("/api/crewbox/action", {
+    method: "POST",
+    body: { action: "spreadsheet.save", id: sheet.id, columns: sheet.columns, rows: sheet.rows },
+  });
+  crewboxState.events.push({ id: `cbe_${Date.now()}`, action: "spreadsheet.save", details: { name: sheet.name }, createdAt: sheet.updatedAt });
+  renderCrewboxDrive();
+  if (workspaceStatus) workspaceStatus.textContent = `Saved spreadsheet "${sheet.name}" in CrewBox Drive.`;
+});
+
+crewboxLinkJobBtn?.addEventListener("click", async () => {
+  const jobId = crewboxJobLinkSelect?.value || activeJobId();
+  const itemId = selectedCrewboxSheetId || crewboxState.items.find((i) => !i.trashedAt)?.id;
+  if (!itemId) return;
+  if (!crewboxState.jobLinks.some((l) => l.itemId === itemId && l.jobId === jobId)) {
+    crewboxState.jobLinks.push({ id: `cbl_${Date.now()}`, workspaceId: "demo-seed", itemId, jobId });
+  }
+  await apiRequest("/api/crewbox/action", {
+    method: "POST",
+    body: { action: "job.link", workspaceId: "demo-seed", itemId, jobId },
+  });
+  crewboxState.events.push({ id: `cbe_${Date.now()}`, action: "job.link", details: { jobId }, createdAt: new Date().toISOString() });
+  renderCrewboxDrive();
+});
+
+crewboxEmptyTrashBtn?.addEventListener("click", async () => {
+  crewboxState.items = crewboxState.items.filter((item) => !item.trashedAt);
+  await apiRequest("/api/crewbox/action", {
+    method: "POST",
+    body: { action: "trash.empty", workspaceId: "demo-seed" },
+  });
+  renderCrewboxDrive();
+});
+
+crewboxRuleForm?.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  const name = crewboxRuleName?.value?.trim();
+  const keywords = (crewboxRuleKeywords?.value || "").split(",").map((s) => s.trim()).filter(Boolean);
+  const targetFolderId = crewboxRuleTarget?.value || null;
+  const requireApproval = Boolean(crewboxRuleApproval?.checked);
+  if (!name || !keywords.length) return;
+  const res = await apiRequest("/api/crewbox/action", {
+    method: "POST",
+    body: { action: "rule.upsert", workspaceId: "demo-seed", name, keywords, targetFolderId, requireApproval },
+  });
+  const rule = res?.rule || {
+    id: `cbr_${Date.now()}`,
+    workspaceId: "demo-seed",
+    name,
+    keywords,
+    targetFolderId,
+    requireApproval,
+    active: true,
+  };
+  crewboxState.rules.push(rule);
+  if (crewboxRuleName) crewboxRuleName.value = "";
+  if (crewboxRuleKeywords) crewboxRuleKeywords.value = "";
+  renderCrewboxDrive();
+});
+
+function renderCrewChat() {
+  if (!chatMessagesContainer) return;
+  const currentRoom = chatRoomSelect?.value || "company";
+  const roomMessages = crewChatState.messages
+    .filter((m) => m.room === currentRoom)
+    .sort((a, b) => a.seq - b.seq);
+
+  chatMessagesContainer.textContent = "";
+  roomMessages.forEach((msg) => {
+    const div = document.createElement("div");
+    div.className = "chat-msg-item";
+    const meta = document.createElement("div");
+    meta.className = "chat-msg-meta";
+    const strong = document.createElement("strong");
+    strong.textContent = `#${msg.seq} ${msg.authorName}`;
+    const timeSpan = document.createElement("span");
+    timeSpan.textContent = String(msg.createdAt || "").slice(11, 16);
+    const linkBtn = document.createElement("button");
+    linkBtn.type = "button";
+    linkBtn.className = "chat-link-job-btn";
+    const targetJob = activeJobId();
+    const isLinked = crewChatState.jobLinks.some((l) => l.messageId === msg.id && l.jobId === targetJob);
+    linkBtn.textContent = isLinked ? `Linked to ${targetJob}` : `Link to ${targetJob}`;
+    linkBtn.addEventListener("click", async () => {
+      if (isLinked) {
+        crewChatState.jobLinks = crewChatState.jobLinks.filter((l) => !(l.messageId === msg.id && l.jobId === targetJob));
+        await apiRequest("/api/chat/action", { method: "POST", body: { action: "job.unlink", messageId: msg.id, jobId: targetJob } });
+      } else {
+        crewChatState.jobLinks.push({
+          id: `cjl_${Date.now()}`,
+          messageId: msg.id,
+          jobId: targetJob,
+          room: msg.room,
+          source: "manual",
+          linkedBy: activeUserAccount.name,
+          createdAt: new Date().toISOString(),
+        });
+        await apiRequest("/api/chat/action", { method: "POST", body: { action: "job.link", messageId: msg.id, jobId: targetJob, linkedBy: activeUserAccount.name } });
+      }
+      renderCrewChat();
+    });
+    meta.append(strong, timeSpan, linkBtn);
+    const textP = document.createElement("p");
+    textP.textContent = msg.text;
+    div.append(meta, textP);
+    chatMessagesContainer.append(div);
+  });
+
+  if (!roomMessages.length) {
+    const empty = document.createElement("p");
+    empty.textContent = `No messages in ${currentRoom} yet. Start the conversation below.`;
+    chatMessagesContainer.append(empty);
+  }
+
+  const jobId = activeJobId();
+  if (chatLogJobLabel) chatLogJobLabel.textContent = jobId;
+  if (chatJobLogBody) {
+    chatJobLogBody.textContent = "";
+    const links = crewChatState.jobLinks.filter((l) => l.jobId === jobId);
+    links.forEach((link) => {
+      const msg = crewChatState.messages.find((m) => m.id === link.messageId);
+      if (!msg) return;
+      const tr = document.createElement("tr");
+      const unlinkBtn = document.createElement("button");
+      unlinkBtn.type = "button";
+      unlinkBtn.textContent = "Unlink";
+      unlinkBtn.addEventListener("click", async () => {
+        crewChatState.jobLinks = crewChatState.jobLinks.filter((l) => l.id !== link.id);
+        await apiRequest("/api/chat/action", { method: "POST", body: { action: "job.unlink", messageId: msg.id, jobId } });
+        renderCrewChat();
+      });
+      renderCells(tr, [
+        msg.room,
+        msg.authorName,
+        msg.text,
+        link.source,
+        String(msg.createdAt || "").slice(0, 16).replace("T", " "),
+        unlinkBtn,
+      ]);
+      chatJobLogBody.append(tr);
+    });
+    if (!links.length) {
+      const tr = document.createElement("tr");
+      renderCells(tr, ["-", "-", `No chat messages linked to ${jobId}`, "-", "-", "-"]);
+      chatJobLogBody.append(tr);
+    }
+  }
+
+  if (chatUnreadBadge) {
+    const summary = crewChatState.summaries.find((s) => s.id === currentRoom);
+    const unread = summary ? summary.unreadCount : 0;
+    chatUnreadBadge.textContent = `${unread} unread`;
+  }
+}
+
+chatRoomSelect?.addEventListener("change", renderCrewChat);
+
+chatMarkReadBtn?.addEventListener("click", async () => {
+  const room = chatRoomSelect?.value || "company";
+  await apiRequest("/api/chat/action", {
+    method: "POST",
+    body: { action: "room.markRead", workspaceId: "demo-seed", room, userId: activeUserAccount.email },
+  });
+  const summary = crewChatState.summaries.find((s) => s.id === room);
+  if (summary) summary.unreadCount = 0;
+  renderCrewChat();
+});
+
+chatForm?.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  const text = chatInput?.value?.trim();
+  if (!text) return;
+  const room = chatRoomSelect?.value || "company";
+  const clientId = `cid_${Date.now()}`;
+  if (chatInput) chatInput.value = "";
+
+  const res = await apiRequest("/api/chat/action", {
+    method: "POST",
+    body: {
+      action: "message.post",
+      workspaceId: "demo-seed",
+      room,
+      authorId: activeUserAccount.email,
+      authorName: `${activeUserAccount.name} (${activeUserAccount.title || activeUserAccount.role})`,
+      text,
+      clientId,
+    },
+  });
+
+  if (res?.message) {
+    if (!crewChatState.messages.some((m) => m.id === res.message.id)) {
+      crewChatState.messages.push(res.message);
+    }
+    const chatSync = await apiRequest(`/api/chat?workspaceId=demo-seed&userId=${encodeURIComponent(activeUserAccount.email)}&jobId=${encodeURIComponent(activeJobId())}`);
+    if (chatSync?.jobLinks) crewChatState.jobLinks = chatSync.jobLinks;
+    if (chatSync?.summaries) crewChatState.summaries = chatSync.summaries;
+  } else {
+    const roomMsgs = crewChatState.messages.filter((m) => m.room === room);
+    const nextSeq = roomMsgs.reduce((max, m) => Math.max(max, m.seq || 0), 0) + 1;
+    const mentions = [...new Set([...text.matchAll(/@?(JOB-\d{3,6})/gi)].map((m) => m[1].toUpperCase()))];
+    const msg = {
+      id: `msg_${Date.now()}`,
+      room,
+      seq: nextSeq,
+      authorId: activeUserAccount.email,
+      authorName: `${activeUserAccount.name} (${activeUserAccount.title || activeUserAccount.role})`,
+      text,
+      mentions,
+      createdAt: new Date().toISOString(),
+    };
+    crewChatState.messages.push(msg);
+    if (room.startsWith("job:")) {
+      const rJob = room.slice(4).toUpperCase();
+      crewChatState.jobLinks.push({ id: `cjl_${Date.now()}_r`, messageId: msg.id, jobId: rJob, room, source: "job-room", linkedBy: activeUserAccount.email, createdAt: msg.createdAt });
+    }
+    mentions.forEach((mJob) => {
+      if (!crewChatState.jobLinks.some((l) => l.messageId === msg.id && l.jobId === mJob)) {
+        crewChatState.jobLinks.push({ id: `cjl_${Date.now()}_${mJob}`, messageId: msg.id, jobId: mJob, room, source: "mention", linkedBy: activeUserAccount.email, createdAt: msg.createdAt });
+      }
+    });
+  }
+
+  const asset = assetData[currentAssetId()];
+  if (asset) {
+    addAssetEvent(asset, `${new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })} Chat`, `${activeUserAccount.name}: ${text}`);
+    renderAsset(currentAssetId());
+  }
+  renderCrewChat();
+});
+
+async function hydrateFromBackend() {
+  if (!canCallBackend()) return;
+  const payload = await apiRequest("/api/state");
+  if (!payload?.state) return;
+  const s = payload.state;
+  if (s.jobs) {
+    Object.entries(s.jobs).forEach(([id, job]) => {
+      if (!jobData[id]) {
+        jobData[id] = {
+          ...job,
+          packageRows: job.packageRows || structuredClone(jobData["JOB-1045"].packageRows),
+        };
+        syncJobSelectOptions(id, jobData[id]);
+      }
+    });
+  }
+  if (s.assets) {
+    Object.entries(s.assets).forEach(([id, asset]) => {
+      assetData[id] = { ...(assetData[id] || {}), ...asset };
+    });
+  }
+  if (s.rateSubmissionsByJob) {
+    Object.entries(s.rateSubmissionsByJob).forEach(([id, rate]) => {
+      rateSubmissionsByJob[id] = rate;
+    });
+  }
+  if (s.crewbox) {
+    crewboxState = s.crewbox;
+  }
+  if (s.chat) {
+    crewChatState = {
+      ...crewChatState,
+      ...s.chat,
+    };
+  }
+  renderCrewboxDrive();
+  renderCrewChat();
+  refreshFieldDerivedViews(currentAssetId());
+}
+
+renderCrewboxDrive();
+renderCrewChat();
+hydrateFromBackend();
+

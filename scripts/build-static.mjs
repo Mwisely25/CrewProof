@@ -12,11 +12,21 @@ for (const entry of ["index.html", "assets"]) {
   cpSync(join(root, entry), join(output, entry), { recursive: true });
 }
 
-for (const doc of ["README.md", "ONBOARDING.md", "DEPLOY_HETZNER.md", "DEPLOY_VERCEL.md"]) {
-  cpSync(join(root, doc), join(output, doc));
+for (const doc of ["README.md", "ONBOARDING.md", "DEPLOY_HETZNER.md", "DEPLOY_VERCEL.md", "DEPLOY_GITHUB.md"]) {
+  if ( doc !== "DEPLOY_GITHUB.md" || true ) {
+    cpSync(join(root, doc), join(output, doc));
+  }
 }
 
 const indexHtml = readFileSync(join(root, "index.html"), "utf8");
+writeFileSync(join(output, ".nojekyll"), "");
+writeFileSync(
+  join(output, "404.html"),
+  indexHtml.replace(
+    "<head>",
+    `<head>\n    <script>(function(){var p=location.pathname||"/";var m=p.match(/^(.*?)(?:\\/(?:crew|crew811|claims|management|onboarding|clients|workspaces|jobs|closeouts|reports|settings|closeout|billing|share)(?:\\/.*)?|\\/(?:index|404)\\.html)?\\/?$/);var b=((m&&m[1])||"").replace(/\\/+$/,"")+"/";document.write('<base href="'+b+'">');})();</script>`,
+  ),
+);
 const staticRoutes = ["crew", "crew811", "claims", "management", "onboarding", "clients", "workspaces", "jobs", "closeouts", "reports", "settings"];
 const jobRoutes = ["JOB-1045", "JOB-1046", "JOB-1047", "JOB-1048"];
 const clientRoutes = ["WINDSTREAM", "KINETIC", "SPECTRUM", "ATT"];

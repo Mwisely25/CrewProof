@@ -38,6 +38,19 @@
               <option value="billing">Billing</option>
             </select>
           </label>
+          <div class="auth-session-bar" data-auth-panel aria-label="Active operator session">
+            <label>Active Operator
+              <select data-auth-user-select>
+                <option value="jramirez@crewproof.local">J. Ramirez (Foreman)</option>
+                <option value="pm@crewproof.local">M. Vance (PM / Owner)</option>
+                <option value="billing@crewproof.local">S. Chen (Billing)</option>
+                <option value="locate@crewproof.local">D. Brooks (811 Desk)</option>
+                <option value="claims@crewproof.local">R. Patel (Claims)</option>
+              </select>
+            </label>
+            <p class="auth-status-copy" data-auth-status>Session: J. Ramirez / Crew</p>
+            <input type="file" data-global-file-input hidden>
+          </div>
         </aside>
 
         <section class="crew-view route-view" data-view="crew" aria-label="Crew field working view">
@@ -530,7 +543,7 @@
                 <div class="client-actions">
                   <a href="/clients/WINDSTREAM/edit" data-client-edit-link data-route-link="/clients/WINDSTREAM/edit">Edit Client</a>
                   <button type="button" data-client-toggle-archive>Archive Client</button>
-                  <button type="button" disabled data-client-create-job>Create Job for Client</button>
+                  <button type="button" data-client-create-job>Create Job for Client</button>
                 </div>
               </div>
               <section class="client-detail-grid">
@@ -682,6 +695,108 @@
             <article class="workspace-card">
               <h2>Audit History</h2>
               <table><tbody data-workspace-audit></tbody></table>
+            </article>
+            <article class="workspace-card wide crewbox-panel" data-crewbox-panel aria-label="CrewBox Drive workspace storage">
+              <div class="crewbox-header">
+                <div>
+                  <h2>CrewBox Drive</h2>
+                  <p>Tenant-isolated folders, field files, live rate/bore spreadsheets, keyword routing rules, approvals, and job links.</p>
+                </div>
+                <div class="crewbox-toolbar">
+                  <label>Folder
+                    <select data-crewbox-folder-select>
+                      <option value="root">/ (Workspace Root)</option>
+                    </select>
+                  </label>
+                  <label>View
+                    <select data-crewbox-filter-select>
+                      <option value="active">Active Folder</option>
+                      <option value="all">All Active Items</option>
+                      <option value="trash">Trash</option>
+                    </select>
+                  </label>
+                  <button type="button" data-crewbox-new-folder>New Folder</button>
+                  <button type="button" data-crewbox-upload-file>Upload File</button>
+                  <button type="button" data-crewbox-new-sheet>New Spreadsheet</button>
+                  <button type="button" data-crewbox-empty-trash>Empty Trash</button>
+                </div>
+              </div>
+              <table>
+                <thead><tr><th>Name</th><th>Type</th><th>Path</th><th>Approval</th><th>Job Links</th><th>Updated</th><th>Actions</th></tr></thead>
+                <tbody data-crewbox-items></tbody>
+              </table>
+              <div class="crewbox-subgrid">
+                <div class="crewbox-sheet-card" data-crewbox-sheet-editor>
+                  <h3>Spreadsheet Editor <span data-crewbox-sheet-title>(Select a sheet)</span></h3>
+                  <div class="crewbox-sheet-grid" data-crewbox-sheet-grid></div>
+                  <div class="crewbox-sheet-actions">
+                    <button type="button" data-crewbox-save-sheet>Save Sheet</button>
+                    <label>Link Job
+                      <select data-crewbox-job-link-select>
+                        <option value="JOB-1045">JOB-1045</option>
+                        <option value="JOB-1046">JOB-1046</option>
+                        <option value="JOB-1047">JOB-1047</option>
+                        <option value="JOB-1048">JOB-1048</option>
+                      </select>
+                    </label>
+                    <button type="button" data-crewbox-link-job-btn>Link Selected Item to Job</button>
+                  </div>
+                </div>
+                <div class="crewbox-rules-card">
+                  <h3>Filename Routing &amp; Approval Rules</h3>
+                  <form class="crewbox-rule-form" data-crewbox-rule-form>
+                    <input data-crewbox-rule-name placeholder="Rule name (e.g. Bore Logs)" required>
+                    <input data-crewbox-rule-keywords placeholder="Keywords (comma-separated, e.g. bore,log)" required>
+                    <select data-crewbox-rule-target></select>
+                    <label><input type="checkbox" data-crewbox-rule-approval checked> Require Approval</label>
+                    <button type="submit">Save Rule</button>
+                  </form>
+                  <ul class="crewbox-rules-list" data-crewbox-rules-list></ul>
+                  <h4>Recent Drive Activity</h4>
+                  <ul class="crewbox-events-list" data-crewbox-events-list></ul>
+                </div>
+              </div>
+            </article>
+            <article class="workspace-card wide crew-chat-panel" data-crew-chat-panel aria-label="Crew Chat and Job Conversation Hub">
+              <div class="crew-chat-header">
+                <div>
+                  <h2>Crew Chat &amp; Job Conversation Hub</h2>
+                  <p>Real-time company, crew, and job rooms with @JOB-XXXX auto-linking into closeout decision logs.</p>
+                </div>
+                <div class="crew-chat-controls">
+                  <label>Room
+                    <select data-chat-room-select>
+                      <option value="company">Company General (company)</option>
+                      <option value="crew:alpha">Crew Alpha (crew:alpha)</option>
+                      <option value="crew:bravo">Crew Bravo (crew:bravo)</option>
+                      <option value="crew:charlie">Crew Charlie (crew:charlie)</option>
+                      <option value="crew:delta">Crew Delta (crew:delta)</option>
+                      <option value="job:JOB-1045">Job Room: JOB-1045</option>
+                      <option value="job:JOB-1046">Job Room: JOB-1046</option>
+                      <option value="job:JOB-1047">Job Room: JOB-1047</option>
+                      <option value="job:JOB-1048">Job Room: JOB-1048</option>
+                    </select>
+                  </label>
+                  <button type="button" data-chat-mark-read>Mark Room Read</button>
+                  <span class="chat-unread-pill" data-chat-unread-badge>0 unread</span>
+                </div>
+              </div>
+              <div class="crew-chat-body">
+                <div class="crew-chat-feed-wrap">
+                  <div class="crew-chat-messages" data-chat-messages aria-live="polite"></div>
+                  <form class="crew-chat-form" data-chat-form>
+                    <input data-chat-input placeholder="Message room... Mention @JOB-1045 to auto-link to job closeout log" required>
+                    <button type="submit">Send Message</button>
+                  </form>
+                </div>
+                <div class="crew-chat-joblog-wrap">
+                  <h3>Job Conversation Log (<span data-chat-log-job-label>JOB-1045</span>)</h3>
+                  <table>
+                    <thead><tr><th>Room</th><th>Author</th><th>Message</th><th>Source</th><th>Timestamp</th><th>Action</th></tr></thead>
+                    <tbody data-chat-job-log></tbody>
+                  </table>
+                </div>
+              </div>
             </article>
           </section>
           <p class="workspace-status" data-workspace-status role="status" aria-live="polite">Workspace system ready. Demo seed data is isolated from pilot client workspaces.</p>
@@ -1080,6 +1195,7 @@
                   <button type="button" data-copy-share>Copy Share Link</button>
                   <button type="button" data-download-snapshot>Download Snapshot JSON</button>
                   <button type="button" data-download-package-csv>Package CSV</button>
+                  <button type="button" data-download-package-zip>Package ZIP</button>
                   <button type="button" data-print-package>Print / Save PDF</button>
                 </div>
               </div>
@@ -1272,14 +1388,15 @@
               </tbody>
             </table>
             <div class="rate-actions" aria-label="Rate submission actions">
-              <button type="button">Submit Rates</button>
-              <button type="button">Approve Rates</button>
-              <button type="button">Reject Rates</button>
-              <button type="button">Lock Rates for Billing</button>
-              <button type="button">Upload Rate Sheet</button>
-              <button type="button">Export Rate Submission</button>
-              <button type="button">View Calculation Audit</button>
+              <button type="button" data-rate-action="submit">Submit Rates</button>
+              <button type="button" data-rate-action="approve">Approve Rates</button>
+              <button type="button" data-rate-action="reject">Reject Rates</button>
+              <button type="button" data-rate-action="lock">Lock Rates for Billing</button>
+              <button type="button" data-rate-action="upload">Upload Rate Sheet</button>
+              <button type="button" data-rate-action="export">Export Rate Submission</button>
+              <button type="button" data-rate-action="audit">View Calculation Audit</button>
             </div>
+            <p class="rate-action-status" data-rate-action-status role="status" aria-live="polite"></p>
           </article>
           <article>
             <h2>CALCULATION AUDIT</h2>
